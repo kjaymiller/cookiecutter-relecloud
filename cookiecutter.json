@@ -3,15 +3,17 @@
   "email": "kjaymiller@gmail.com",
   "project_name": "Relecloud",
   "repo_name": "relecloud",
+  "src_folder_name": "demo-code",
   "project_short_description": "Create Relecloud Demo Applications",
-  "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+  "project_slug": "{{ cookiecutter.src_folder_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
   "version": "0.0.1",
   "project_backend": ["django", "fastapi"],
   "use_vnet": "n",
+  "install_deps": "y",
   "db_resource": ["postgres-flexible", "cosmos-pg", "cosmos-mongo"],
   "web_port": "8000",
   "_copy_without_render": [
     "*.html",
-    "*/.github/workflows/*"
+    "root/.github/workflows/*"
   ]
 }

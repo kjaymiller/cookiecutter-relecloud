@@ -40,7 +40,7 @@ You can choose to work inside your browser or open that Codespace using your loc
 
 ### Do I need a virtual environment and `pip install`?
 
-**No**, because we are operating inside of a containerized environment, we've gone ahead and installed all of the tools needed for this lab. You can see the list of tools installed in the [devcontainer.json](../.devcontainer/devcontainer.json) file, as well as the [requirements.txt](../demo-code/requirements.txt) and [requirements-dev.txt](../requirements-dev.txt) files.
+**No**, because we are operating inside of a containerized environment, we've gone ahead and installed all of the tools needed for this lab. You can see the list of tools installed in the [devcontainer.json](../../.devcontainer_fastapi/devcontainer.json) file, as well as the [requirements.txt](../demo-code/requirements.txt) and [requirements-dev.txt](../requirements-dev.txt) files.
 
 ---
 

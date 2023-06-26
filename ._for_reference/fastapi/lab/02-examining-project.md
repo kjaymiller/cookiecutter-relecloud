@@ -26,7 +26,7 @@ The code we will deploy exists in the `demo-code` folder. This is a [Django](htt
 
 You may notice we have 2 Docker Compose files and 2 Dockerfiles. [docker-compose.yml](../docker-compose.yml) serves as the base configuration for all of the development environments. This ensures that your deployment environment is as close to your development environment as possible.
 
- [.devcontainer/docker-compose_dev.yml](../.devcontainer/docker-compose_dev.yml) and [.devcontainer/Dockerfile_dev](../.devcontainer/Dockerfile_dev) are used to configure the development environment when using [Dev Containers](https://code.visualstudio.com/docs/remote/containers) or [Codespaces](https://codespaces.github.com). `Dockerfile_dev` provides configuration changes specific to local testing to ensure that our testing database is configured correctly, while remaining separate from production.
+ [.devcontainer/docker-compose_dev.yml](../../.devcontainer_fastapi/docker-compose_dev.yml) and [.devcontainer/Dockerfile_dev](../../.devcontainer_fastapi/Dockerfile_dev) are used to configure the development environment when using [Dev Containers](https://code.visualstudio.com/docs/remote/containers) or [Codespaces](https://codespaces.github.com). `Dockerfile_dev` provides configuration changes specific to local testing to ensure that our testing database is configured correctly, while remaining separate from production.
 
 > **:book: Learn More**
 > 
