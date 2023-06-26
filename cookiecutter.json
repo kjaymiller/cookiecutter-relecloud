@@ -4,7 +4,14 @@
   "project_name": "Relecloud",
   "repo_name": "relecloud",
   "project_short_description": "Create Relecloud Demo Applications",
-  "release_date": "2023-06-20",
-  "year": "2023",
-  "version": "0.0.1"
+  "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+  "version": "0.0.1",
+  "project_backend": ["django", "fastapi"],
+  "use_vnet": "n",
+  "db_resource": ["postgres-flexible", "cosmos-pg", "cosmos-mongo"],
+  "web_port": "8000",
+  "_copy_without_render": [
+    "*.html",
+    "*/.github/workflows/*"
+  ]
 }

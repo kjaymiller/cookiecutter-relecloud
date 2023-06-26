@@ -7,8 +7,8 @@ infra:
     provider: "bicep"
 services:
     web:
-        project: ./demo_code
-        module: web
+        project: ./fastapi/demo_code
+        module: fastapi/web
         language: py
         host: containerapp
 # metadata:

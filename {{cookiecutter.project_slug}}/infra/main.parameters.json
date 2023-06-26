@@ -14,8 +14,12 @@
       "webAppExists": {
         "value": "${SERVICE_WEB_RESOURCE_EXISTS=false}"
       },
-      "postgresPassword": {
-        "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} POSTGRESPASSWORD)"
+      "dbserverPassword": {
+        "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} DBSERVERPASSWORD)"
+      }{% if cookiecutter.project_backend in ("django", "flask") %},
+      "secretKey": {
+        "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} SECRETKEY)"
       }
+      {% endif %}
     }
   }
