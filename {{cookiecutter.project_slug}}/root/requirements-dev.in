@@ -1,4 +1,4 @@
--r demo-code/requirements.txt
+-r {{cookiecutter.project_slug}}/requirements.txt
 playwright
 pytest
 pytest-cov

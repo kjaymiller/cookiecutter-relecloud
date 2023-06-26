@@ -1,8 +1,24 @@
-fastapi
+{% if cookiecutter.project_backend in ('postgres-flexible', 'cosmos-pg') %}
+# postgres requirements
 psycopg2-binary
+{% endif %}
+
+{% if cookiecutter.project_backend == "fastapi" %}
+# fastapi requirements
+fastapi
 sqlmodel
-# opencensus-ext-azure 
-# opencensus-ext-django
 jinja2
 uvicorn[standard]
 python-multipart
+{% endif %}
+
+{% if cookiecutter.project_backend == "django" %}
+# django requirements
+django
+django-crispy-forms
+crispy-bootstrap4
+gunicorn
+whitenoise
+opencensus-ext-azure
+opencensus-ext-django
+{% endif %}
