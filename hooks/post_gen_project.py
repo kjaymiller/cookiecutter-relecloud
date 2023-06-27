@@ -2,7 +2,6 @@ import logging
 import pathlib
 import shutil
 import sys
-import subprocess
 
 
 # Steps to finalize the cookiecutter build
@@ -22,14 +21,5 @@ def move_root_files():
         logging.warning(e)
         sys.exit(1)
 
-def install_required_packages(install_deps:bool):
-    subprocess.run(['pip', 'install', 'pip-tools'])
-    subprocess.run(['python', '-m', 'piptools', 'compile', '-o', '../requirements-dev.txt', '../requirements-dev.in'])
-
-    if install_deps:
-        subprocess.run(['python', '-m', 'pip', 'install', '../requirements.txt'])
-
-
 # Run the steps
 move_root_files()
-install_required_packages(install_deps={{cookiecutter.install_deps}})
