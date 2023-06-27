@@ -15,5 +15,9 @@
   "_copy_without_render": [
     "*.html",
     "root/.github/workflows/*"
-  ]
+  ],
+  "_jinja2_env_vars": {
+      "lstrip_blocks": true,
+      "trim_blocks": true
+  }
 }
