@@ -7,9 +7,11 @@ infra:
     provider: "bicep"
 services:
     web:
-        project: ./fastapi/demo_code
-        module: fastapi/web
+        project: {{cookiecutter.project_slug}}
+        module: web
         language: py
         host: containerapp
 # metadata:
 #     template: django-postgres-aca@0.0.1-beta
+
+

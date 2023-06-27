@@ -15,6 +15,7 @@ from models import (
 app = FastAPI()
 app.mount('/mount', StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
+templates.env.globals["prod"] = os.environ.get("RUNNING_IN_PRODUCTION", False)
 
 
 @app.get("/", response_class=HTMLResponse)

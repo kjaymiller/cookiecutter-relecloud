@@ -51,6 +51,12 @@ module app 'core/host/container-app-upsert.bicep' = {
         name: 'KEYVAULT'
         value: keyVault.name
       }
+      {% if cookiecutter.project_backend == "fastapi" %}
+      {
+        name: 'RUNNING_IN_PRODUCTION'
+        value: 'true'
+      } 
+      {% endif %}
       {
         name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
         value: applicationInsights.properties.ConnectionString
