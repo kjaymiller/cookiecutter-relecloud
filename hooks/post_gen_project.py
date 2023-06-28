@@ -2,6 +2,7 @@ import logging
 import pathlib
 import shutil
 import sys
+import json
 
 
 # Steps to finalize the cookiecutter build
@@ -21,5 +22,25 @@ def move_root_files():
         logging.warning(e)
         sys.exit(1)
 
+def rename_backend_files():
+    """Rename the selected backend folder correspondint to the selected option"""
+    # remove the project_backend folders that are not selected
+
+    selected_backend = "{{cookiecutter.project_backend}}"
+
+    project_backends = {{_cookiecutter.project_backend|jsonify}}
+    project_backends.remove(selected_backend)
+
+    for unused_backend in project_backends:
+        shutil.rmtree(pathlib.Path(unused_backend))
+        
+    # rename the selected backend folder to backend
+    for file in pathlib.Path(selected_backend).iterdir():
+            shutil.move(file, pathlib.Path.cwd())
+
+    pathlib.Path(selected_backend).rmdir()
+
+
 # Run the steps
 move_root_files()
+rename_backend_files()

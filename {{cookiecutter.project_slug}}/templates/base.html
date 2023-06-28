@@ -1,9 +1,12 @@
 <html lang="en">
 <head>
+    {% raw %}
     {% if prod %}
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     {% endif %}
-    <link rel="stylesheet" href="{{ url_for('static', path='res/css/theme.css') }}" />
+    {% endraw %}
+    <link rel="stylesheet" href="{{ 'res/css/theme.css' | get_static_url_for_backend(framework=cookiecutter.project_backend) }}" />
+
     <title>
         {% block title %}
         ReleCloud - Expand your horizons
@@ -12,7 +15,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-translucent-secondary">
-        <img src="{{ url_for('static', path='res/img/small-logo.png') }}" width="60" height="auto" alt="Rocket ship logo" />
+        <img src="{{ 'res/img/small-logo.png' | get_static_url_for_backend(framework=cookiecutter.project_backend) }}" width="60" height="auto" alt="Rocket ship logo" />
         <a class="navbar-brand tk-elevon" href="/">&nbsp; ReleCloud Space Tourism</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar"
             aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,14 +25,14 @@
         <div class="collapse navbar-collapse" id="mainNavbar">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('info_request') }}">Request Information</a>
+                    <a class="nav-link" href="{{ 'info_request' | get_url_for_backend(framework=cookiecutter.project_backend) }}">Request Information</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('destinations') }}">Destinations</a>
+                    <a class="nav-link" href="{{ 'destinations' | get_url_for_backend(framework=cookiecutter.project_backend) }}">Destinations</a>
                 </li>
                 <li class="nav-item">
                 
-                    <a class="nav-link" href="{{ url_for('about')}}">About</a>
+                    <a class="nav-link" href="{{ 'about' | get_url_for_backend(framework=cookiecutter.project_backend)}}">About</a>
                 </li>
                 {# <li class="nav-item">
                     <a class="nav-link" href="#">Login</a>
@@ -39,11 +42,11 @@
     </nav>
 
     <main role="main">
-        <div class="jumbotron main-header" style="background-image: url({{ url_for('static', path='res/img/cosmos-db.jpeg') }}); background-size: cover;">
+        <div class="jumbotron main-header" style="background-image: url({{ 'res/img/cosmos-db.jpeg' | get_static_url_for_backend(framework=cookiecutter.project_backend) }}); background-size: cover;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
-                        <img src="{{ url_for('static', path='res/img/bit_cosmos.png') }}" class="img img-fluid" alt="Cartoon raccoon floating in space" />
+                        <img src="{{ 'res/img/bit_cosmos.png' | get_static_url_for_backend(framework=cookiecutter.project_backend) }}" class="img img-fluid" alt="Cartoon raccoon floating in space" />
                     </div>
                     <div class="col-md-8 ml-md-auto align-self-center">
                         <h1 class="display-1">Expand your horizons</h1>
@@ -51,7 +54,8 @@
                 </div>
             </div>
         </div>
-
+        
+        {% raw %}
         {% if messages %}
             {% for message in messages %}'
             <div class="alert alert-{{message.tags}}" role="alert">
@@ -59,11 +63,12 @@
             </div>   
             {% endfor %}
         {% endif %}
+        {% endraw %}
 
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <img class="mr-3 img-fluid" src="{{ url_for('static', path='res/img/astronaut.jpeg') }}" alt="Astronaut looking into space" />
+                    <img class="mr-3 img-fluid" src="{{ 'res/img/astronaut.jpeg' | get_static_url_for_backend(framework=cookiecutter.project_backend) }}" alt="Astronaut looking into space" />
                 </div>
                 <div class="col-md-8">
                     {% block content %}

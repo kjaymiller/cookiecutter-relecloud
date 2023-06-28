@@ -1,5 +1,0 @@
--r demo-code/requirements.txt
-playwright
-pytest
-pytest-cov
-pip-tools
