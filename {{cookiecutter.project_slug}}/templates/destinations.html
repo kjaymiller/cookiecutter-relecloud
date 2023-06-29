@@ -1,3 +1,4 @@
+{% raw %}
 {% extends 'base.html' %}
 
 {% block title %}
@@ -11,9 +12,12 @@ If you can imagine it, we travel to it! Below is our list of confirmed destinati
 </p>
 <div class="list-group">
     {% for destination in destinations %}
-    <a class="list-group-item list-group-item-action" href="{{ url_for('destination_detail', pk=destination.id) }}">
-        {{ destination }}
+    {% endraw %}
+    <a class="list-group-item list-group-item-action" href="{{ 'destination' | get_detail_url_for_backend(framework=cookiecutter.project_backend) }}">
+    {% raw %}
+        {{ destination }}}
     </a>
     {% endfor %}
 </div>
 {% endblock content %}
+{% endraw %}
