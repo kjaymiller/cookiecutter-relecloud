@@ -61,7 +61,7 @@ ROOT_URLCONF = "project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -83,11 +83,11 @@ WSGI_APPLICATION = "project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": os.environ.get("POSTGRES_HOST"),
-        "PORT": os.environ.get("POSTGRES_PORT"),
+        "NAME": os.environ.get("DBSERVER_DB"),
+        "USER": os.environ.get("DBSERVER_USER"),
+        "PASSWORD": os.environ.get("DBSERVER_PASSWORD"),
+        "HOST": os.environ.get("DBSERVER_HOST"),
+        "PORT": os.environ.get("DBSERVER_PORT"),
     }
 }
 

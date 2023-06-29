@@ -33,10 +33,10 @@
 			]
         }
     },
+	// "features": {
+	// 	"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+	// },
     {% if cookiecutter.project_backend == "django" %}
-    "postCreateCommand": "python demo-code/manage.py migrate && python demo-code/manage.py loaddata demo-code/seed_data.json"
-	"features": {
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
-	}
+    "postCreateCommand": "python {{cookiecutter.project_slug}}/manage.py migrate && python {{cookiecutter.project_slug}}/manage.py loaddata {{cookiecutter.project_slug}}/seed_data.json"
     {% endif %}
 }
