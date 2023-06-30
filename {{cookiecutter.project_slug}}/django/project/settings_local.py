@@ -82,7 +82,9 @@ WSGI_APPLICATION = "project.wsgi.application"
 
 DATABASES = {
     "default": {
+        {% if 'postgres' in cookiecutter.db_resource %}
         "ENGINE": "django.db.backends.postgresql",
+        {% endif %}
         "NAME": os.environ.get("DBSERVER_DB"),
         "USER": os.environ.get("DBSERVER_USER"),
         "PASSWORD": os.environ.get("DBSERVER_PASSWORD"),
