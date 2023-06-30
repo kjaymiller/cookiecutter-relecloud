@@ -19,6 +19,7 @@ param secretKey string
 {% endif %}
 param webAppExists bool = false
 
+
 @description('Id of the user or app to assign application roles')
 param principalId string = ''
 
@@ -117,7 +118,9 @@ module web 'web.bicep' = {
     dbserverUser: dbserverUser
     dbserverDatabaseName: dbserverDatabaseName
     dbserverPassword: dbserverPassword
-    {% if cookiecutter.project_backend in ("django", "flask") %}secretKey: secretKey{% endif%}
+    {% if cookiecutter.project_backend in ("django", "flask") %}
+    secretKey: secretKey
+    {% endif%}
     exists: webAppExists
   }
 }
