@@ -1,9 +1,9 @@
 # global requirements
-gunicorn
+gunicorn==20.1.0
 
 {% if cookiecutter.db_resource in ('postgres-flexible', 'cosmos-pg') %}
 # postgres requirements
-psycopg2-binary
+psycopg2-binary==2.9.6
 {% endif %}
 
 {% if cookiecutter.project_backend == "fastapi" %}

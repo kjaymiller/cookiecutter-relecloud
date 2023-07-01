@@ -10,20 +10,21 @@ services:
       DBSERVER_HOST: db
       DBSERVER_PORT: 5432
 
-    ports:
-      - 5432:5432
-      - {{cookiecutter.web_port}}:{{cookiecutter.web_port}}
-
     volumes:
       - postgres-data:/var/lib/postgresql/data 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d relecloud"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   app:
     platform: linux/amd64
     build:
       context: .
       dockerfile: ./{{cookiecutter.project_slug}}/Dockerfile
     depends_on:
-      - db
-
+      db:
+        condition: service_healthy
     network_mode: service:db
 
 volumes:

@@ -5,7 +5,7 @@
   "src_folder_name": "demo-code",
   "project_short_description": "Create Relecloud Demo Applications",
   "version": "0.0.1",
-  "project_backend": ["django", "fastapi"],
+  "project_backend": ["django", "fastapi", "flask"],
   "use_vnet": "n",
   "install_deps": "n",
   "db_resource": ["postgres-flexible", "cosmos-postgres", "cosmos-mongo"],
