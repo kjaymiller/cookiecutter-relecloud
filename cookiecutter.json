@@ -1,13 +1,10 @@
 {
-  "full_name": "Jay Miller",
-  "email": "kjaymiller@gmail.com",
   "project_name": "Relecloud",
   "src_folder_name": "demo-code",
   "project_short_description": "Create Relecloud Demo Applications",
   "version": "0.0.1",
   "project_backend": ["django", "fastapi", "flask"],
   "use_vnet": "n",
-  "install_deps": "n",
   "db_resource": ["postgres-flexible", "cosmos-postgres", "cosmos-mongo"],
   "__repo_name": "relecloud-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}",
   "project_slug": "{{ cookiecutter.src_folder_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
