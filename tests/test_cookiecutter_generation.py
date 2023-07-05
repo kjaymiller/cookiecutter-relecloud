@@ -2,46 +2,32 @@
 This module tests the cookiecutter generation of the project.
 This DOES NOT TEST AZURE DEPLOYMENT
 """
+import json
 import pytest
 import itertools
 # import subprocess
 # import pathlib
 
-# @pytest.mark.parametrize("context_override", SUPPORTED_COMBINATIONS, ids=_fixture_id)
-# def test_project_generation(cookies, context, context_override):
-#     """Test that project is generated and fully rendered."""
 
-#     result = cookies.bake(extra_context={**context, **context_override})
-#     assert result.exit_code == 0
-#     assert result.exception is None
-#     assert result.project_path.name == context["project_slug"]
-#     assert result.project_path.is_dir()
-
-#     paths = build_files_list(str(result.project_path))
-#     assert paths
-#     check_paths(paths)
-
-# # @pytest.fixture()
-# def context_override():
-#     """Return a list of all combinations of the supported options."""
 web_frameworks =  ["django", "flask", "fastapi"]
 db_resources = ["postgres-flexible"]
 
 combinations = itertools.product(web_frameworks, db_resources)
+# Creates the context override for the parametrized test
 CONTEXT_OVERRIDE = [{"project_backend":x, "db_resource":y} for x,y in combinations]
     
     
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def context():
-    return {
-        "project_name": "Relecloud",
-        "project_slug": "demo-code",
-        "version": "0.0.1",
-        "project_backend": ["django", "fastapi", "flask"],
-        "use_vnet": "n",
-        "db_resource": ["postgres-flexible"],
-        "web_port": "8000",
-    }
+    with open("cookiecutter.json", "r") as f:
+        context = json.load(f)
+
+        # remove all the non-prompted values
+        for key in list(context.keys()):
+            if key.startswith("_"):
+                del context[key]
+
+    return context
 
 
 @pytest.mark.parametrize("context_override", CONTEXT_OVERRIDE)  
