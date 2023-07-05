@@ -7,8 +7,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 RUN python -m pip install --upgrade pip
 
-
-
 WORKDIR /demo-code
 
 COPY requirements.txt .
@@ -18,4 +16,7 @@ COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
 COPY . .
+{% if cookiecutter.project_backend == "flask" %}
+RUN python -m pip install -e .
+{% endif %}
 CMD bash -c ". entrypoint.sh"

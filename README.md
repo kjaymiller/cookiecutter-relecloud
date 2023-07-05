@@ -23,7 +23,7 @@ python -m cookiecutter gh:kjaymiller/cookiecutter-relecloud
 ```
 
 # Running your Deployment via DevContainer/Github Codespaces
-This template is designed to work with DevContainers and GitHub Codespaces. You can deploy the Github Codespaces instance by cliking the green code button and creating a new codespace.
+This template is designed to work with DevContainers and GitHub Codespaces. You can deploy the Github Codespaces instance by clicking the green code button and creating a new codespace.
 
 To deploy the dev container locally you can do so with a compatible code editor like Visual Studio Code.
 

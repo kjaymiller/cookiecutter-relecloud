@@ -4,7 +4,7 @@ from jinja2.ext import Extension
 def get_url_for_backend(route, framework):
     url_formulas = {
         "django": f"{{% url '{route}' %}}",
-        "flask": f"{{% url_for('{route}') %}}",
+        "flask": f"{{{{ url_for('pages.{route}') }}}}",
         "fastapi": f"{{% url_for('{route}') %}}",
     }
 
@@ -15,7 +15,7 @@ def get_detail_url_for_backend(route, framework):
     """Return the url for the selected backend"""
     url_formulas = {
         "django": f"{{% url '{route}_detail' {route}.id %}}",
-        "flask": f"{{% url_for('{route}_detail', pk={route}.id) %}}",
+        "flask": f"{{{{ url_for('pages.{route}_detail', pk={route}.id) }}}}",
         "fastapi": f"{{% url_for('{route}_detail', pk={route}.id) %}}",
     }
 
@@ -26,7 +26,7 @@ def get_static_url_for_backend(val, framework):
     """Return the url for the selected backend"""
     url_formulas = {
         "django": f"{{% static '{val}' %}}",
-        "flask": f"{{% url_for(static, path='{val}') %}}",
+        "flask": f"{{{{ url_for('static', filename='{val}') }}}}",
         "fastapi": f"{{% url_for(static, path='{val}') %}}",
     }
     return url_formulas[framework]
