@@ -3,5 +3,5 @@
 
 git+https://github.com/kjaymiller/cookiecutter.git@kjaymiller-adds-_cookiecutter
 ruff
-pytest==7.4.0
-pytest-cookies==0.7.0
+pytest
+pytest-cookies
