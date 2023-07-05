@@ -21,7 +21,7 @@ services:
     platform: linux/amd64
     build:
       context: .
-      dockerfile: ./{{cookiecutter.project_slug}}/Dockerfile
+      dockerfile: ./{{cookiecutter.__src_folder_name}}/Dockerfile
     depends_on:
       db:
         condition: service_healthy
