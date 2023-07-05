@@ -1,5 +1,0 @@
--r {{cookiecutter.project_slug}}/requirements.txt
-playwright
-pytest
-pytest-cov
-pip-tools

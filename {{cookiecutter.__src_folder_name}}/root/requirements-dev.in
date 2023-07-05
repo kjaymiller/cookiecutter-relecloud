@@ -1,0 +1,5 @@
+-r {{cookiecutter.__src_folder_name}}/requirements.txt
+playwright
+pytest
+pytest-cov
+pip-tools
