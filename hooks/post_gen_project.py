@@ -23,8 +23,10 @@ def move_root_files():
         sys.exit(1)
 
 def rename_backend_files():
-    """Rename the selected backend folder correspondint to the selected option"""
-    # remove the project_backend folders that are not selected
+    """
+    Rename the selected backend folder corresponding to the selected option.
+    remove the project_backend folders that are not selected
+    """
 
     selected_backend = "{{cookiecutter.project_backend}}"
 
