@@ -6,7 +6,7 @@ import re
 import pytest
 import itertools
 import pathlib
-# import subprocess
+import subprocess
 
 
 web_frameworks =  ["django", "flask", "fastapi"]
@@ -77,3 +77,10 @@ def test_files_moved_one_level_above(bakery, context):
 
     # Tests Files do not exist in the source folder
     assert not (bakery.project_path / "root").exists()
+
+
+def tests_valid_bicep(bakery, context):
+    commands = f"az bicep build --file {bakery.project_path.parent}/infra/main.bicep".split(" ")
+    result = subprocess.run(commands, capture_output=True, text=True)
+    assert result.returncode == 0 
+

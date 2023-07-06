@@ -2,7 +2,6 @@ import logging
 import pathlib
 import shutil
 import sys
-import json
 
 
 # Steps to finalize the cookiecutter build
@@ -42,7 +41,5 @@ def rename_backend_files():
 
     pathlib.Path(selected_backend).rmdir()
 
-
-# Run the steps
 move_root_files()
 rename_backend_files()
