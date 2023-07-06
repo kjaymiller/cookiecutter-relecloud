@@ -69,12 +69,11 @@ def test_build_folders_are_deleted(bakery, context):
                 pytest.fail(f"Found build folder {path.name} - {path.relative_to(bakery.project_path)}")
     
 
-# def test_src_folder_name_slugifies(cookies):
-    
-    
-# def files_moved_one_level_above():
-"""There are files that are moved outside of the source folder. Test those files are moved"""
-# Tests Files exist one level above the source folder
-# Tests Files do not exist in the source folder
+def test_files_moved_one_level_above(bakery, context):
+    """There are files that are moved outside of the source folder. Test those files are moved"""
+    # Tests files exist one level above the source folder
+    assert (bakery.project_path.parent / "infra").exists()
+    assert (bakery.project_path.parent / "infra").is_dir()
 
-# _and_ruff_isnt_upset():
+    # Tests Files do not exist in the source folder
+    assert not (bakery.project_path / "root").exists()
