@@ -2,11 +2,11 @@
 This module tests the cookiecutter generation of the project.
 This DOES NOT TEST AZURE DEPLOYMENT
 """
-import json
+import re
 import pytest
 import itertools
+import pathlib
 # import subprocess
-# import pathlib
 
 
 web_frameworks =  ["django", "flask", "fastapi"]
@@ -19,16 +19,15 @@ CONTEXT_OVERRIDE = [{"project_backend":x, "db_resource":y} for x,y in combinatio
     
 @pytest.fixture(scope="session")
 def context():
-    with open("cookiecutter.json", "r") as f:
-        context = json.load(f)
-
-        # remove all the non-prompted values
-        for key in list(context.keys()):
-            if key.startswith("_"):
-                del context[key]
-
-    return context
-
+    return {
+    "project_name": "Relecloud",
+    "project_slug": "Long_MIXED_CASE-demo name",
+    "version": "0.0.1",
+    "project_backend": ["django", "fastapi", "flask"],
+    "use_vnet": "n",
+    "db_resource": ["postgres-flexible"],
+    "web_port": "8000",
+    }
 
 @pytest.fixture(scope="module", params=[*CONTEXT_OVERRIDE])
 def bakery(request, context, cookies_session):
@@ -44,7 +43,7 @@ def test_project_generation(bakery):
 
 def test_bicep_assertion_working_path_referenced_in_bicep(bakery):
     """Ensures that the generated path name is same as referenced path in azure.yaml"""
-    assert bakery.project_path.name == "demo_code"
+    assert bakery.project_path.name == "long_mixed_case_demo_name"
     assert bakery.project_path.is_dir()
 
 # FUTURE TESTS
@@ -52,14 +51,23 @@ def test_bicep_assertion_working_path_referenced_in_bicep(bakery):
     # assert paths
     # check_paths(paths) 
 
+def test_all_cookiecutter_paths_generated(bakery):
+    """Check for any cookiecutter variables that were not replaced"""
+    for path in pathlib.Path(bakery.project_path).rglob("*_"):
+        
+        # This path is the only one that should have files
+        if path.relative_to(bakery.project_path) == "/static/res/img": 
+            matches = re.findall(r"\{\{\s*cookiecutter\.\w+\s*\}\}", path.read_text())
+            if matches:
+                pytest.fail(f"Found cookiecutter variable in {path.relative_to(result.project_path)}")
 
-# def test_all_cookiecutter_paths_generated(cookies):
-# result = cookies.bake()
-# pathlib.rglob("**/*cookiecutter*")
-# for path in pathlib.Path(result.project_path).rglob("*"):
-    # if path.relative_to(result.project_path) == "/static/res/img"
-    #     continue
-    # re.findall(r"{{\s*cookiecutter\.\w+\s*}}", path.read_text())
+def test_build_folders_are_deleted(bakery, context):
+    backend_names = context.get("project_backend")
+    for path in bakery.project_path.iterdir():
+        if path.is_dir():
+            if path.name in backend_names:
+                pytest.fail(f"Found build folder {path.name} - {path.relative_to(bakery.project_path)}")
+    
 
 # def test_src_folder_name_slugifies(cookies):
     
