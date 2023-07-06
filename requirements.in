@@ -1,7 +1,7 @@
-# TODO: #27 Pin Versions and and generate hashes
 # Currently not using any of the commented out packages
 
 git+https://github.com/kjaymiller/cookiecutter.git@kjaymiller-adds-_cookiecutter
 ruff
-pytest==7.4.0
-pytest-cookies==0.7.0
+cookiecutter
+pytest
+pytest-cookies

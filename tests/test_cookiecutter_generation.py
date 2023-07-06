@@ -2,84 +2,78 @@
 This module tests the cookiecutter generation of the project.
 This DOES NOT TEST AZURE DEPLOYMENT
 """
+import re
 import pytest
 import itertools
+import pathlib
 # import subprocess
-# import pathlib
 
-# @pytest.mark.parametrize("context_override", SUPPORTED_COMBINATIONS, ids=_fixture_id)
-# def test_project_generation(cookies, context, context_override):
-#     """Test that project is generated and fully rendered."""
 
-#     result = cookies.bake(extra_context={**context, **context_override})
-#     assert result.exit_code == 0
-#     assert result.exception is None
-#     assert result.project_path.name == context["project_slug"]
-#     assert result.project_path.is_dir()
-
-#     paths = build_files_list(str(result.project_path))
-#     assert paths
-#     check_paths(paths)
-
-# # @pytest.fixture()
-# def context_override():
-#     """Return a list of all combinations of the supported options."""
 web_frameworks =  ["django", "flask", "fastapi"]
 db_resources = ["postgres-flexible"]
 
 combinations = itertools.product(web_frameworks, db_resources)
+# Creates the context override for the parametrized test
 CONTEXT_OVERRIDE = [{"project_backend":x, "db_resource":y} for x,y in combinations]
     
     
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def context():
     return {
-        "project_name": "Relecloud",
-        "project_slug": "demo-code",
-        "version": "0.0.1",
-        "project_backend": ["django", "fastapi", "flask"],
-        "use_vnet": "n",
-        "db_resource": ["postgres-flexible"],
-        "web_port": "8000",
+    "project_name": "Relecloud",
+    "project_slug": "Long_MIXED_CASE-demo name",
+    "version": "0.0.1",
+    "project_backend": ["django", "fastapi", "flask"],
+    "use_vnet": "n",
+    "db_resource": ["postgres-flexible"],
+    "web_port": "8000",
     }
 
+@pytest.fixture(scope="module", params=[*CONTEXT_OVERRIDE])
+def bakery(request, context, cookies_session):
+    extra_context = {**context, **request.param}
+    result = cookies_session.bake(extra_context=extra_context)
+    yield result
 
-@pytest.mark.parametrize("context_override", CONTEXT_OVERRIDE)  
-def tests_project_generation(cookies, context, context_override):
+def test_project_generation(bakery):
     """Test that project is generated and fully rendered."""
+    assert bakery.exit_code == 0
+    assert bakery.exception is None
 
-    extra_context = {**context, **context_override}
 
-    print(context_override)
-    result = cookies.bake(extra_context=extra_context) # TODO: parametrize and add context override
-    assert result.exit_code == 0
-    assert result.exception is None
-    
-
+def test_bicep_assertion_working_path_referenced_in_bicep(bakery):
+    """Ensures that the generated path name is same as referenced path in azure.yaml"""
+    assert bakery.project_path.name == "long_mixed_case_demo_name"
+    assert bakery.project_path.is_dir()
 
 # FUTURE TESTS
-    # assert result.project_path.name == "demo_code"
-    # assert result.project_path.is_dir()
-
     # paths = build_files_list(str(result.project_path))
     # assert paths
     # check_paths(paths) 
 
+def test_all_cookiecutter_paths_generated(bakery):
+    """Check for any cookiecutter variables that were not replaced"""
+    for path in pathlib.Path(bakery.project_path).rglob("*_"):
+        
+        # This path is the only one that should have files
+        if path.relative_to(bakery.project_path) == "/static/res/img": 
+            matches = re.findall(r"\{\{\s*cookiecutter\.\w+\s*\}\}", path.read_text())
+            if matches:
+                pytest.fail(f"Found cookiecutter variable in {path.relative_to(result.project_path)}")
 
-# def test_all_cookiecutter_paths_generated(cookies):
-# result = cookies.bake()
-# pathlib.rglob("**/*cookiecutter*")
-# for path in pathlib.Path(result.project_path).rglob("*"):
-    # if path.relative_to(result.project_path) == "/static/res/img"
-    #     continue
-    # re.findall(r"{{\s*cookiecutter\.\w+\s*}}", path.read_text())
-
-# def test_src_folder_name_slugifies(cookies):
+def test_build_folders_are_deleted(bakery, context):
+    backend_names = context.get("project_backend")
+    for path in bakery.project_path.iterdir():
+        if path.is_dir():
+            if path.name in backend_names:
+                pytest.fail(f"Found build folder {path.name} - {path.relative_to(bakery.project_path)}")
     
-    
-# def files_moved_one_level_above():
-"""There are files that are moved outside of the source folder. Test those files are moved"""
-# Tests Files exist one level above the source folder
-# Tests Files do not exist in the source folder
 
-# _and_ruff_isnt_upset():
+def test_files_moved_one_level_above(bakery, context):
+    """There are files that are moved outside of the source folder. Test those files are moved"""
+    # Tests files exist one level above the source folder
+    assert (bakery.project_path.parent / "infra").exists()
+    assert (bakery.project_path.parent / "infra").is_dir()
+
+    # Tests Files do not exist in the source folder
+    assert not (bakery.project_path / "root").exists()
