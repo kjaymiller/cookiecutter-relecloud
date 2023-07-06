@@ -30,23 +30,24 @@ def context():
     return context
 
 
-@pytest.mark.parametrize("context_override", CONTEXT_OVERRIDE)  
-def tests_project_generation(cookies, context, context_override):
+@pytest.fixture(scope="module", params=[*CONTEXT_OVERRIDE])
+def bakery(request, context, cookies_session):
+    extra_context = {**context, **request.param}
+    result = cookies_session.bake(extra_context=extra_context)
+    yield result
+
+def test_project_generation(bakery):
     """Test that project is generated and fully rendered."""
+    assert bakery.exit_code == 0
+    assert bakery.exception is None
 
-    extra_context = {**context, **context_override}
 
-    print(context_override)
-    result = cookies.bake(extra_context=extra_context) # TODO: parametrize and add context override
-    assert result.exit_code == 0
-    assert result.exception is None
-    
-
+def test_bicep_assertion_working_path_referenced_in_bicep(bakery):
+    """Ensures that the generated path name is same as referenced path in azure.yaml"""
+    assert bakery.project_path.name == "demo_code"
+    assert bakery.project_path.is_dir()
 
 # FUTURE TESTS
-    # assert result.project_path.name == "demo_code"
-    # assert result.project_path.is_dir()
-
     # paths = build_files_list(str(result.project_path))
     # assert paths
     # check_paths(paths) 
