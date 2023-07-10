@@ -21,9 +21,6 @@ services:
       DBSERVER_HOST: db
       DBSERVER_PORT: 5432
       DBSERVER_PASSWORD: postgres
-      {% if cookiecutter.project_backend == "django" %}
-      DJANGO_SETTINGS_MODULE: project.settings_local
-      {% endif %}
 
     command: sleep infinity
 
