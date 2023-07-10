@@ -1,7 +1,8 @@
+
 from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
 
-from .models import Cruise, Destination
+from relecloud.models import Cruise, Destination
 
 # Create your tests here.
 
