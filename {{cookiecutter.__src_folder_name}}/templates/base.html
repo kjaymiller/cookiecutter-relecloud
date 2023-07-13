@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="{{ 'res/css/theme.css' | get_static_url_for_backend(framework=cookiecutter.project_backend) }}" />
 
     <title>
-        {% block title %}
+        {{ "{% block title %}" }}
         ReleCloud - Expand your horizons
-        {% endblock %}
+        {{ "{% endblock %}" }}
     </title>
 </head>
 <body>
