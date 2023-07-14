@@ -1,21 +1,13 @@
 -r {{cookiecutter.__src_folder_name}}/requirements.txt
 pytest
+coverage
+pytest-cov
 pytest-playwright
 pip-tools
 
 {% if cookiecutter.project_backend == "django" %}
-# Django Testing Tools
 pytest-django
 {% endif %}
-
-{# 
-{% if cookiecutter.project_backend == "django" %}
-# Django Testing Tools
-pytest-django
+{% if cookiecutter.project_backend == "flask" %}
+pytest-flask
 {% endif %}
-
-{% if cookiecutter.project_backend == "django" %}
-# Django Testing Tools
-pytest-django
-{% endif %}
-#}
