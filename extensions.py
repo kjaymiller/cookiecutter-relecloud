@@ -5,7 +5,7 @@ def get_url_for_backend(route, framework):
     url_formulas = {
         "django": f"{{% url '{route}' %}}",
         "flask": f"{{{{ url_for('pages.{route}') }}}}",
-        "fastapi": f"{{% url_for('{route}') %}}",
+        "fastapi": f"{{{{ url_for('{route}') }}}}",
     }
 
     return url_formulas[framework]
@@ -16,7 +16,7 @@ def get_detail_url_for_backend(route, framework):
     url_formulas = {
         "django": f"{{% url '{route}_detail' {route}.id %}}",
         "flask": f"{{{{ url_for('pages.{route}_detail', pk={route}.id) }}}}",
-        "fastapi": f"{{% url_for('{route}_detail', pk={route}.id) %}}",
+        "fastapi": f"{{{{ url_for('{route}_detail', pk={route}.id) }}}}",
     }
 
     return url_formulas[framework]
@@ -27,7 +27,7 @@ def get_static_url_for_backend(val, framework):
     url_formulas = {
         "django": f"{{% static '{val}' %}}",
         "flask": f"{{{{ url_for('static', filename='{val}') }}}}",
-        "fastapi": f"{{% url_for(static, path='{val}') %}}",
+        "fastapi": f"{{{{ url_for('static', path='{val}') }}}}",
     }
     return url_formulas[framework]
 
