@@ -1,24 +1,24 @@
 # Cookiecutter Relecloud
 
-# Installing our modified cookiecutter template
+## Deploying your cookiecutter template
 
-If you're running this cookiecutter from the url you will need to import our fork of cookiecutter.
-
-```shell
-python -m pip install git+https://github.com/kjaymiller/cookiecutter.git@kjaymiller-adds-_cookiecutter
-```
-
-> **Note**
-We've submitted our needed changes to the [cookiecutter project](https://github.com/cookiecutter/cookiecutter/issues/1873). This may not be required in the future.
-
-# Deploying your cookiecutter template
-- Create a new project
-- import [our cookiecutter template](#installing-our-modified-cookiecutter-template)
+1. Create a new folder
+2. Create a virtual environment 
 
 ```
 python -m venv venv
 source venv/bin/activate
-python -m pip install git+https://github.com/kjaymiller/cookiecutter.git@kjaymiller-adds-_cookiecutter
+```
+
+2. Install cookiecutter ( >= 2.2.1)
+
+```
+python -m pip install cookiecutter
+```
+
+3. Generate the project using this template
+
+```
 python -m cookiecutter gh:kjaymiller/cookiecutter-relecloud
 ```
 
