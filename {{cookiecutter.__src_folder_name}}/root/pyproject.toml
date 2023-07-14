@@ -1,5 +1,5 @@
 [tool.pytest.ini_options]
-addopts = "-ra --cov"
+addopts = "-ra --cov -vv"
 {% if cookiecutter.project_backend == "django" %}
 DJANGO_SETTINGS_MODULE = "project.settings"
 {% endif %}
