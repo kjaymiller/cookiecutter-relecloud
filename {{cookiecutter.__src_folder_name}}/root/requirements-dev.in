@@ -1,5 +1,7 @@
 -r {{cookiecutter.__src_folder_name}}/requirements.txt
 pytest
+coverage
+pytest-cov
 pytest-playwright
 pip-tools
 
