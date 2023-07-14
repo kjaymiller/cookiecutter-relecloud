@@ -1,2 +1,8 @@
 [tool.pytest.ini_options]
+addopts = "-ra --cov"
+{% if cookiecutter.project_backend == "django" %}
 DJANGO_SETTINGS_MODULE = "project.settings"
+{% endif %}
+
+[tool.coverage.report]
+show_missing = true
