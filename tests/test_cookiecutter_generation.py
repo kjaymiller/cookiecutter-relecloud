@@ -22,7 +22,7 @@ def context():
     return {
         "project_name": "Relecloud",
         "project_slug": "Long_MIXED_CASE-demo name",
-        "version": "0.0.1",
+        "azd_template_version": "0.0.1",
         "project_backend": ["django", "fastapi", "flask"],
         "use_vnet": "n",
         "db_resource": ["postgres-flexible"],
