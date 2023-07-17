@@ -35,7 +35,12 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 var prefix = '${name}-${resourceToken}'
 {% set pg_name = "dbserver" %}
 {% set pg_version = 15 %}
+{% if cookiecutter.db_resource == "cosmos-postgres" %}
+// value is read-only in cosmos
+var dbserverUser = 'citus'
+{% else %}
 var dbserverUser = 'admin${uniqueString(resourceGroup.id)}'
+{% endif %}
 var dbserverDatabaseName = 'relecloud'
 
 // Store secrets in a keyvault
@@ -59,12 +64,11 @@ module dbserver 'core/database/cosmos/cosmos-pg-adapter.bicep' = {
     location: location
     tags: tags
     postgresqlVersion: '{{pg_version}}'
-    administratorLogin: dbserverUser
     administratorLoginPassword: dbserverPassword
     databaseName: dbserverDatabaseName
     allowAzureIPsFirewall: true
     coordinatorServerEdition: 'BurstableMemoryOptimized'
-    coordinatorStorageQuotainMb: 32768
+    coordinatorStorageQuotainMb: 131072
     coordinatorVCores: 1
     nodeCount: 0
     nodeVCores: 4
