@@ -33,7 +33,8 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 }
 
 var prefix = '${name}-${resourceToken}'
-
+{% set pg_name = "dbserver" %}
+{% set pg_version = 15 %}
 var dbserverUser = 'admin${uniqueString(resourceGroup.id)}'
 var dbserverDatabaseName = 'relecloud'
 
@@ -49,9 +50,31 @@ module keyVault './core/security/keyvault.bicep' = {
   }
 }
 
+{% if cookiecutter.db_resource == "cosmos-postgres" %}
+module dbserver 'core/database/cosmos/cosmos-pg-adapter.bicep' = {
+  name: '{{pg_name}}'
+  scope: resourceGroup
+  params: {
+    name: '${prefix}-postgresql'
+    location: location
+    tags: tags
+    postgresqlVersion: '{{pg_version}}'
+    administratorLogin: dbserverUser
+    administratorLoginPassword: dbserverPassword
+    databaseName: dbserverDatabaseName
+    allowAzureIPsFirewall: true
+    coordinatorServerEdition: 'BurstableMemoryOptimized'
+    coordinatorStorageQuotainMb: 32768
+    coordinatorVCores: 1
+    nodeCount: 0
+    nodeVCores: 4
+  }
+}
+{% endif %}
+
 {% if cookiecutter.db_resource == "postgres-flexible" %}
 module dbserver 'core/database/postgresql/flexibleserver.bicep' = {
-  name: 'dbserver'
+  name: '{{pg_name}}'
   scope: resourceGroup
   params: {
     name: '${prefix}-postgresql'
@@ -64,13 +87,14 @@ module dbserver 'core/database/postgresql/flexibleserver.bicep' = {
     storage: {
       storageSizeGB: 32
     }
-    version: '14' // 14 is the latest supported version with 15 Coming Soon
+    version: '{{pg_version}}'
     administratorLogin: dbserverUser
     administratorLoginPassword: dbserverPassword
     databaseNames: [dbserverDatabaseName]
     allowAzureIPsFirewall: true
   }
 }
+{% endif %}
 
 // Monitor application with Azure Monitor
 
@@ -99,7 +123,6 @@ module containerApps 'core/host/container-apps.bicep' = {
     logAnalyticsWorkspaceName: monitoring.outputs.logAnalyticsWorkspaceName
   }
 }
-{% endif %}
 
 // Web frontend
 module web 'web.bicep' = {

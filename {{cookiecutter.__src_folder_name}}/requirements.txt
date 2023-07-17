@@ -1,7 +1,7 @@
 # global requirements
 gunicorn==20.1.0
 
-{% if cookiecutter.db_resource in ('postgres-flexible', 'cosmos-pg') %}
+{% if cookiecutter.db_resource in ('postgres-flexible', 'cosmos-postgres') %}
 # postgres requirements
 psycopg2-binary==2.9.6
 {% endif %}
