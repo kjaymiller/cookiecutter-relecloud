@@ -21,7 +21,6 @@ resource postgresCluster 'Microsoft.DBforPostgreSQL/serverGroupsv2@2023-03-02-pr
   name: name
   location: location
   tags: tags
-  // sku: sku
   properties: {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
@@ -32,32 +31,31 @@ resource postgresCluster 'Microsoft.DBforPostgreSQL/serverGroupsv2@2023-03-02-pr
     nodeCount: nodeCount
     nodeVCores: nodeVCores
     databaseName: databaseName
+  }
+
+  resource firewall_all 'firewallRules' = if (allowAllIPsFirewall) {
+    name: 'allow-all-IPs'
+    properties: {
+      startIpAddress: '0.0.0.0'
+      endIpAddress: '255.255.255.255'
     }
-
-
-resource firewall_all 'firewallRules' = if (allowAllIPsFirewall) {
-  name: 'allow-all-IPs'
-  properties: {
-    startIpAddress: '0.0.0.0'
-    endIpAddress: '255.255.255.255'
   }
-}
 
-resource firewall_azure 'firewallRules' = if (allowAzureIPsFirewall) {
-  name: 'allow-all-azure-internal-IPs'
-  properties: {
-    startIpAddress: '0.0.0.0'
-    endIpAddress: '0.0.0.0'
+  resource firewall_azure 'firewallRules' = if (allowAzureIPsFirewall) {
+    name: 'allow-all-azure-internal-IPs'
+    properties: {
+      startIpAddress: '0.0.0.0'
+      endIpAddress: '0.0.0.0'
+    }
   }
-}
 
-resource firewall_single 'firewallRules' = [for ip in allowedSingleIPs: {
-  name: 'allow-single-${replace(ip, '.', '')}'
-  properties: {
-    startIpAddress: ip
-    endIpAddress: ip
-  }
-}]
+  resource firewall_single 'firewallRules' = [for ip in allowedSingleIPs: {
+    name: 'allow-single-${replace(ip, '.', '')}'
+    properties: {
+      startIpAddress: ip
+      endIpAddress: ip
+    }
+  }]
 
 }
 
