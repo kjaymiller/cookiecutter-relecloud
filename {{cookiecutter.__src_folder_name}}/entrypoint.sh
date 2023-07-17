@@ -7,14 +7,15 @@ python3 -m flask --app flaskapp db upgrade --directory flaskapp/migrations
 python3 -m flask --app flaskapp seed --filename seed_data.json
 python3 -m gunicorn 'flaskapp:create_app()'
 {% endif %}
-{% if cookiecutter.project_backend in ("fastapi", "flask") %}
+{% if cookiecutter.project_backend == "fastapi" %}
+python3 seed_data.py
 python3 -m gunicorn app:app
 {% endif %}
 {% if cookiecutter.project_backend == "django" %}
 echo "${0}: running migrations."
-python manage.py migrate
-python manage.py loaddata seed_data.json
-python manage.py collectstatic
+python3 manage.py migrate
+python3 manage.py loaddata seed_data.json
+python3 manage.py collectstatic
 python3 -m gunicorn project.wsgi:application \
     --name relecloud
 {% endif %}
