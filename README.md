@@ -1,5 +1,23 @@
 # Cookiecutter Relecloud
 
+## Deployment Options
+
+|Feature| Django| FastAPI| Flask|
+|---|---|---|---|
+|**Deployment**|-|-|-|
+|Deploys via AZD|✅|✅|✅|
+|Deploys via Terraform|❌|❌|❌|
+|Deploys via ACA|✅|✅|✅|
+|Deploys with Azure Web App|❌|❌|❌|
+|**Databases**|-|-|-|
+|Azure ACA Postgres Plugin|❌|❌|❌|
+|Azure Cosmos DB (Postgres Adapter)|✅|✅|✅|
+|Azure Cosmos DB (MongoDB)|✅|✅|✅|
+|Azure Postgres Flexible Server|✅|✅|✅|
+|**Azure Add-ons**|-|-|-|
+|Azure vNet|❌|❌|❌|
+|Azure Secret KeyVault|✅|✅|✅|
+
 ## Deploying your cookiecutter template
 
 1. Create a new folder
