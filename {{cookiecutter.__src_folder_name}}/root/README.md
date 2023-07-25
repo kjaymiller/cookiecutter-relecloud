@@ -48,6 +48,7 @@ If you're not using one of those options for opening the project, then you'll ne
 
 Run gunicorn on the app:
 
+```sh
 {% if cookiecutter.project_backend == "flask" %}
 python3 -m gunicorn 'flaskapp:create_app()'
 {% endif %}
@@ -58,6 +59,7 @@ python3 -m gunicorn app:app
 python3 manage.py collectstatic
 python3 -m gunicorn project.wsgi:application --name relecloud
 {% endif %}
+```
 
 ## Running tests
 
