@@ -36,6 +36,29 @@ If you're not using one of those options for opening the project, then you'll ne
     ```
 {% endif %}
 
+{% if cookiecutter.project_backend == "fastapi" %}
+1. Apply database migrations and seed initial data:
+    
+    ```sh
+    python3 seed_data.py
+    ```
+{% endif %}
+
+## Running locally
+
+Run gunicorn on the app:
+
+{% if cookiecutter.project_backend == "flask" %}
+python3 -m gunicorn 'flaskapp:create_app()'
+{% endif %}
+{% if cookiecutter.project_backend == "fastapi" %}
+python3 -m gunicorn app:app
+{% endif %}
+{% if cookiecutter.project_backend == "django" %}
+python3 manage.py collectstatic
+python3 -m gunicorn project.wsgi:application --name relecloud
+{% endif %}
+
 ## Running tests
 
 2. Install the development requirements:
