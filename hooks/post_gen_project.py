@@ -29,7 +29,7 @@ def rename_backend_files():
 
     selected_backend = "{{cookiecutter.project_backend}}"
 
-    project_backends = {{_cookiecutter.project_backend|jsonify}}
+    project_backends = ["django", "fastapi", "flask"]
     project_backends.remove(selected_backend)
 
     for unused_backend in project_backends:

@@ -3,6 +3,7 @@
 from multiprocessing import Process
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
+import os
 import pathlib
 {% endif %}
 
@@ -22,6 +23,10 @@ import uvicorn
 {% if cookiecutter.project_backend == "fastapi" %}
 import seed_data
 from app import app
+{% endif %}
+
+{% if cookiecutter.project_backend == "flask" %}
+from flaskapp import create_app, db, seeder
 {% endif %}
 
 {% if cookiecutter.project_backend == "fastapi" %}
@@ -85,16 +90,21 @@ def mock_functions_env():
     pass
     {% endif %}
 
+{% if cookiecutter.project_backend == "django" %}
 @pytest.fixture(scope="session")
 def live_server_url(live_server):
     """Returns the url of the live server"""
-    {% if cookiecutter.project_backend == "django" %}
     return live_server.url
-    {% endif %}
-    {% if cookiecutter.project_backend == "fastapi" %}
+{% endif %}
+{% if cookiecutter.project_backend == "fastapi" %}
+@pytest.fixture(scope="session")
+def live_server_url(live_server):
+    """Returns the url of the live server"""
     return 'http://localhost:8000'
-    {% endif %}
-    {% if cookiecutter.project_backend == "flask" %}
+{% endif %}
+{% if cookiecutter.project_backend == "flask" %}
+@pytest.fixture(scope="function")
+def live_server_url(app, live_server):
+    """Returns the url of the live server"""
     return url_for('pages.index', _external=True)
-    {% endif %}
-
+{% endif %}
