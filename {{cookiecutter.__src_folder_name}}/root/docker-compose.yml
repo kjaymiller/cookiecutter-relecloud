@@ -8,7 +8,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: relecloud
       POSTGRES_HOST: db
-      POSTGRES_PASSWORD: postgres
       POSTGRES_PORT: 5432
 
     volumes:
