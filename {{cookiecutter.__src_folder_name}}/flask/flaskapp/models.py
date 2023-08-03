@@ -3,8 +3,9 @@ from . import db
 association_table = db.Table(
     "cruise_destination_link",
     db.Column("cruise_id", db.ForeignKey("cruise.id"), primary_key=True),
-    db.Column("destination_id", db.ForeignKey("destination.id"), primary_key=True)
+    db.Column("destination_id", db.ForeignKey("destination.id"), primary_key=True),
 )
+
 
 class Destination(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -14,7 +15,8 @@ class Destination(db.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 class Cruise(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
@@ -23,6 +25,7 @@ class Cruise(db.Model):
 
     def __str__(self):
         return self.name
+
 
 class InfoRequest(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

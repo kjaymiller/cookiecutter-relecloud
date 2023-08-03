@@ -35,9 +35,10 @@ def create_app(test_config=None):
     app.register_blueprint(pages.bp)
 
     @app.cli.command("seed")
-    @click.option('--filename', default="seed_data.json")
+    @click.option("--filename", default="seed_data.json")
     def seed_data(filename):
         from . import seeder
+
         seeder.seed_data(db, filename)
         click.echo("Database seeded!")
 

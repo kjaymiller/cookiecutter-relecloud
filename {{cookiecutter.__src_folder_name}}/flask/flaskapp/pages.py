@@ -9,14 +9,17 @@ bp = Blueprint("pages", __name__)
 def index():
     return render_template("index.html")
 
+
 @bp.get("/about")
 def about():
     return render_template("about.html")
+
 
 @bp.get("/destinations")
 def destinations():
     all_destinations = db.session.execute(db.select(models.Destination)).scalars().all()
     return render_template("destinations.html", destinations=all_destinations)
+
 
 @bp.get("/destination/<int:pk>")
 def destination_detail(pk: int):
@@ -39,8 +42,10 @@ def info_request():
 @bp.post("/info_request/")
 def create_info_request():
     name = request.form["name"]
-    db_info_request = models.InfoRequest(name=name, email=request.form["email"], notes=request.form["notes"], cruise_id=request.form["cruise_id"])
+    db_info_request = models.InfoRequest(
+        name=name, email=request.form["email"], notes=request.form["notes"], cruise_id=request.form["cruise_id"]
+    )
     db.session.add(db_info_request)
     db.session.commit()
     success_message = f"Thank you, {name}! We will email you when we have more information!"
-    return redirect(url_for('pages.info_request', message=success_message))
+    return redirect(url_for("pages.info_request", message=success_message))
