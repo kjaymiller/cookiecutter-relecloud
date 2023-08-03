@@ -1,7 +1,4 @@
-# Currently not using any of the commented out packages
-
-git+https://github.com/kjaymiller/cookiecutter.git@kjaymiller-adds-_cookiecutter
+git+https://github.com/cookiecutter/cookiecutter@main # Need PR 1904
 ruff
-cookiecutter
 pytest
 pytest-cookies
