@@ -3,6 +3,11 @@ line-length = 120
 select = ["E", "F", "I", "UP"]
 ignore = ["D203"]
 
+{% if cookiecutter.project_backend == "flask" %}
+[tool.ruff.isort]
+known-local-folder = ["flaskapp"]
+{% endif %}
+
 [tool.black]
 line-length = 120
 
