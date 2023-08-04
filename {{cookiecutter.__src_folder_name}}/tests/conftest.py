@@ -21,12 +21,13 @@ import uvicorn
 
 {# Local imports #}
 {% if cookiecutter.project_backend == "fastapi" %}
-import seed_data
-from app import app
+from fastapi_app import seed_data
+from fastapi_app.app import app
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
 from flaskapp import create_app, db, seeder
 {% endif %}
+
 
 {% if cookiecutter.project_backend == "fastapi" %}
 def run_server():

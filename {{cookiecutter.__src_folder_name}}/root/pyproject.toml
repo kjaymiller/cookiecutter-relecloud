@@ -3,9 +3,12 @@ line-length = 120
 select = ["E", "F", "I", "UP"]
 ignore = ["D203"]
 
-{% if cookiecutter.project_backend == "flask" %}
 [tool.ruff.isort]
-known-local-folder = ["flaskapp"]
+{% if cookiecutter.project_backend == "flask" %}
+known-first-party = ["flaskapp"]
+{% endif %}
+{% if cookiecutter.project_backend == "fastapi" %}
+known-first-party = ["fastapi_app"]
 {% endif %}
 
 [tool.black]

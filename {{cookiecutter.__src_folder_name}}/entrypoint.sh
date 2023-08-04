@@ -8,8 +8,8 @@ python3 -m flask --app flaskapp seed --filename seed_data.json
 python3 -m gunicorn 'flaskapp:create_app()'
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
-python3 seed_data.py
-python3 -m gunicorn app:app
+python3 fastapi_app/seed_data.py
+python3 -m gunicorn fastapi_app:app
 {% endif %}
 {% if cookiecutter.project_backend == "django" %}
 echo "${0}: running migrations."

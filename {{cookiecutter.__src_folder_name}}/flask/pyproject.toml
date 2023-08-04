@@ -1,7 +1,6 @@
 [project]
 name = "flaskapp"
 version = "1.0.0"
-description = "The basic blog app built in the Flask tutorial."
 dependencies = [
     "Flask==2.3.2",
     "Flask-Migrate==4.0.4",
