@@ -33,6 +33,7 @@ from flaskapp import create_app, db, seeder
 def run_server():
     uvicorn.run(app)
 
+
 @pytest.fixture(scope="session")
 def live_server():
     seed_data.load_from_json()
@@ -42,7 +43,6 @@ def live_server():
     proc.kill()
     seed_data.drop_all()
 {% endif %}
-
 {% if cookiecutter.project_backend == "flask" %}
 @pytest.fixture(scope="session")
 def app():
