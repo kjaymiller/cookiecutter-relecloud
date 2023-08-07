@@ -1,23 +1,8 @@
-import logging
-import os
 import pathlib
 import shutil
-import sys
 
 
 # Steps to finalize the cookiecutter build
-
-# Move the root paths to the correct location
-def move_root_files():
-    try:
-        root_folder = pathlib.Path("root")
-        shutil.copytree(root_folder, pathlib.Path.cwd().parent, dirs_exist_ok=True)
-        shutil.rmtree(root_folder)
-
-    except Exception as e:
-        # exit with status 1 to indicate failure
-        logging.warning(e)
-        sys.exit(1)
 
 def rename_backend_files():
     """
@@ -36,5 +21,4 @@ def rename_backend_files():
     shutil.copytree(pathlib.Path(selected_backend), pathlib.Path.cwd(), dirs_exist_ok=True)
     shutil.rmtree(pathlib.Path(selected_backend))
 
-move_root_files()
 rename_backend_files()
