@@ -6,11 +6,11 @@ from multiprocessing import Process
 import os
 import pathlib
 {% endif %}
+{% if cookiecutter.project_backend == "django" %}
+import os
+{% endif %}
 
 {# third-party library imports #}
-{% if cookiecutter.project_backend == "django" %}
-from django.core.management import call_command
-{% endif %}
 import pytest
 {% if cookiecutter.project_backend == "flask" %}
 from flask import url_for
@@ -18,16 +18,20 @@ from flask import url_for
 {% if cookiecutter.project_backend == "fastapi" %}
 import uvicorn
 {% endif %}
+{% if cookiecutter.project_backend == "django" %}
+from django.core.management import call_command
+{% endif %}
 
 {# Local imports #}
 {% if cookiecutter.project_backend == "fastapi" %}
 from fastapi_app import seed_data
 from fastapi_app.app import app
+
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
 from flaskapp import create_app, db, seeder
-{% endif %}
 
+{% endif %}
 
 {% if cookiecutter.project_backend == "fastapi" %}
 def run_server():
@@ -86,7 +90,7 @@ def django_db_setup(django_db_setup, django_db_blocker):
 @pytest.fixture(scope="session")
 def mock_functions_env():
     {% if cookiecutter.project_backend == "django" %}
-    os.environ['DJANGO_ALLOW_ASYNC_UNSAFE'] = "true"
+    os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
     {% else %}
     pass
     {% endif %}
