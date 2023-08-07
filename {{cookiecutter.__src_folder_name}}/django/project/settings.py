@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 prod = bool(os.environ.get("RUNNING_IN_PRODUCTION", False))
 
-if not prod: # Running in a Test Environment
+if not prod:  # Running in a Test Environment
     DEBUG = True
-    DEFAULT_SECRET = 'insecure-secret-key'
+    DEFAULT_SECRET = "insecure-secret-key"
     ALLOWED_HOSTS = []
 
-else: # Running is Production
+else:  # Running is Production
     DEBUG = False
     DEFAULT_SECRET = None
     ALLOWED_HOSTS = [os.environ["CONTAINER_APP_NAME"] + "." + os.environ["CONTAINER_APP_ENV_DNS_SUFFIX"]]
@@ -68,7 +68,7 @@ ROOT_URLCONF = "project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ['templates'],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -98,9 +98,7 @@ OPENCENSUS = {
 
 DATABASES = {
     "default": {
-        {% if 'postgres' in cookiecutter.db_resource %}
         "ENGINE": "django.db.backends.postgresql",
-        {% endif %}
         "NAME": os.environ.get("DBSERVER_DB"),
         "USER": os.environ.get("DBSERVER_USER"),
         "PASSWORD": os.environ.get("DBSERVER_PASSWORD"),
