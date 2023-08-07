@@ -48,9 +48,13 @@
             }
         }
     },
-    // "features": {
-    // 	"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
-    // },
+    "features": {
+        "ghcr.io/azure/azure-dev/azd:latest": {},
+        {% if cookiecutter.project_host == "aca" %}
+        // Required for azd to package the app to ACA
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+        {% endif %}
+    },
     {% if cookiecutter.project_backend == "django" %}
     "postCreateCommand": "python {{cookiecutter.__src_folder_name}}/manage.py migrate && python {{cookiecutter.__src_folder_name}}/manage.py loaddata {{cookiecutter.__src_folder_name}}/seed_data.json"
     {% endif %}

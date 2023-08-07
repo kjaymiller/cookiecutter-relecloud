@@ -11,27 +11,28 @@ import pathlib
 {% if cookiecutter.project_backend == "django" %}
 from django.core.management import call_command
 {% endif %}
+import pytest
 {% if cookiecutter.project_backend == "flask" %}
 from flask import url_for
 {% endif %}
-import pytest
 {% if cookiecutter.project_backend == "fastapi" %}
 import uvicorn
 {% endif %}
 
 {# Local imports #}
 {% if cookiecutter.project_backend == "fastapi" %}
-import seed_data
-from app import app
+from fastapi_app import seed_data
+from fastapi_app.app import app
 {% endif %}
-
 {% if cookiecutter.project_backend == "flask" %}
 from flaskapp import create_app, db, seeder
 {% endif %}
 
+
 {% if cookiecutter.project_backend == "fastapi" %}
 def run_server():
     uvicorn.run(app)
+
 
 @pytest.fixture(scope="session")
 def live_server():
@@ -42,7 +43,6 @@ def live_server():
     proc.kill()
     seed_data.drop_all()
 {% endif %}
-
 {% if cookiecutter.project_backend == "flask" %}
 @pytest.fixture(scope="session")
 def app():
@@ -82,6 +82,7 @@ def django_db_setup(django_db_setup, django_db_blocker):
         call_command("loaddata", "seed_data.json")
 {% endif %}
 
+
 @pytest.fixture(scope="session")
 def mock_functions_env():
     {% if cookiecutter.project_backend == "django" %}
@@ -89,6 +90,7 @@ def mock_functions_env():
     {% else %}
     pass
     {% endif %}
+
 
 {% if cookiecutter.project_backend == "django" %}
 @pytest.fixture(scope="session")
@@ -100,11 +102,11 @@ def live_server_url(live_server):
 @pytest.fixture(scope="session")
 def live_server_url(live_server):
     """Returns the url of the live server"""
-    return 'http://localhost:8000'
+    return "http://localhost:8000"
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
 @pytest.fixture(scope="function")
 def live_server_url(app, live_server):
     """Returns the url of the live server"""
-    return url_for('pages.index', _external=True)
+    return url_for("pages.index", _external=True)
 {% endif %}

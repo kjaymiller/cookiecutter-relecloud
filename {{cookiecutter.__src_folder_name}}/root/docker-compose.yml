@@ -5,10 +5,10 @@ services:
     image: postgres:14
 
     environment:
-      DBSERVER_USER: postgres
-      DBSERVER_DB: relecloud
-      DBSERVER_HOST: db
-      DBSERVER_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_DB: relecloud
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
 
     volumes:
       - postgres-data:/var/lib/postgresql/data 
@@ -18,7 +18,6 @@ services:
       timeout: 5s
       retries: 5
   app:
-    platform: linux/amd64
     build:
       context: .
       dockerfile: ./{{cookiecutter.__src_folder_name}}/Dockerfile

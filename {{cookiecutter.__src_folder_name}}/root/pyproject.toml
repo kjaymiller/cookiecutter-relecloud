@@ -1,3 +1,19 @@
+[tool.ruff]
+line-length = 120
+select = ["E", "F", "I", "UP"]
+ignore = ["D203"]
+
+[tool.ruff.isort]
+{% if cookiecutter.project_backend == "flask" %}
+known-first-party = ["flaskapp"]
+{% endif %}
+{% if cookiecutter.project_backend == "fastapi" %}
+known-first-party = ["fastapi_app"]
+{% endif %}
+
+[tool.black]
+line-length = 120
+
 [tool.pytest.ini_options]
 addopts = "-ra --cov -vv"
 {% if cookiecutter.project_backend == "django" %}

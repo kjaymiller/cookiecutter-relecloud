@@ -2,6 +2,7 @@
   "project_name": "Relecloud",
   "project_slug": "demo-code",
   "version": "0.0.1",
+  "project_host": ["aca"],
   "project_backend": ["django", "fastapi", "flask"],
   "use_vnet": "n",
   "db_resource": ["postgres-flexible", "cosmos-postgres"],

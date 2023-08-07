@@ -4,6 +4,8 @@ coverage
 pytest-cov
 pytest-playwright
 pip-tools
+ruff
+black
 
 {% if cookiecutter.project_backend == "django" %}
 pytest-django
