@@ -15,10 +15,17 @@ def rename_backend_files():
     project_backends = ["django", "fastapi", "flask"]
     project_backends.remove(selected_backend)
 
+    src = pathlib.Path('src')
+    
     for unused_backend in project_backends:
-        shutil.rmtree(pathlib.Path(unused_backend))
+        shutil.rmtree(src / pathlib.Path(unused_backend))
         
-    shutil.copytree(pathlib.Path(selected_backend), pathlib.Path.cwd(), dirs_exist_ok=True)
-    shutil.rmtree(pathlib.Path(selected_backend))
+    shutil.copytree(
+        src / pathlib.Path(selected_backend),
+        pathlib.Path.cwd() / src,
+        dirs_exist_ok=True,
+    )
+    shutil.rmtree(src / pathlib.Path(selected_backend))
 
 rename_backend_files()
+
