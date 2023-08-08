@@ -7,7 +7,7 @@ infra:
     provider: "bicep"
 services:
     web:
-        project: {{cookiecutter.__src_folder_name}}
+        project: src 
         module: web
         language: py
         host: containerapp

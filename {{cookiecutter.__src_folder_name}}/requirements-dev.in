@@ -1,4 +1,4 @@
--r {{cookiecutter.__src_folder_name}}/requirements.txt
+-r src/requirements.txt
 pytest
 coverage
 pytest-cov
