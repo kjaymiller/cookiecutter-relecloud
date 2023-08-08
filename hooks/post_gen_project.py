@@ -1,23 +1,8 @@
-import logging
-import os
 import pathlib
 import shutil
-import sys
 
 
 # Steps to finalize the cookiecutter build
-
-# Move the root paths to the correct location
-def move_root_files():
-    try:
-        root_folder = pathlib.Path("root")
-        shutil.copytree(root_folder, pathlib.Path.cwd().parent, dirs_exist_ok=True)
-        shutil.rmtree(root_folder)
-
-    except Exception as e:
-        # exit with status 1 to indicate failure
-        logging.warning(e)
-        sys.exit(1)
 
 def rename_backend_files():
     """
@@ -30,11 +15,17 @@ def rename_backend_files():
     project_backends = ["django", "fastapi", "flask"]
     project_backends.remove(selected_backend)
 
+    src = pathlib.Path('src')
+    
     for unused_backend in project_backends:
-        shutil.rmtree(pathlib.Path(unused_backend))
+        shutil.rmtree(src / pathlib.Path(unused_backend))
         
-    shutil.copytree(pathlib.Path(selected_backend), pathlib.Path.cwd(), dirs_exist_ok=True)
-    shutil.rmtree(pathlib.Path(selected_backend))
+    shutil.copytree(
+        src / pathlib.Path(selected_backend),
+        pathlib.Path.cwd() / src,
+        dirs_exist_ok=True,
+    )
+    shutil.rmtree(src / pathlib.Path(selected_backend))
 
-move_root_files()
 rename_backend_files()
+

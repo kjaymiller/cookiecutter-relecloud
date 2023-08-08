@@ -20,12 +20,11 @@ CONTEXT_OVERRIDE = [{"project_backend": x, "db_resource": y} for x, y in combina
 @pytest.fixture(scope="session")
 def context():
     return {
-        "project_name": "Relecloud",
-        "project_slug": "Long_MIXED_CASE-demo name",
+        "project_name": "Long_MIXED_CASE-demo name",
         "azd_template_version": "0.0.1",
         "project_backend": ["django", "fastapi", "flask"],
         "use_vnet": "n",
-        "db_resource": ["postgres-flexible"],
+        "db_resource": ["postgres-flexible",  "cosmos-postgres",],
         "web_port": "8000",
     }
 
@@ -45,7 +44,7 @@ def test_project_generation(bakery):
 
 def test_bicep_assertion_working_path_referenced_in_bicep(bakery):
     """Ensures that the generated path name is same as referenced path in azure.yaml"""
-    assert bakery.project_path.name == "long_mixed_case_demo_name"
+    assert bakery.project_path.name == f"long_mixed_case_demo_name_{bakery.context['project_backend']}_{bakery.context['db_resource']}".replace("-", "_")
     assert bakery.project_path.is_dir()
 
 
@@ -73,20 +72,9 @@ def test_build_folders_are_deleted(bakery, context):
                 pytest.fail(f"Found build folder {path.name}")
 
 
-def test_files_moved_one_level_above(bakery, context):
-    """Tests root files are moved"""
-
-    # Tests files exist one level above the source folder
-    assert (bakery.project_path.parent / "infra").exists()
-    assert (bakery.project_path.parent / "infra").is_dir()
-
-    # Tests Files do not exist in the source folder
-    assert not (bakery.project_path / "root").exists()
-
-
 def tests_valid_bicep(bakery, context):
     commands = (
-        f"az bicep build --file {bakery.project_path.parent}/infra/main.bicep".split(
+        f"az bicep build --file {bakery.project_path}/infra/main.bicep".split(
             " "
         )
     )
