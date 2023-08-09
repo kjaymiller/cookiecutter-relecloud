@@ -16,14 +16,14 @@ If you're not using one of those options for opening the project, then you'll ne
 1. Install production requirements:
 
     ```sh
-    python -m pip install -r {{cookiecutter.__src_folder_name}}/requirements.txt
+    python -m pip install -r src/requirements.txt
     ```
 
 {% if cookiecutter.project_backend in ("flask", "fastapi") %}
 1. Install the app as an editable package:
 
     ```sh
-    python -m pip install -e {{cookiecutter.__src_folder_name}}
+    python -m pip install -e src
     ```
 {% endif %}
 
@@ -31,19 +31,19 @@ If you're not using one of those options for opening the project, then you'll ne
 
 {% if cookiecutter.project_backend == "django" %}
     ```sh
-    python {{cookiecutter.__src_folder_name}}/manage.py migrate
-    python {{cookiecutter.__src_folder_name}}/manage.py loaddata {{cookiecutter.__src_folder_name}}/seed_data.json
+    python src/manage.py migrate
+    python src/manage.py loaddata src/seed_data.json
     ```
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
     ```sh
-    python3 -m flask --app flaskapp db upgrade --directory {{cookiecutter.__src_folder_name}}/flaskapp/migrations
-    python3 -m flask --app flaskapp seed --filename {{cookiecutter.__src_folder_name}}/seed_data.json
+    python3 -m flask --app flaskapp db upgrade --directory src/flaskapp/migrations
+    python3 -m flask --app flaskapp seed --filename src/seed_data.json
     ```
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
     ```sh
-    python3 demo_code/fastapi_app/seed_data.py
+    python3 src/fastapi_app/seed_data.py
     ```
 {% endif %}
 
