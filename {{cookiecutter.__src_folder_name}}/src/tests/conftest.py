@@ -83,7 +83,7 @@ def app():
 @pytest.fixture(scope="session")
 def django_db_setup(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
-        call_command("loaddata", "seed_data.json")
+        call_command("loaddata", "src/seed_data.json")
 {% endif %}
 
 

@@ -56,9 +56,9 @@
         {% endif %}
     },
     {% if cookiecutter.project_backend == "django" %}
-    "postCreateCommand": "python {{cookiecutter.__src_folder_name}}/manage.py migrate && python {{cookiecutter.__src_folder_name}}/manage.py loaddata {{cookiecutter.__src_folder_name}}/seed_data.json"
+    "postCreateCommand": "python src/manage.py migrate && python src/manage.py loaddata src/seed_data.json"
     {% endif %}
     {% if cookiecutter.project_backend == "flask" %}
-    "postCreateCommand": "pip install -e {{cookiecutter.__src_folder_name}} && python3 -m flask --app flaskapp db upgrade --directory {{cookiecutter.__src_folder_name}}/flaskapp/migrations && python3 -m flask --app flaskapp seed --filename {{cookiecutter.__src_folder_name}}/seed_data.json"
+    "postCreateCommand": "pip install -e src && python3 -m flask --app flaskapp db upgrade --directory src/flaskapp/migrations && python3 -m flask --app flaskapp seed --filename src/seed_data.json"
     {% endif %}
 }

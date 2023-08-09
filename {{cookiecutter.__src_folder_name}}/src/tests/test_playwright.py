@@ -65,7 +65,7 @@ cruises = (
     "The Big Tour",
 )
 
-
+@pytest.mark.skip(reason="Issue with pytest-django not loading test data see issue #72")
 @pytest.mark.parametrize(
     "destination",
     destinations,
@@ -90,6 +90,7 @@ def test_destination_options(
     "destination",
     destinations,
 )
+@pytest.mark.skip(reason="Issue with pytest-django not loading test data see issue #72")
 def test_destination_options_have_cruises(page: Page, mock_functions_env, live_server_url: str, destination):
     page.goto(live_server_url)
     page.get_by_role("link", name="Destinations").click()

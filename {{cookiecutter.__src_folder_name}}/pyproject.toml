@@ -18,6 +18,7 @@ line-length = 120
 addopts = "-ra --cov -vv"
 {% if cookiecutter.project_backend == "django" %}
 DJANGO_SETTINGS_MODULE = "project.settings"
+pythonpath = ["src"]
 {% endif %}
 
 [tool.coverage.report]

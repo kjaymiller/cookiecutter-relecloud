@@ -20,7 +20,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: ./{{cookiecutter.__src_folder_name}}/Dockerfile
+      dockerfile: ./src/Dockerfile
     depends_on:
       db:
         condition: service_healthy
