@@ -40,6 +40,14 @@ python -m pip install cruft
 python -m cruft create https://github.com/kjaymiller/cookiecutter-relecloud
 ```
 
+# Getting Updates from this Template
+
+Cruft allows you to update your project with the latest changes from this template. To do so, run the following command:
+
+```sh
+cruft update
+```
+
 # Running your Deployment via DevContainer/Github Codespaces
 
 This template is designed to work with DevContainers and GitHub Codespaces. You can deploy the Github Codespaces instance by clicking the green code button and creating a new codespace.

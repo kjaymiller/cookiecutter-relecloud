@@ -1,8 +1,13 @@
+import importlib.util
+import logging
 import pathlib
 import shutil
+import subprocess
 
 
 # Steps to finalize the cookiecutter build
+def error_msg(pkg):
+    return f"`{pkg}` is not installed. Run `pip install {pkg}` to install it."
 
 def rename_backend_files():
     """
@@ -27,5 +32,20 @@ def rename_backend_files():
     )
     shutil.rmtree(src / pathlib.Path(selected_backend))
 
-rename_backend_files()
+def run_ruff_fix_and_black():
+    """checks if ruff and black are installed and runs them on the project"""
 
+    if importlib.util.find_spec("ruff"):
+        subprocess.run(["python3", "-m" "ruff", "--fix", "src"])
+    else:
+        logging.warning(error_msg("ruff"))
+
+    if importlib.util.find_spec("black"):
+        subprocess.run(["python3", "-m", "black", "-q", "src"])
+    else:
+        logging.warning(error_msg("black"))
+
+
+if __name__ == "__main__":
+    rename_backend_files()
+    run_ruff_fix_and_black()
