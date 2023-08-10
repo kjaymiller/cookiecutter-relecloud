@@ -114,7 +114,57 @@ module monitoring 'core/monitor/monitoring.bicep' = {
   }
 }
 
+{% if cookiecutter.project_host == "appservice" %}
+module web 'core/host/appservice.bicep' = {
+  name: 'appservice'
+  location: location
+  tags: union(tags, {'azd-service-name': web'})
+  appServicePlanId: appServicePlan.outputs.id
+  runtimeName: 'python'
+  runtimeVersion: '3.11'
+  scmDoBuildDuringDeployment: true
+  ftpsState: 'Disabled'
+  managedIdentity: true
+  appCommandLine: entrypoint.sh
+  appSettings: {
+    keyVaultName: keyVault.outputs.name
+    dbserverDomainName: dbserver.outputs.DOMAIN_NAME
+    dbserverUser: dbserverUser
+    dbserverDatabaseName: dbserverDatabaseName
+    dbserverPassword: dbserverPassword 
+    {% if cookiecutter.project_backend in ("django", "flask") %}
+    secretKey: secretKey
+    {% endif %}
+  }
+}
 
+module appServicePlan 'core/host/appserviceplan.bicep' = {
+  name: 'serviceplan'
+  scope: resourceGroup
+  params: {
+    name: '${prefix}-serviceplan'
+    location: location
+    tags: tags
+    sku: {
+      name: 'B1'
+    }
+    reserved: true
+  }
+}
+
+module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
+  name: 'loganalytics'
+  scope: resourceGroup
+  params: {
+    name: '${prefix}-loganalytics'
+    location: location
+    tags: tags
+  }
+}
+
+{% endif %}
+
+{% if cookiecutter.project_host == "aca" %}
 // Container apps host (including container registry)
 module containerApps 'core/host/container-apps.bicep' = {
   name: 'container-apps'
@@ -147,10 +197,11 @@ module web 'web.bicep' = {
     dbserverPassword: dbserverPassword
     {% if cookiecutter.project_backend in ("django", "flask") %}
     secretKey: secretKey
-    {% endif%}
+    {% endif %}
     exists: webAppExists
   }
 }
+{% endif %}
 
 // Give the app access to KeyVault
 module webKeyVaultAccess './core/security/keyvault-access.bicep' = {

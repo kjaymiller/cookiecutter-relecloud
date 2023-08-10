@@ -30,7 +30,10 @@ if not prod:  # Running in a Test Environment
 else:  # Running is Production
     DEBUG = False
     DEFAULT_SECRET = None
-    ALLOWED_HOSTS = [os.environ["CONTAINER_APP_NAME"] + "." + os.environ["CONTAINER_APP_ENV_DNS_SUFFIX"]]
+    ALLOWED_HOSTS = [
+        {% if cookiecutter.project_host == "aca" %}os.environ["CONTAINER_APP_NAME"] + "." + os.environ["CONTAINER_APP_ENV_DNS_SUFFIX"],{% endif %}
+        {% if cookiecutter.project_host == "appservice" %}os.environ["WEBSITE_HOSTNAME"],{% endif %}
+    ]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 SECRET_KEY = os.environ.get("SECRET_KEY", DEFAULT_SECRET)
