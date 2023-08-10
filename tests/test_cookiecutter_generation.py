@@ -42,6 +42,19 @@ def test_project_generation(bakery):
     assert bakery.exception is None
 
 
+@pytest.mark.skip(reason="unable to check with caplog but tested in functional test - Issue: #77")
+def test_project_post_hook_triggers_warning_if_linters_not_installed(
+    cookies_session, context, mocker, caplog
+    ):
+    """If ruff or black is not installed, the post hook should trigger a warning"""
+
+    mocker.patch("hooks.post_gen_project.importlib.util.find_spec", return_value=None)
+
+    with caplog.at_level("WARNING"):
+        cookies_session.bake(extra_context=context)
+
+
+
 def test_bicep_assertion_working_path_referenced_in_bicep(bakery):
     """Ensures that the generated path name is same as referenced path in azure.yaml"""
     assert bakery.project_path.name == f"long_mixed_case_demo_name_{bakery.context['project_backend']}_{bakery.context['db_resource']}".replace("-", "_")
