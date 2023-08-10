@@ -1,4 +1,4 @@
-git+https://github.com/cookiecutter/cookiecutter@main # Need PR 1904
+cookiecutter
 ruff
 pytest
 pytest-cookies
