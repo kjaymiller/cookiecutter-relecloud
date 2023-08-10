@@ -21,26 +21,27 @@
 ## Deploying your cookiecutter template
 
 1. Create a new folder
-2. Create a virtual environment 
+2. Create a virtual environment
 
-```
+```sh
 python -m venv venv
 source venv/bin/activate
 ```
 
-2. Install cookiecutter ( >= 2.2.1)
+2. Install cruft
 
-```
-python -m pip install cookiecutter
+```sh
+python -m pip install cruft
 ```
 
 3. Generate the project using this template
 
-```
-python -m cookiecutter gh:kjaymiller/cookiecutter-relecloud
+```sh
+python -m cruft create https://github.com/kjaymiller/cookiecutter-relecloud
 ```
 
 # Running your Deployment via DevContainer/Github Codespaces
+
 This template is designed to work with DevContainers and GitHub Codespaces. You can deploy the Github Codespaces instance by clicking the green code button and creating a new codespace.
 
 To deploy the dev container locally you can do so with a compatible code editor like Visual Studio Code.

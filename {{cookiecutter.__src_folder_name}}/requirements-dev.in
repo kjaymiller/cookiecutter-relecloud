@@ -1,15 +1,21 @@
 -r src/requirements.txt
-pytest
-coverage
-pytest-cov
-pytest-playwright
-pip-tools
-ruff
-black
 
+# Cookiecutter Support
+cruft
+pip-tools
+
+# Testing Tools
+coverage
+pytest
+pytest-cov
 {% if cookiecutter.project_backend == "django" %}
 pytest-django
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
 pytest-flask
 {% endif %}
+pytest-playwright
+
+# Linters
+ruff
+black
