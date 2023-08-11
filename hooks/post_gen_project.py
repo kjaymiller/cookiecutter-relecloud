@@ -1,5 +1,6 @@
 import importlib.util
 import logging
+import os
 import pathlib
 import shutil
 import subprocess
@@ -8,6 +9,11 @@ import subprocess
 # Steps to finalize the cookiecutter build
 def error_msg(pkg):
     return f"`{pkg}` is not installed. Run `pip install {pkg}` to install it."
+
+def remove_aca_files():
+    file_names = ["infra/web.bicep"]
+    for file_name in file_names:
+        os.remove(file_name)
 
 def rename_backend_files():
     """
@@ -48,4 +54,8 @@ def run_ruff_fix_and_black():
 
 if __name__ == "__main__":
     rename_backend_files()
+    
+    if "{{ cookiecutter.project_host }}" != "aca":
+        remove_aca_files()
+
     run_ruff_fix_and_black()

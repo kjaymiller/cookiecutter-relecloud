@@ -17,7 +17,9 @@ param dbserverPassword string
 @description('Secret Key')
 param secretKey string
 {% endif %}
+{% if cookiecutter.project_host == "aca" %}
 param webAppExists bool = false
+{% endif %}
 
 
 @description('Id of the user or app to assign application roles')
@@ -115,26 +117,32 @@ module monitoring 'core/monitor/monitoring.bicep' = {
 }
 
 {% if cookiecutter.project_host == "appservice" %}
+
 module web 'core/host/appservice.bicep' = {
   name: 'appservice'
-  location: location
-  tags: union(tags, {'azd-service-name': web'})
-  appServicePlanId: appServicePlan.outputs.id
-  runtimeName: 'python'
-  runtimeVersion: '3.11'
-  scmDoBuildDuringDeployment: true
-  ftpsState: 'Disabled'
-  managedIdentity: true
-  appCommandLine: entrypoint.sh
-  appSettings: {
-    keyVaultName: keyVault.outputs.name
-    dbserverDomainName: dbserver.outputs.DOMAIN_NAME
-    dbserverUser: dbserverUser
-    dbserverDatabaseName: dbserverDatabaseName
-    dbserverPassword: dbserverPassword 
-    {% if cookiecutter.project_backend in ("django", "flask") %}
-    secretKey: secretKey
-    {% endif %}
+  scope: resourceGroup
+  params: {
+    name: '${prefix}-web'
+    location: location
+    tags: union(tags, {'azd-service-name': 'web'})
+    appServicePlanId: appServicePlan.outputs.id
+    runtimeName: 'python'
+    runtimeVersion: '3.11'
+    scmDoBuildDuringDeployment: true
+    ftpsState: 'Disabled'
+    appCommandLine: 'entrypoint.sh'
+    managedIdentity: true
+    appSettings: {
+      APPLICATIONINSIGHTS_CONNECTION_STRING: monitoring.outputs.applicationInsightsConnectionString
+      RUNNING_IN_PRODUCTION: 'true'
+      DBSERVER_HOST: dbserver.outputs.DOMAIN_NAME
+      DBSERVER_USER: dbserverUser
+      DBSERVER_DB: dbserverDatabaseName
+      DBSERVER_PASSWORD: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=DBSERVERPASSWORD)'
+      {% if cookiecutter.project_backend in ("django", "flask") %}
+      SECRET_KEY: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=SECRETKEY)'
+      {% endif %}
+    }
   }
 }
 
@@ -151,17 +159,6 @@ module appServicePlan 'core/host/appserviceplan.bicep' = {
     reserved: true
   }
 }
-
-module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
-  name: 'loganalytics'
-  scope: resourceGroup
-  params: {
-    name: '${prefix}-loganalytics'
-    location: location
-    tags: tags
-  }
-}
-
 {% endif %}
 
 {% if cookiecutter.project_host == "aca" %}
@@ -203,15 +200,22 @@ module web 'web.bicep' = {
 }
 {% endif %}
 
+
 // Give the app access to KeyVault
 module webKeyVaultAccess './core/security/keyvault-access.bicep' = {
   name: 'web-keyvault-access'
   scope: resourceGroup
   params: {
     keyVaultName: keyVault.outputs.name
+    {% if cookiecutter.project_host == "aca" %}
     principalId: web.outputs.SERVICE_WEB_IDENTITY_PRINCIPAL_ID
+    {% endif %}
+    {% if cookiecutter.project_host == "appservice" %}
+    principalId: web.outputs.identityPrincipalId
+    {% endif %}
   }
 }
+
 
 var secrets = [
   {
@@ -238,16 +242,18 @@ module keyVaultSecrets './core/security/keyvault-secret.bicep' = [for secret in 
 }]
 
 output AZURE_LOCATION string = location
+{% if cookiecutter.project_host == "aca" %}
 output AZURE_CONTAINER_ENVIRONMENT_NAME string = containerApps.outputs.environmentName
 output AZURE_CONTAINER_REGISTRY_ENDPOINT string = containerApps.outputs.registryLoginServer
 output AZURE_CONTAINER_REGISTRY_NAME string = containerApps.outputs.registryName
-output DBSERVER_DATABASE_NAME string = dbserverDatabaseName
-output DBSERVER_DOMAIN_NAME string = dbserver.outputs.DOMAIN_NAME
-output DBSERVER_USER string = dbserverUser
 output SERVICE_WEB_IDENTITY_PRINCIPAL_ID string = web.outputs.SERVICE_WEB_IDENTITY_PRINCIPAL_ID
 output SERVICE_WEB_NAME string = web.outputs.SERVICE_WEB_NAME
 output SERVICE_WEB_URI string = web.outputs.SERVICE_WEB_URI
 output SERVICE_WEB_IMAGE_NAME string = web.outputs.SERVICE_WEB_IMAGE_NAME
+{% endif %}
+output DBSERVER_DATABASE_NAME string = dbserverDatabaseName
+output DBSERVER_DOMAIN_NAME string = dbserver.outputs.DOMAIN_NAME
+output DBSERVER_USER string = dbserverUser
 output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output APPLICATIONINSIGHTS_NAME string = monitoring.outputs.applicationInsightsName
