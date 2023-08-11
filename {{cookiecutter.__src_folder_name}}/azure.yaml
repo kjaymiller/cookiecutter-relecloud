@@ -8,7 +8,12 @@ infra:
 services:
     web:
         project: src 
-        module: web
         language: py
+        {% if cookiecutter.project_host == "aca" %}
+        module: web
         host: containerapp
+        {% endif %}
+        {% if cookiecutter.project_host == "appservice" %}
+        host: appservice
+        {% endif %}
 

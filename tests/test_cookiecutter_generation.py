@@ -57,7 +57,7 @@ def test_project_post_hook_triggers_warning_if_linters_not_installed(
 
 def test_bicep_assertion_working_path_referenced_in_bicep(bakery):
     """Ensures that the generated path name is same as referenced path in azure.yaml"""
-    assert bakery.project_path.name == f"long_mixed_case_demo_name_{bakery.context['project_backend']}_{bakery.context['db_resource']}".replace("-", "_")
+    assert bakery.project_path.name == f"long_mixed_case_demo_name_{bakery.context['project_backend']}_{bakery.context['db_resource']}_{bakery.context['project_host']}".replace("-", "_")
     assert bakery.project_path.is_dir()
 
 

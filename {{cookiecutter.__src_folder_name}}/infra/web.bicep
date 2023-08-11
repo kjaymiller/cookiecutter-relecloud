@@ -49,10 +49,6 @@ module app 'core/host/container-app-upsert.bicep' = {
         value: dbserverDatabaseName
       }
       {
-        name: 'KEYVAULT'
-        value: keyVault.name
-      }
-      {
         name: 'RUNNING_IN_PRODUCTION'
         value: 'true'
       } 
