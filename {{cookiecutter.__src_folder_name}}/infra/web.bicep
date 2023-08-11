@@ -24,6 +24,7 @@ resource webIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-3
   location: location
 }
 
+{% if cookiecutter.project_host == "aca" %}
 module app 'core/host/container-app-upsert.bicep' = {
   name: '${serviceName}-container-app-module'
   params: {
@@ -46,10 +47,6 @@ module app 'core/host/container-app-upsert.bicep' = {
       {
         name: 'DBSERVER_DB'
         value: dbserverDatabaseName
-      }
-      {
-        name: 'KEYVAULT'
-        value: keyVault.name
       }
       {
         name: 'RUNNING_IN_PRODUCTION'
@@ -85,6 +82,7 @@ module app 'core/host/container-app-upsert.bicep' = {
     targetPort: {{cookiecutter.web_port}} 
   }
 }
+{% endif %}
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
   name: keyVaultName
