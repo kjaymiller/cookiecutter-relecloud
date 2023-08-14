@@ -57,3 +57,12 @@ To deploy the dev container locally you can do so with a compatible code editor 
 # Deploy your template to Azure
 
 These templates are configured to deploy to Microsoft Azure via the Azure Developer CLI. You can deploy your project immediately using `azd up`
+
+# Deployed Project Examples
+- [Django/Cosmos Postgres Adapter/Azure Container Apps](https://github.com/Azure-Samples/azure-django-cosmos-postgres-aca)
+- [Django/Postgres Flexible Server/Azure Container Apps](https://github.com/Azure-Samples/azure-django-postgres-aca)
+- [Django/Postgres Flexible Server/Azure App Service](https://github.com/Azure-Samples/azure-django-postgres-flexible-appservice)
+- [FastAPI/Cosmos Postgres Adapter/Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-cosmos-postgres-aca)
+- [FastAPI/Postgres Flexible Server/Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-postgres-aca)
+- [Flask/Postgres Flexible Server/Azure Container Apps](https://github.com/Azure-Samples/azure-flask-postgres-aca)
+- [Flask/Cosmos Postgres Adapter/Azure Container Apps](https://github.com/Azure-Samples/azure-flask-cosmos-postgres-aca)
