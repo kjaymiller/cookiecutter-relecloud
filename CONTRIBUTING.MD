@@ -29,7 +29,39 @@ You can ensure that it is up to date using the command:
 curl -fsSL https://aka.ms/install-azd.sh | bash
 ```
 
-## Running Tests
+## Testing
+
+### Creating Tests
+We have two sets of tests:
+1. Generation tests - Tests that verify project generation is accurate
+2. Application tests - Tests that are created by cookiecutter that are ran by the generated project
+
+Both sets of tests are created using [Pytest](https://pytest.org).
+
+### Generation tests
+
+The generation tests are located at `/tests/` 
+
+Generation tests use [pytest-cookies](https://github.com/hackebrot/pytest-cookies) to generate an iteration of each project and run a series of tests.
+
+You'll need to include the fixture `bakery` in your new tests to ensure that the desired outcome is happening across all of the products.
+
+```python
+def tests_something_happened(bakery, context)
+```
+
+### Application tests
+
+Application tests are in `{{cookiecutter.__src_folder_name}}/tests/`.
+
+Application tests use [playwright](https://playwright.dev/python/) and [pytest-playwright](https://github.com/microsoft/playwright-pytest). If you're testing the generated projects, you'll need to have `playwright` installed with dependencies.
+
+```sh
+playwright install --with-deps
+```
+
+
+### Running Tests
 
 Our goal is to ensure that the template is always up to date with the latest versions of the tools we use. Tests are run using [GitHub Actions](https://github.com/kjaymiller/cookiecutter-relecloud/actions). You should also run the tests locally before submitting a PR.
 
