@@ -51,6 +51,9 @@ def run_ruff_fix_and_black():
     else:
         logging.warning(error_msg("black"))
 
+def run_bicep_format():
+    """formats your bicep files"""
+    subprocess.run(["bicep", "format", "infra"])
 
 if __name__ == "__main__":
     rename_backend_files()
@@ -59,3 +62,4 @@ if __name__ == "__main__":
         remove_aca_files()
 
     run_ruff_fix_and_black()
+    run_bicep_format()
