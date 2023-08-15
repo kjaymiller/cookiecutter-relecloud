@@ -1,6 +1,7 @@
 [project]
 name = "flaskapp"
 version = "1.0.0"
+description = "{{cookiecutter.__project_short_description}}"
 dependencies = [
     "Flask==2.3.2",
     "Flask-Migrate==4.0.4",
