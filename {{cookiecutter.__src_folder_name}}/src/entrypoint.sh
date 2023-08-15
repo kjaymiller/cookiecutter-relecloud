@@ -2,6 +2,7 @@
 
 set -e
 
+python3 -m pip install --upgrade pip
 {% if cookiecutter.project_backend in ("flask", "fastapi") %}
 python3 -m pip install -e .
 {% endif %}
