@@ -16,7 +16,4 @@ COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
 COPY . .
-{% if cookiecutter.project_backend in ("fastapi", "flask") %}
-RUN python -m pip install -e .
-{% endif %}
 CMD bash -c ". entrypoint.sh"
