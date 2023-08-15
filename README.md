@@ -8,7 +8,7 @@
 |Deploys via AZD|✅|✅|✅|
 |Deploys via Terraform|❌|❌|❌|
 |Deploys via ACA|✅|✅|✅|
-|Deploys with Azure App Service|✅|❌|❌|
+|Deploys with Azure App Service|✅|✅|✅|
 |**Databases**|-|-|-|
 |Azure ACA Postgres Plugin|❌|❌|❌|
 |Azure Cosmos DB (Postgres Adapter)|✅|✅|✅|
