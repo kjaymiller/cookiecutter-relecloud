@@ -53,7 +53,7 @@ def run_ruff_fix_and_black():
 
 def run_bicep_format():
     """formats your bicep files"""
-    subprocess.run(["bicep", "format", "infra"])
+    subprocess.run(["az", "bicep", "format", "--file", "infra/main.bicep"])
 
 if __name__ == "__main__":
     rename_backend_files()

@@ -12,7 +12,7 @@ def check_version(current_version: str, supported_version: str) -> bool:
 def tests_bicep_is_installed():
     """Tests that bicep is installed"""
 
-    supported_bicep_version = Version("0.20.5")
+    supported_bicep_version = Version("0.20.4")
     bicep_check = subprocess.run(["az", "bicep", "version"], capture_output=True)
     bicep_version = parse(
         re.search(r"\d+\.\d+\.\d+", bicep_check.stdout.decode("utf-8")).group(0),
