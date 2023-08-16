@@ -4,6 +4,10 @@ import click
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from opencensus.ext.azure.trace_exporter import AzureExporter
+from opencensus.ext.flask.flask_middleware import FlaskMiddleware
+from opencensus.trace.samplers import ProbabilitySampler
+
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -19,6 +23,11 @@ def create_app(test_config=None):
         app.config.from_object("flaskapp.config.development")
     else:
         app.config.from_object("flaskapp.config.production")  # pragma: no cover
+        middleware = FlaskMiddleware(
+            app,
+            exporter=AzureExporter(connection_string=os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING", None)),
+            sampler=ProbabilitySampler(rate=1.0),
+        )
 
     # Configure the database
     app.config.update(SQLALCHEMY_DATABASE_URI=app.config.get("DATABASE_URI"), SQLALCHEMY_TRACK_MODIFICATIONS=False)
