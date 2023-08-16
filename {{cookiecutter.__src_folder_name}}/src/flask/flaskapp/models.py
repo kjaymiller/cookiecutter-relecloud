@@ -10,6 +10,7 @@ association_table = db.Table(
 class Destination(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
+    subtitle = db.Column(db.String(255), nullable=True)
     description = db.Column(db.String(255), nullable=True)
     cruises = db.relationship("Cruise", secondary=association_table, back_populates="destinations")
 
@@ -20,6 +21,7 @@ class Destination(db.Model):
 class Cruise(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
+    subtitle = db.Column(db.String(255), nullable=True)
     description = db.Column(db.String(255), nullable=True)
     destinations = db.relationship("Destination", secondary=association_table, back_populates="cruises")
 
