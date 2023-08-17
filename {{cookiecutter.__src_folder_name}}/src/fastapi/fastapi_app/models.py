@@ -38,6 +38,7 @@ class CruiseDestinationLink(SQLModel, table=True):
 class Destination(SQLModel, table=True):
     id: typing.Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True)
+    subtitle: typing.Optional[str]
     description: typing.Optional[str]
     cruises: typing.List["Cruise"] = Relationship(
         back_populates="destinations",
@@ -52,6 +53,7 @@ class Cruise(SQLModel, table=True):
     id: typing.Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True)
     description: typing.Optional[str]
+    subtitle: typing.Optional[str]
     destinations: typing.List["Destination"] = Relationship(
         back_populates="cruises",
         link_model=CruiseDestinationLink,

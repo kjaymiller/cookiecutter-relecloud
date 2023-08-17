@@ -10,8 +10,11 @@ association_table = db.Table(
 class Destination(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(255), nullable=True)
-    cruises = db.relationship("Cruise", secondary=association_table, back_populates="destinations")
+    subtitle = db.Column(db.String(255), nullable=True)
+    description = db.Column(db.String(1000), nullable=True)
+    cruises = db.relationship(
+        "Cruise", secondary=association_table, back_populates="destinations"
+    )
 
     def __str__(self):
         return self.name
@@ -20,8 +23,11 @@ class Destination(db.Model):
 class Cruise(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(255), nullable=True)
-    destinations = db.relationship("Destination", secondary=association_table, back_populates="cruises")
+    subtitle = db.Column(db.String(255), nullable=True)
+    description = db.Column(db.String(1000), nullable=True)
+    destinations = db.relationship(
+        "Destination", secondary=association_table, back_populates="cruises"
+    )
 
     def __str__(self):
         return self.name
