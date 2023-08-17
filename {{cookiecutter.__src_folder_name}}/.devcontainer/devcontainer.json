@@ -59,6 +59,6 @@
     "postCreateCommand": "python src/manage.py migrate && python src/manage.py loaddata src/seed_data.json"
     {% endif %}
     {% if cookiecutter.project_backend == "flask" %}
-    "postCreateCommand": "pip install -e src && python3 -m flask --app flaskapp db upgrade --directory src/flaskapp/migrations && python3 -m flask --app flaskapp seed --filename src/seed_data.json"
+    "postCreateCommand": "pip install -e src && python3 -m flask --app src/flaskapp db upgrade --directory src/flaskapp/migrations && python3 -m flask --app src/flaskapp seed --filename src/seed_data.json"
     {% endif %}
 }

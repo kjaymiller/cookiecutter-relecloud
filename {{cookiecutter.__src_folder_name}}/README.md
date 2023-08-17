@@ -1,4 +1,5 @@
 {% if cookiecutter.project_backend == "fastapi" %}
+
 # Deploy a FastAPI Application via Azure Container Apps
 
 This project deploy a [FastAPI](https://fastapi.tiangolo.com) application to [Azure Container Apps](https://aka.ms/aca). The FastAPI application is a simple web application for a space travel agency. The application is built using the FastAPI framework and uses a PostgreSQL database with SQLModel as an ORM. The application can be deployed to Azure using the [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/overview).
@@ -20,11 +21,13 @@ If you're not using one of those options for opening the project, then you'll ne
     ```
 
 {% if cookiecutter.project_backend in ("flask", "fastapi") %}
+
 1. Install the app as an editable package:
 
     ```sh
     python -m pip install -e src
     ```
+
 {% endif %}
 
 1. Apply database migrations and seed initial data:
@@ -33,18 +36,21 @@ If you're not using one of those options for opening the project, then you'll ne
     ```sh
     python src/manage.py migrate
     python src/manage.py loaddata src/seed_data.json
-    ```
+
+```
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
     ```sh
-    python3 -m flask --app flaskapp db upgrade --directory src/flaskapp/migrations
-    python3 -m flask --app flaskapp seed --filename src/seed_data.json
-    ```
+    python3 -m flask --app src.flaskapp db upgrade --directory src/flaskapp/migrations
+    python3 -m flask --app src.flaskapp seed --filename src/seed_data.json
+```
+
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
     ```sh
     python3 src/fastapi_app/seed_data.py
-    ```
+
+```
 {% endif %}
 
 ## Running locally
@@ -53,10 +59,10 @@ Run gunicorn on the app:
 
 ```sh
 {% if cookiecutter.project_backend == "flask" %}
-python3 -m gunicorn 'flaskapp:create_app()' -c demo_code/gunicorn.conf.py
+python3 -m gunicorn 'src.flaskapp:create_app()' -c src/gunicorn.conf.py
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
-python3 -m gunicorn fastapi_app:app -c demo_code/gunicorn.conf.py
+python3 -m gunicorn fastapi_app:app -c src/gunicorn.conf.py
 {% endif %}
 {% if cookiecutter.project_backend == "django" %}
 python3 manage.py collectstatic
