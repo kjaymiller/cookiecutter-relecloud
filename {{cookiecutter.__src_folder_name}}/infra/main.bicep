@@ -66,6 +66,7 @@ module dbserver 'core/database/cosmos/cosmos-pg-adapter.bicep' = {
     location: location
     tags: tags
     postgresqlVersion: '{{pg_version}}'
+    administratorLogin: dbserverUser
     administratorLoginPassword: dbserverPassword
     databaseName: dbserverDatabaseName
     allowAzureIPsFirewall: true
