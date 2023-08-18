@@ -10,7 +10,7 @@ class Destination(models.Model):
         blank=False,
     )
     subtitle = models.CharField(
-        unique=True,
+        unique=False,
         max_length=240,
         null=False,
         blank=True,
@@ -29,7 +29,7 @@ class Cruise(models.Model):
         blank=False,
     )
     subtitle = models.CharField(
-        unique=True,
+        unique=False,
         max_length=240,
         null=False,
         blank=True,

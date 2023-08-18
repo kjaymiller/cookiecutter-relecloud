@@ -65,8 +65,8 @@ python3 -m gunicorn 'src.flaskapp:create_app()' -c src/gunicorn.conf.py
 python3 -m gunicorn fastapi_app:app -c src/gunicorn.conf.py
 {% endif %}
 {% if cookiecutter.project_backend == "django" %}
-python3 manage.py collectstatic
-python3 -m gunicorn project.wsgi:application --name relecloud
+python3 src/manage.py collectstatic
+python3 -m gunicorn project.wsgi:application -c src/gunicorn.conf.py --pythonpath src
 {% endif %}
 ```
 
