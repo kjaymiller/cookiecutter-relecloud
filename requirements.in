@@ -1,5 +1,11 @@
+# Modules used in generation
 cookiecutter
+packaging
+
+# linting
 ruff
 black
+
+# testing
 pytest
 pytest-cookies
