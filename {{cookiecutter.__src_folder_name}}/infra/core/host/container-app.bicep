@@ -34,6 +34,10 @@ param daprAppId string = containerName
 @description('Protocol used by Dapr to connect to the app, e.g. http or grpc')
 param daprAppProtocol string = 'http'
 
+// Service options
+@description('PostgreSQL service ID')
+param postgresServiceId string
+
 @description('CPU cores allocated to a single container instance, e.g. 0.5')
 param containerCpuCoreCount string = '0.5'
 
@@ -52,7 +56,7 @@ module containerRegistryAccess '../security/registry-access.bicep' = {
   }
 }
 
-resource app 'Microsoft.App/containerApps@2022-03-01' = {
+resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
   name: name
   location: location
   tags: tags
@@ -89,6 +93,12 @@ resource app 'Microsoft.App/containerApps@2022-03-01' = {
       ]
     }
     template: {
+      serviceBinds: !empty(postgresServiceId) ? [
+        {
+          serviceId: postgresServiceId
+          name: 'postgres'
+        }
+      ] : []
       containers: [
         {
           image: !empty(imageName) ? imageName : 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'

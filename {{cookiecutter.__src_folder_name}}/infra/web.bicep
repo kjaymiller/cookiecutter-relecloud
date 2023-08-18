@@ -7,17 +7,19 @@ param containerAppsEnvironmentName string
 param containerRegistryName string
 param exists bool
 param identityName string
-param keyVaultName string
 param serviceName string = 'web'
+{% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
 param dbserverDomainName string
 param dbserverDatabaseName string
 param dbserverUser string
 @secure()
 param dbserverPassword string
+{% endif %}
 {% if cookiecutter.project_backend in ("django", "flask") %}
 @secure()
 param secretKey string
 {% endif %}
+param postgresServiceId string
 
 resource webIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: identityName
@@ -36,18 +38,24 @@ module app 'core/host/container-app-upsert.bicep' = {
     containerAppsEnvironmentName: containerAppsEnvironmentName
     containerRegistryName: containerRegistryName
     env: [
+      {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
       {
-        name: 'DBSERVER_HOST'
+        name: 'POSTGRES_HOST'
         value: dbserverDomainName
       }
       {
-        name: 'DBSERVER_USER'
+        name: 'POSTGRES_USERNAME'
         value: dbserverUser
       }
       {
-        name: 'DBSERVER_DB'
+        name: 'POSTGRES_DATABASE'
         value: dbserverDatabaseName
       }
+      {
+        name: 'POSTGRES_PASSWORD'
+        secretRef: 'dbserver-password'
+      }
+      {% endif %}
       {
         name: 'RUNNING_IN_PRODUCTION'
         value: 'true'
@@ -62,16 +70,14 @@ module app 'core/host/container-app-upsert.bicep' = {
         secretRef: 'secret-key'
       }
       {% endif %}
-      {
-        name: 'DBSERVER_PASSWORD'
-        secretRef: 'dbserver-password'
-      }
       ]
     secrets: [
+        {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
         {
           name: 'dbserver-password'
           value: dbserverPassword
         }
+        {% endif %}
         {% if cookiecutter.project_backend in ("django", "flask") %}
         {
           name: 'secret-key'
@@ -79,14 +85,13 @@ module app 'core/host/container-app-upsert.bicep' = {
         }
         {% endif %}
       ]
+    {% if cookiecutter.db_resource == "postgres-service" %}
+    postgresServiceId: postgresServiceId
+    {% endif %}
     targetPort: {{cookiecutter.web_port}} 
   }
 }
 {% endif %}
-
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-  name: keyVaultName
-}
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: applicationInsightsName

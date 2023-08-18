@@ -5,14 +5,17 @@ import typing
 
 from sqlmodel import Field, Relationship, SQLModel, create_engine
 
-DBSERVER_USER = os.environ.get("DBSERVER_USER")
-DBSERVER_PASSWORD = os.environ.get("DBSERVER_PASSWORD")
-DBSERVER_HOST = os.environ.get("DBSERVER_HOST")
-DBSERVER_DB = os.environ.get("DBSERVER_DB")
+{% if cookiecutter.db_resource == "postgres-service" %}
+# The PostgreSQL service binding will always set env variables with these names.
+{% endif %}
+POSTGRES_USERNAME = os.environ.get("POSTGRES_USERNAME")
+POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
+POSTGRES_HOST = os.environ.get("POSTGRES_HOST")
+POSTGRES_DATABASE = os.environ.get("POSTGRES_DATABASE")
 
-sql_url = f"postgresql://{DBSERVER_USER}:{DBSERVER_PASSWORD}@{DBSERVER_HOST}/{DBSERVER_DB}"
+sql_url = f"postgresql://{POSTGRES_USERNAME}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}/{POSTGRES_DATABASE}"
 
-if os.environ.get("RUNNING_IN_PRODUCTION", False):
+if os.environ.get("POSTGRES_SSL", "disable") != "disable":
     sql_url = f"{sql_url}?sslmode=require"
 
 engine = create_engine(sql_url, echo=True)
