@@ -36,7 +36,7 @@ param daprAppProtocol string = 'http'
 
 // Service options
 @description('PostgreSQL service ID')
-param postgresServiceId string
+param postgresServiceId string = ''
 
 @description('CPU cores allocated to a single container instance, e.g. 0.5')
 param containerCpuCoreCount string = '0.5'

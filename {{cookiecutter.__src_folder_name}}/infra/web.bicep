@@ -19,7 +19,9 @@ param dbserverPassword string
 @secure()
 param secretKey string
 {% endif %}
+{% if cookiecutter.db_resource == "postgres-service" %}
 param postgresServiceId string
+{% endif %}
 
 resource webIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: identityName
