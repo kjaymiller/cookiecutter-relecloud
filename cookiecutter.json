@@ -4,7 +4,7 @@
   "project_host": ["aca", "appservice"],
   "project_backend": ["django", "fastapi", "flask"],
   "use_vnet": "n",
-  "db_resource": ["postgres-flexible", "cosmos-postgres"],
+  "db_resource": ["postgres-flexible", "cosmos-postgres", "postgres-service"],
   "__repo_name": "{{cookiecutter.project_name}}-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-{{cookiecutter.project_host}}",
   "__src_folder_name": "{{ cookiecutter.__repo_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
   "__project_short_description": "Create a relecloud demo application with {{cookiecutter.project_backend}} and {{cookiecutter.db_resource}}",
