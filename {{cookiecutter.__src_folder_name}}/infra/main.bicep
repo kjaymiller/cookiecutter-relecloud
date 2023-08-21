@@ -9,9 +9,12 @@ param name string
 @description('Primary location for all resources')
 param location string
 
+{% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
 @secure()
 @description('DBServer administrator password')
 param dbserverPassword string
+{% endif %}
+
 {% if cookiecutter.project_backend in ("django", "flask") %}
 @secure()
 @description('Secret Key')
@@ -40,10 +43,12 @@ var prefix = '${name}-${resourceToken}'
 {% if cookiecutter.db_resource == "cosmos-postgres" %}
 // value is read-only in cosmos
 var dbserverUser = 'citus'
-{% else %}
+{% elif cookiecutter.db_resource == "postgres-flexible" %}
 var dbserverUser = 'admin${uniqueString(resourceGroup.id)}'
 {% endif %}
+{% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
 var dbserverDatabaseName = 'relecloud'
+{% endif %}
 
 // Store secrets in a keyvault
 module keyVault './core/security/keyvault.bicep' = {
@@ -103,8 +108,20 @@ module dbserver 'core/database/postgresql/flexibleserver.bicep' = {
 }
 {% endif %}
 
-// Monitor application with Azure Monitor
+{% if cookiecutter.db_resource == "postgres-service" %}
+module dbserver 'core/database/postgresql/aca-service.bicep' = {
+  name: '{{pg_name}}'
+  scope: resourceGroup
+  params: {
+    name: '${take(prefix, 29)}-pg' // max 32 characters
+    location: location
+    tags: tags
+    containerAppsEnvironmentId: containerApps.outputs.environmentId
+  }
+}
+{% endif %}
 
+// Monitor application with Azure Monitor
 module monitoring 'core/monitor/monitoring.bicep' = {
   name: 'monitoring'
   scope: resourceGroup
@@ -136,10 +153,10 @@ module web 'core/host/appservice.bicep' = {
     appSettings: {
       APPLICATIONINSIGHTS_CONNECTION_STRING: monitoring.outputs.applicationInsightsConnectionString
       RUNNING_IN_PRODUCTION: 'true'
-      DBSERVER_HOST: dbserver.outputs.DOMAIN_NAME
-      DBSERVER_USER: dbserverUser
-      DBSERVER_DB: dbserverDatabaseName
-      DBSERVER_PASSWORD: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=DBSERVERPASSWORD)'
+      POSTGRES_HOST: dbserver.outputs.DOMAIN_NAME
+      POSTGRES_USERNAME: dbserverUser
+      POSTGRES_DATABASE: dbserverDatabaseName
+      POSTGRES_PASSWORD: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=DBSERVERPASSWORD)'
       {% if cookiecutter.project_backend in ("django", "flask") %}
       SECRET_KEY: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=SECRETKEY)'
       {% endif %}
@@ -188,11 +205,15 @@ module web 'web.bicep' = {
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     containerAppsEnvironmentName: containerApps.outputs.environmentName
     containerRegistryName: containerApps.outputs.registryName
-    keyVaultName: keyVault.outputs.name
+    {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
     dbserverDomainName: dbserver.outputs.DOMAIN_NAME
     dbserverUser: dbserverUser
     dbserverDatabaseName: dbserverDatabaseName
     dbserverPassword: dbserverPassword
+    {% endif %}
+    {% if cookiecutter.db_resource == "postgres-service" %}
+    postgresServiceId: dbserver.outputs.id
+    {% endif %}
     {% if cookiecutter.project_backend in ("django", "flask") %}
     secretKey: secretKey
     {% endif %}
@@ -219,10 +240,12 @@ module webKeyVaultAccess './core/security/keyvault-access.bicep' = {
 
 
 var secrets = [
+  {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
   {
     name: 'DBSERVERPASSWORD'
     value: dbserverPassword
   }
+  {% endif %}
   {% if cookiecutter.project_backend in ("django", "flask") %}
   {
     name: 'SECRETKEY'
@@ -252,9 +275,6 @@ output SERVICE_WEB_NAME string = web.outputs.SERVICE_WEB_NAME
 output SERVICE_WEB_URI string = web.outputs.SERVICE_WEB_URI
 output SERVICE_WEB_IMAGE_NAME string = web.outputs.SERVICE_WEB_IMAGE_NAME
 {% endif %}
-output DBSERVER_DATABASE_NAME string = dbserverDatabaseName
-output DBSERVER_DOMAIN_NAME string = dbserver.outputs.DOMAIN_NAME
-output DBSERVER_USER string = dbserverUser
 output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output APPLICATIONINSIGHTS_NAME string = monitoring.outputs.applicationInsightsName

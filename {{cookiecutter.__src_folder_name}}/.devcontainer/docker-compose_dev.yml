@@ -16,11 +16,11 @@ services:
       context: .
       dockerfile: .devcontainer/Dockerfile_dev
     environment:
-      DBSERVER_USER: postgres
-      DBSERVER_DB: relecloud
-      DBSERVER_HOST: db
-      DBSERVER_PORT: 5432
-      DBSERVER_PASSWORD: postgres
+      POSTGRES_USERNAME: postgres
+      POSTGRES_DATABASE: relecloud
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_PASSWORD: postgres
 
     command: sleep infinity
 
