@@ -9,7 +9,7 @@ web_frameworks = [
     "flask",
     "fastapi",
 ]
-db_resources = postgres_db_resources + mongo_db_resources
+db_resources = postgres_db_resources # + mongo_db_resources
 
 
 # Creates the context override for the parametrized test
@@ -17,7 +17,7 @@ def CONTEXT_OVERRIDE(web_frameworks, db_resource):
     return [{"project_backend": x, "db_resource": y} for x, y in itertools.product(web_frameworks, db_resources)]
 
 @pytest.fixture(scope="session")
-def everything_context():
+def default_context():
     return {
         "project_name": "Long_MIXED_CASE-demo name",
         "azd_template_version": "0.0.1",
@@ -36,8 +36,8 @@ def everything_context():
         scope="module",
         params=[*CONTEXT_OVERRIDE(web_frameworks, db_resources)],
 )
-def bakery(request, everything_context, cookies_session):
-    extra_context = {**everything_context, **request.param}
+def bakery(request, default_context, cookies_session):
+    extra_context = {**default_context, **request.param}
     result = cookies_session.bake(extra_context=extra_context)
     yield result
 
@@ -46,9 +46,9 @@ def bakery(request, everything_context, cookies_session):
         scope="module",
         params=[*CONTEXT_OVERRIDE(["flask"], db_resources)],
 )
-def flask_bakery(request, everything_context, cookies_session):
+def flask_bakery(request, default_context, cookies_session):
     """Validates settings and options for Flask Deployments"""
-    extra_context = {**everything_context, **request.param}
+    extra_context = {**default_context, **request.param}
     result = cookies_session.bake(extra_context=extra_context)
     yield result
 
@@ -57,8 +57,8 @@ def flask_bakery(request, everything_context, cookies_session):
         scope="module",
         params=[*CONTEXT_OVERRIDE(["flask", "fastapi"], mongo_db_resources)],
 )
-def mongo_bakery(scope="module", params=):
+def mongo_bakery(request, default_context, cookies_session):
     """Validates settings and options for Flask Deployments"""
-    extra_context = {**everything_context, **request.param}
+    extra_context = {**default_context, **request.param}
     result = cookies_session.bake(extra_context=extra_context)
     yield result
