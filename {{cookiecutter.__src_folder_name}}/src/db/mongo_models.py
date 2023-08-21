@@ -1,0 +1,33 @@
+from mongoengine import (
+    Document,
+    EmailField,
+    StringField,
+    ReferenceField,
+    ListField,
+)
+
+class Destination(Document):
+    name = StringField(unique=True, required=True)
+    subtitle = StringField(required=False)
+    description = StringField(required=False) 
+
+    def __str__(self):
+        return self.name
+
+class Cruise(Document):
+    name = StringField(unique=True, required=True)
+    subtitle = StringField(required=False)
+    description = StringField(required=False) 
+    destinations = ListField(
+        ReferenceField(Destination),
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class InfoRequest(db.Model):
+    name = StringField(required=True)
+    email = EmailField(required=True)
+    notes = StringField(required=False)
+    cruise = ReferenceField(Cruise)
