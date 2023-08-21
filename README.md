@@ -10,9 +10,9 @@
 |Deploys via ACA|✅|✅|✅|
 |Deploys with Azure App Service|✅|✅|✅|
 |**Databases**|-|-|-|
-|Azure ACA Postgres Plugin|❌|❌|❌|
+|Azure ACA Postgres Plugin|✅|✅|✅|
 |Azure Cosmos DB (Postgres Adapter)|✅|✅|✅|
-|Azure Cosmos DB (MongoDB)|✅|✅|✅|
+|Azure Cosmos DB (MongoDB)|❌|❌|❌|
 |Azure Postgres Flexible Server|✅|✅|✅|
 |**Azure Add-ons**|-|-|-|
 |Azure vNet|❌|❌|❌|
