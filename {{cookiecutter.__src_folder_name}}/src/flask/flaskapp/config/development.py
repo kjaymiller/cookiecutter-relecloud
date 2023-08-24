@@ -21,5 +21,4 @@ dbhost = os.environ["MONGO_HOST"]
 dbname = os.environ["MONGO_DATABASE"]
 DATABASE_URI  = f"mongodb://{dbuser}:{dbpass}@{dbhost}/{dbname}"
 {% endif %}
-
 TIME_ZONE = "UTC"
