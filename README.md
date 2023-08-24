@@ -28,10 +28,10 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-2. Install cruft
+2. Install necessary files
 
 ```sh
-python -m pip install cruft
+python -m pip install cruft packaging ruff black
 ```
 
 3. Generate the project using this template
