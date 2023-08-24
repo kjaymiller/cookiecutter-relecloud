@@ -2,7 +2,7 @@ import pytest
 import itertools
 
 postgres_db_resources = ["postgres-flexible", "cosmos-postgres", "postgres-service"]
-mongo_db_resources = ["mongo-service"]
+mongo_db_resources = ["cosmos-mongodb"]
 
 web_frameworks = [
     "django",
@@ -27,7 +27,7 @@ def default_context():
             "postgres-flexible",
             "cosmos-postgres", 
             "postgres-service", 
-            "mongo-service",
+            "cosmos-mongodb",
         ],
         "web_port": "8000",
     }

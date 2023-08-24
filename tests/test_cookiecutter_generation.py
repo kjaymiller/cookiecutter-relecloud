@@ -68,6 +68,6 @@ def tests_valid_bicep(bakery):
 
 @pytest.mark.skip(reason="not implmented yet")
 def tests_mongo_builds_use_mongo_db_vars(bakery, default_context):
-    if "mongo" in default_context.get("db_resource"):
+    if "mongodb" in default_context.get("db_resource"):
         # read the contents from the generated 
         pass
