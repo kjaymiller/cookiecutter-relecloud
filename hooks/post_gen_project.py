@@ -75,10 +75,6 @@ def run_bicep_format():
     """formats your bicep files"""
     subprocess.run(["az", "bicep", "format", "--file", "infra/main.bicep"])
 
-def delete_abbreviations():
-    """deletes the abbreviations file used to create the project"""
-    os.remove(".abbreviations.txt")
-
 if __name__ == "__main__":
     rename_backend_files()
     
@@ -87,4 +83,3 @@ if __name__ == "__main__":
 
     run_ruff_fix_and_black()
     run_bicep_format()
-    delete_abbreviations()

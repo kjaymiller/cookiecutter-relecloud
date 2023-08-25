@@ -29,6 +29,7 @@ def default_context():
             "postgres-addon", 
             "cosmos-mongodb",
         ],
+        "opencensus": "y",
         "web_port": "8000",
     }
 
