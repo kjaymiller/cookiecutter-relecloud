@@ -71,3 +71,17 @@ def tests_mongo_builds_use_mongo_db_vars(bakery, default_context):
     if "mongodb" in default_context.get("db_resource"):
         # read the contents from the generated 
         pass
+
+
+    devcontainer = bakery.project_path / ".devcontainer" / "devcontainer.json"
+
+    devcontainer_text = pathlib.Path(bakery.project_path / ".devcontainer" / "devcontainer.json").read_text()
+
+    assert port in devcontainer_text
+    assert port_label in devcontainer_text
+
+
+    for check in port_checks:
+        assert check in devcontainer.read_text()
+
+    

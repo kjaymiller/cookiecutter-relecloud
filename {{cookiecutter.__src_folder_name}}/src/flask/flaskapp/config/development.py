@@ -15,10 +15,10 @@ DATABASE_URI = f"postgresql+psycopg2://{dbuser}:{dbpass}@{dbhost}/{dbname}"
 {% endif %}
 
 {% if 'mongo' in cookiecutter.db_resource %}
-dbuser = os.environ["MONGO_USERNAME"]
-dbpass = os.environ["MONGO_PASSWORD"]
-dbhost = os.environ["MONGO_HOST"]
-dbname = os.environ["MONGO_DATABASE"]
+dbuser = os.environ["MONGODB_USERNAME"]
+dbpass = os.environ["MONGODB_PASSWORD"]
+dbhost = os.environ["MONGODB_HOST"]
+dbname = os.environ["MONGODB_DATABASE"]
 DATABASE_URI  = f"mongodb://{dbuser}:{dbpass}@{dbhost}/{dbname}"
 {% endif %}
 TIME_ZONE = "UTC"
