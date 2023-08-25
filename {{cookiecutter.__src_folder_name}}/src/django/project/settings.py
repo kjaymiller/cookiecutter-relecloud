@@ -102,7 +102,7 @@ OPENCENSUS = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        {% if cookiecutter.db_resource == "postgres-aca-addon" %}
+        {% if cookiecutter.db_resource == "postgres-addon" %}
         # The PostgreSQL service binding will always set env variables with these names.
         {% endif %}
         "NAME": os.environ.get("POSTGRES_DATABASE"),
