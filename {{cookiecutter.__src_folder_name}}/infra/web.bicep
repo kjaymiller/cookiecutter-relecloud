@@ -19,7 +19,7 @@ param dbserverPassword string
 @secure()
 param secretKey string
 {% endif %}
-{% if cookiecutter.db_resource == "postgres-service" %}
+{% if cookiecutter.db_resource == "postgres-aca-addon" %}
 param postgresServiceId string
 {% endif %}
 
@@ -87,7 +87,7 @@ module app 'core/host/container-app-upsert.bicep' = {
         }
         {% endif %}
       ]
-    {% if cookiecutter.db_resource == "postgres-service" %}
+    {% if cookiecutter.db_resource == "postgres-aca-addon" %}
     postgresServiceId: postgresServiceId
     {% endif %}
     targetPort: {{cookiecutter.web_port}} 

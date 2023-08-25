@@ -12,7 +12,7 @@ if "WEBSITE_HOSTNAME" in os.environ:
 else:
     ALLOWED_HOSTS = []
 
-{% if cookiecutter.db_resource == "postgres-service" %}
+{% if cookiecutter.db_resource == "postgres-aca-addon" %}
 # The PostgreSQL service binding will always set env variables with these names.
 {% endif %}
 

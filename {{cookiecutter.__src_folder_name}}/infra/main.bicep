@@ -108,7 +108,7 @@ module dbserver 'core/database/postgresql/flexibleserver.bicep' = {
 }
 {% endif %}
 
-{% if cookiecutter.db_resource == "postgres-service" %}
+{% if cookiecutter.db_resource == "postgres-aca-addon" %}
 module dbserver 'core/database/postgresql/aca-service.bicep' = {
   name: '{{pg_name}}'
   scope: resourceGroup
@@ -211,7 +211,7 @@ module web 'web.bicep' = {
     dbserverDatabaseName: dbserverDatabaseName
     dbserverPassword: dbserverPassword
     {% endif %}
-    {% if cookiecutter.db_resource == "postgres-service" %}
+    {% if cookiecutter.db_resource == "postgres-aca-addon" %}
     postgresServiceId: dbserver.outputs.id
     {% endif %}
     {% if cookiecutter.project_backend in ("django", "flask") %}

@@ -5,7 +5,7 @@ import typing
 
 from sqlmodel import Field, Relationship, SQLModel, create_engine
 
-{% if cookiecutter.db_resource == "postgres-service" %}
+{% if cookiecutter.db_resource == "postgres-aca-addon" %}
 # The PostgreSQL service binding will always set env variables with these names.
 {% endif %}
 POSTGRES_USERNAME = os.environ.get("POSTGRES_USERNAME")

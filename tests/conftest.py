@@ -1,7 +1,7 @@
 import pytest 
 import itertools
 
-postgres_db_resources = ["postgres-flexible", "cosmos-postgres", "postgres-service"]
+postgres_db_resources = ["postgres-flexible", "cosmos-postgres", "postgres-aca-addon"]
 mongo_db_resources = ["cosmos-mongodb"]
 
 web_frameworks = [
@@ -26,7 +26,7 @@ def default_context():
         "db_resource": [
             "postgres-flexible",
             "cosmos-postgres", 
-            "postgres-service", 
+            "postgres-aca-addon", 
             "cosmos-mongodb",
         ],
         "web_port": "8000",
