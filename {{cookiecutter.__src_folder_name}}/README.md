@@ -1,3 +1,5 @@
+{% extends 'abbreviations.txt' %}
+{% block cc %}
 {% if cookiecutter.project_backend == "fastapi" %}
 
 # Deploy {{web_framework}} Application with {{db}} via Azure Container Apps
@@ -124,3 +126,5 @@ to be stored as Github action secrets. To set that up, run:
 ```shell
 azd pipeline config
 ```
+
+{% endblock %}
