@@ -15,6 +15,7 @@ def remove_aca_files():
     file_names = ["infra/web.bicep"]
     for file_name in file_names:
         os.remove(file_name)
+    os.remove("{{cookiecutter.__src_folder_name}}/src/Dockerfile")
 
 def move_db_files():
     """
