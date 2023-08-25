@@ -11,9 +11,15 @@ def error_msg(pkg):
     return f"`{pkg}` is not installed. Run `pip install {pkg}` to install it."
 
 def remove_aca_files():
-    file_names = ["infra/web.bicep"]
+    file_names = ("infra/web.bicep")
     for file_name in file_names:
         os.remove(file_name)
+
+    # Delete the Dockerfile
+    os.remove("src/Dockerfile")
+
+def remove_postgres_files():
+    shutil.rmtree("src/flask/flaskapp/migrations")
 
 def rename_backend_files():
     """
@@ -60,6 +66,9 @@ if __name__ == "__main__":
     
     if "{{ cookiecutter.project_host }}" != "aca":
         remove_aca_files()
+
+    if "postgres" not in "{{ cookiecutter.db_resource }}":
+        remove_postgres_files()
 
     run_ruff_fix_and_black()
     run_bicep_format()
