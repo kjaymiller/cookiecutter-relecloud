@@ -1,3 +1,5 @@
+import rich.progress
+import rich
 import importlib.util
 import logging
 import os
@@ -15,7 +17,7 @@ def remove_aca_files():
     file_names = ("infra/web.bicep")
     for file_name in file_names:
         os.remove(file_name)
-    os.remove("{{cookiecutter.__src_folder_name}}/src/Dockerfile")
+    os.remove("src/Dockerfile")
 
 def move_db_files():
     """
@@ -35,17 +37,9 @@ def move_db_files():
 
     shutil.rmtree("src/db")
 
-    # Delete the Dockerfile
-    os.remove("src/Dockerfile")
-
 def remove_postgres_files():
-    shutil.rmtree("src/flask/flaskapp/migrations")
-
-    # Delete the Dockerfile
-    os.remove("src/Dockerfile")
-
-def remove_postgres_files():
-    shutil.rmtree("src/flask/flaskapp/migrations")
+    if "{{ cookiecutter.project_backend }}" == "flask":
+        shutil.rmtree("src/flask/flaskapp/migrations")
 
 def rename_backend_files():
     """
@@ -88,13 +82,25 @@ def run_bicep_format():
     subprocess.run(["az", "bicep", "format", "--file", "infra/main.bicep"])
 
 if __name__ == "__main__":
-    rename_backend_files()
+    # It's import to remove the unecessary files before moving the db files
     
-    if "{{ cookiecutter.project_host }}" != "aca":
-        remove_aca_files()
+    with rich.progress.Progress() as progress:
+        removing_files = progress.add_task(
+            "Removing unecessary files",
+            total=len((remove_postgres_files, remove_aca_files)),
+        )
 
-    if "postgres" not in "{{ cookiecutter.db_resource }}":
-        remove_postgres_files()
+        if "postgres" not in "{{ cookiecutter.db_resource }}":
+            progress.update(removing_files, description="Removing [aqua]postgres[/aqua] files")
+            remove_postgres_files()
+        progress.update(removing_files, advance=1)
+    
+        
+        if "{{ cookiecutter.project_host }}" != "aca":
+            progress.update(removing_files, description="Removing [aqua]aca[/aqua] files")
+            remove_aca_files()
+        progress.update(removing_files, advance=1)
 
-    run_ruff_fix_and_black()
-    run_bicep_format()
+        rename_backend_files()
+        run_ruff_fix_and_black()
+        run_bicep_format()
