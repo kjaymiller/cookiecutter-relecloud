@@ -86,9 +86,11 @@ def tests_mongo_builds_use_mongo_db_vars(bakery, default_context):
 
 def tests_migrations_file_deleted_when_not_using_postgres(bakery):
     """tests that the migrations folder is deleted when not using postgres"""""
-    if "postgres" not in bakery.context.get("db_resource"):
-        assert not (bakery.project_path / "src/flask/flaskapp/migrations").exists()
+    if "postgres" not in bakery.context.get("db_resource") and bakery.context.get("project_backend") == "flask":
+        assert not (bakery.project_path / "src/flaskapp/migrations").exists()
 
+    if "postgres" in bakery.context.get("db_resource") and bakery.context.get("project_backend") == "flask":
+        assert (bakery.project_path / "src/flaskapp/migrations").exists()
 
 def tests_abbreviations_are_replaced_in_readme(bakery):
     """Tests that abbreviations are replaced"""
