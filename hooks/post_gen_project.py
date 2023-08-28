@@ -11,9 +11,35 @@ def error_msg(pkg):
     return f"`{pkg}` is not installed. Run `pip install {pkg}` to install it."
 
 def remove_aca_files():
+    """Removes the files that are not needed for app service"""
     file_names = ("infra/web.bicep")
     for file_name in file_names:
         os.remove(file_name)
+    os.remove("{{cookiecutter.__src_folder_name}}/src/Dockerfile")
+
+def move_db_files():
+    """
+    Moves the correct db files to the correct location
+    Delete the remaining files in the db folder and the db folder itself
+    """
+    if "postgres" in "{{ cookiecutter.db_resource}}":
+        shutil.move(
+            "src/db/postgres_models.py",
+            "src/models.py"
+        )
+    elif "mongo" in "{{ cookiecutter.db_resource}}":
+        shutil.move(
+            "src/db/mongo_models.py",
+            "src/models.py"
+        )
+
+    shutil.rmtree("src/db")
+
+    # Delete the Dockerfile
+    os.remove("src/Dockerfile")
+
+def remove_postgres_files():
+    shutil.rmtree("src/flask/flaskapp/migrations")
 
     # Delete the Dockerfile
     os.remove("src/Dockerfile")

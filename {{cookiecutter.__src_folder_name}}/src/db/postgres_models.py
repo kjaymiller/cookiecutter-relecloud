@@ -6,7 +6,6 @@ association_table = db.Table(
     db.Column("destination_id", db.ForeignKey("destination.id"), primary_key=True),
 )
 
-
 class Destination(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)

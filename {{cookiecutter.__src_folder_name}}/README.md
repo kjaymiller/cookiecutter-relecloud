@@ -1,6 +1,8 @@
+{% extends 'abbreviations.txt' %}
+{% block cc %}
 {% if cookiecutter.project_backend == "fastapi" %}
 
-# Deploy a FastAPI Application via Azure Container Apps
+# Deploy {{web_framework}} Application with {{db}} via Azure Container Apps
 
 This project deploy a [FastAPI](https://fastapi.tiangolo.com) application to [Azure Container Apps](https://aka.ms/aca). The FastAPI application is a simple web application for a space travel agency. The application is built using the FastAPI framework and uses a PostgreSQL database with SQLModel as an ORM. The application can be deployed to Azure using the [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/overview).
 
@@ -124,3 +126,5 @@ to be stored as Github action secrets. To set that up, run:
 ```shell
 azd pipeline config
 ```
+
+{% endblock %}

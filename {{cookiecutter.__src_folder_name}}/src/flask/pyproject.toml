@@ -2,15 +2,23 @@
 name = "flaskapp"
 version = "1.0.0"
 description = "{{cookiecutter.__project_short_description}}"
-dependencies = [
-    "Flask==2.3.2",
-    "Flask-Migrate==4.0.4",
-    "Flask-SQLAlchemy==3.0.5",
+dependencies = ["Flask==2.3.2",]
+
+[project.optional-dependencies]
+opencensus = [
     "opencensus-ext-azure==1.1.9",
     "opencensus-ext-flask==0.8.2",
-    "psycopg2-binary==2.9.6",
-    "SQLAlchemy==2.0.17"
 ]
+postgres = [
+    "SQLAlchemy==2.0.17",
+    "psycopg2-binary==2.9.6",
+    "Flask-Migrate==4.0.4",
+    "Flask-SQLAlchemy==3.0.5",
+]
+mongodb = [
+    "mongoengine==0.27.0",
+]
+
 
 [build-system]
 requires = ["flit_core<4"]

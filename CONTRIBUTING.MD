@@ -66,3 +66,43 @@ playwright install --with-deps
 Our goal is to ensure that the template is always up to date with the latest versions of the tools we use. Tests are run using [GitHub Actions](https://github.com/kjaymiller/cookiecutter-relecloud/actions). You should also run the tests locally before submitting a PR.
 
 There are plenty of tests our repo. The majority of tests are focused on testing deployment scendarios. These cannot be tested without creating a subprocess. These tests are relatively slow and should not be ran on every commit. Instead, they are ran when a PR is submitted.
+
+## Adding a New Framework
+If you would like to add a new framework there are a few things that you need to consider.
+
+- What database technologies is the framework compatible with?
+- What deployment technologies is the framework compatible with?
+- How do you test the framework?
+- What are the best practices for the framework?
+- What are the best practices for the framework on Azure?
+
+### Database Technology Support
+We currently support the following database technologies:
+    - PostgreSQL
+    - MongoDB
+
+Your framework should be compatible with at least one of these technologies. If it is not, you will need to add support for the technology to the framework.
+
+## Adding a New Database
+
+
+## Testing Frameworks and Databases
+In our `tests/conftest.py` we have a fixture style we refer to as `bakery`. These session fixtures are used to generate a project and run tests against it.
+
+You'll need to create a new bakery for your scenario (if one does not already exist). You can do this by adding a new fixture to the `conftest.py` file.
+
+```python
+@pytest.fixture(
+        scope="module",
+        params=[*CONTEXT_OVERRIDE(["<ALL>","<RELEVANT>","<FRAMEWORKS"], ["<ALL>","<RELEVANT>","<DATABASES>"])],
+)
+def new_bakery(
+    request,
+    scope="module",
+    default_context,
+    cookies_session,
+):
+    """Validates settings and options for Flask Deployments"""
+    extra_context = {**default_context, **request.param}
+    result = cookies_session.bake(extra_context=extra_context)
+    yield result
