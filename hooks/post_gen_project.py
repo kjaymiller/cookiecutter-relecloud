@@ -115,6 +115,15 @@ if __name__ == "__main__":
         rename_backend_files()
         progress.update(moving_files, advance=1)
 
+        formatting = progress.add_task(
+            "Formatting files",
+            total=len((run_ruff_fix_and_black, run_bicep_format)),
+        )
 
+        progress.update(formatting, description="[yellow]Linting Project[/yellow]")
         run_ruff_fix_and_black()
+        progress.update(formatting, advance=1)
+
+        progress.update(formatting, description="[yellow]Linting Deployment Files[/yellow]")
         run_bicep_format()
+        progress.update(formatting, advance=1)
