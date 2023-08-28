@@ -84,7 +84,25 @@ def tests_mongo_builds_use_mongo_db_vars(bakery, default_context):
         assert check in devcontainer.read_text()
 
 
-def tests_migrations_file_deleted_when_not_using_postgres(bakery, default_context):
+def tests_migrations_file_deleted_when_not_using_postgres(bakery):
     """tests that the migrations folder is deleted when not using postgres"""""
     if "postgres" not in bakery.context.get("db_resource"):
         assert not (bakery.project_path / "src/flask/flaskapp/migrations").exists()
+
+
+def tests_abbreviations_are_replaced_in_readme(bakery):
+    """Tests that abbreviations are replaced"""
+    if bakery.context.get('project_backend') == 'flask':
+        assert re.findall(r"Flask", (bakery.project_path / "README.md").read_text())
+
+    if bakery.context.get('project_backend') == 'fastapi':
+        assert re.findall(r"FastAPI", (bakery.project_path / "README.md").read_text())
+
+    if bakery.context.get('project_backend') == 'django':
+        assert re.findall(r"Django", (bakery.project_path / "README.md").read_text())
+
+    if bakery.context.get('project_host') == 'aca':
+        assert re.findall(r"Azure Container Apps", (bakery.project_path / "README.md").read_text())
+
+    if bakery.context.get('project_host') == 'appservice':
+        assert re.findall(r"Azure App Service", (bakery.project_path / "README.md").read_text())
