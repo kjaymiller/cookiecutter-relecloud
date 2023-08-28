@@ -16,14 +16,14 @@ def test_project_generation(bakery):
 
 @pytest.mark.skip(reason="unable to check with caplog but tested in functional test - Issue: #77")
 def test_project_post_hook_triggers_warning_if_linters_not_installed(
-    cookies_session, context, mocker, caplog
+    cookies_session, default_context, mocker, caplog
     ):
     """If ruff or black is not installed, the post hook should trigger a warning"""
 
     mocker.patch("hooks.post_gen_project.importlib.util.find_spec", return_value=None)
 
     with caplog.at_level("WARNING"):
-        cookies_session.bake(extra_context=context)
+        cookies_session.bake(extra_context=default_context)
 
 
 
@@ -72,7 +72,6 @@ def tests_mongo_builds_use_mongo_db_vars(bakery, default_context):
         # read the contents from the generated 
         pass
 
-
     devcontainer = bakery.project_path / ".devcontainer" / "devcontainer.json"
 
     devcontainer_text = pathlib.Path(bakery.project_path / ".devcontainer" / "devcontainer.json").read_text()
@@ -84,31 +83,8 @@ def tests_mongo_builds_use_mongo_db_vars(bakery, default_context):
     for check in port_checks:
         assert check in devcontainer.read_text()
 
-    
-def tests_migrations_file_deleted_when_not_using_postgres(bakery, context):
-    if "postgres" not in context.get("db_resource"):
+
+def tests_migrations_file_deleted_when_not_using_postgres(bakery, default_context):
+    """tests that the migrations folder is deleted when not using postgres"""""
+    if "postgres" not in bakery.context.get("db_resource"):
         assert not (bakery.project_path / "src/flask/flaskapp/migrations").exists()
-
-
-def tests_migrations_file_deleted_when_not_using_postgres(bakery, context):
-    if "postgres" not in context.get("db_resource"):
-        assert not (bakery.project_path / "src/flask/flaskapp/migrations").exists()
-@pytest.mark.skip(reason="not implmented yet")
-def tests_mongo_builds_use_mongo_db_vars(bakery, default_context):
-    if "mongodb" in default_context.get("db_resource"):
-        # read the contents from the generated 
-        pass
-
-
-    devcontainer = bakery.project_path / ".devcontainer" / "devcontainer.json"
-
-    devcontainer_text = pathlib.Path(bakery.project_path / ".devcontainer" / "devcontainer.json").read_text()
-
-    assert port in devcontainer_text
-    assert port_label in devcontainer_text
-
-
-    for check in port_checks:
-        assert check in devcontainer.read_text()
-
-    
