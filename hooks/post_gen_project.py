@@ -91,16 +91,39 @@ if __name__ == "__main__":
         )
 
         if "postgres" not in "{{ cookiecutter.db_resource }}":
-            progress.update(removing_files, description="Removing [aqua]postgres[/aqua] files")
+            progress.update(removing_files, description="Removing [blue]postgres[/blue] files")
             remove_postgres_files()
         progress.update(removing_files, advance=1)
     
         
         if "{{ cookiecutter.project_host }}" != "aca":
-            progress.update(removing_files, description="Removing [aqua]aca[/aqua] files")
+            progress.update(
+                removing_files,
+                description="[yellow]{{cookiecutter.project_host}}[/yellow] selected. Removing [blue]aca[/blue] files"
+            )
             remove_aca_files()
         progress.update(removing_files, advance=1)
 
+        moving_files = progress.add_task(
+            "Moving files",
+            total=len((move_db_files, rename_backend_files)),
+        )
+        progress.update(moving_files, description="Moving [blue]{{cookiecutter.db_resource}}[/blue] files")
+        move_db_files()
+        progress.update(moving_files, advance=1)
+        progress.update(moving_files, description="Moving [blue]{{cookiecutter.project_host}}[/blue] files")
         rename_backend_files()
+        progress.update(moving_files, advance=1)
+
+        formatting = progress.add_task(
+            "Formatting files",
+            total=len((run_ruff_fix_and_black, run_bicep_format)),
+        )
+
+        progress.update(formatting, description="[yellow]Linting Project[/yellow]")
         run_ruff_fix_and_black()
+        progress.update(formatting, advance=1)
+
+        progress.update(formatting, description="[yellow]Linting Deployment Files[/yellow]")
         run_bicep_format()
+        progress.update(formatting, advance=1)
