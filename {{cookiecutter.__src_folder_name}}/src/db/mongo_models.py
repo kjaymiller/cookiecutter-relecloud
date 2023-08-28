@@ -26,7 +26,7 @@ class Cruise(Document):
         return self.name
 
 
-class InfoRequest(db.Model):
+class InfoRequest(Document):
     name = StringField(required=True)
     email = EmailField(required=True)
     notes = StringField(required=False)
