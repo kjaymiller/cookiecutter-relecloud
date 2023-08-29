@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "project_host": ["aca", "appservice"],
   "project_backend": ["django", "fastapi", "flask"],
-  "opencensus": "y",
+  "use_opencensus": "y",
   "use_vnet": "n",
   "db_resource": ["postgres-flexible", "cosmos-postgres", "postgres-addon", "cosmos-mongodb"],
   "__repo_name": "{{cookiecutter.project_name}}-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-{{cookiecutter.project_host}}",
