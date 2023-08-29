@@ -28,11 +28,11 @@ def seed_data(filename:str) -> None:
             if entry["model"] == "relecloud.cruise":
 
                 if Cruise.objects.filter(name=entry["fields"]["name"]).count() == 0:
-                cruise = models.Cruise(
+                    cruise = models.Cruise(
                     name=entry["fields"]["name"],
                     description=entry["fields"].get("description", None),
                     subtitle=entry["fields"].get("subtitle", None),
-                )
+                    )
                     
                 for destination_id in entry["fields"]["destinations"]:
                     destination = models.Destination.objects.get(id=pk_maps[destination_id])
