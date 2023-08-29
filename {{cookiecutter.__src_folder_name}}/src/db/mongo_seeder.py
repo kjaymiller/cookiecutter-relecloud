@@ -6,12 +6,19 @@ import json
 
 import models
 
-pk_maps = {}
 
-def seed_data(filename:str) -> None:
+def seed_data(filename:str, drop:bool=False) -> None:
     """Uses the json file to populate the database"""
+
+    pk_maps = {}
+
     with open(filename) as f:
         data = json.load(f)
+
+        if drop:
+            models.Destination.drop_collection()
+            models.Cruise.drop_collection()
+            models.InfoRequest.drop_collection()
 
         for entry in data:
             if entry["model"] == "relecloud.destination":
