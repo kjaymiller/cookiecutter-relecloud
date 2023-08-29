@@ -29,10 +29,18 @@ def move_db_files():
             "src/db/postgres_models.py",
             "src/models.py"
         )
+        shutil.move(
+            "src/db/postgres_seeder.py",
+            "src/flask/flaskapp/seeder.py",
+        )
     elif "mongo" in "{{ cookiecutter.db_resource}}":
         shutil.move(
             "src/db/mongo_models.py",
             "src/models.py"
+        )
+        shutil.move(
+            "src/db/mongo_seeder.py",
+            "src/flask/flaskapp/seeder.py",
         )
 
     shutil.rmtree("src/db")

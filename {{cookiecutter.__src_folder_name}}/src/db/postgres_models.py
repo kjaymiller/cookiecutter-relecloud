@@ -1,3 +1,7 @@
+{# 
+The postgres model definitions. If a 'postgres' option is selected,
+this will be moved to `src/models.py`.
+#}
 from . import db
 
 association_table = db.Table(

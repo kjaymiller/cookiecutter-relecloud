@@ -1,3 +1,4 @@
+{% from 'pages_macros.py' import get_all with context %}
 from flask import Blueprint, redirect, render_template, request, url_for
 
 from . import db, models
@@ -17,17 +18,17 @@ def about():
 
 @bp.get("/destinations")
 def destinations():
-    all_destinations = db.session.execute(db.select(models.Destination)).scalars().all()
+    {{ get_all("Destination") }}
     return render_template("destinations.html", destinations=all_destinations)
 
 
-@bp.get("/destination/<int:pk>")
+@bp.get("/destination/<pk>")
 def destination_detail(pk: int):
     destination = db.get_or_404(models.Destination, pk)
     return render_template("destination_detail.html", destination=destination)
 
 
-@bp.get("/cruise/<int:pk>")
+@bp.get("/cruise/<pk>")
 def cruise_detail(pk: int):
     cruise = db.get_or_404(models.Cruise, pk)
     return render_template("cruise_detail.html", cruise=cruise)

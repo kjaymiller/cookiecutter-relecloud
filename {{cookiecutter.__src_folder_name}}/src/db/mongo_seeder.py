@@ -1,4 +1,7 @@
-"""Adds the documents from a json_file to the database"""
+{# 
+The mongodb seeder module. If 'mongodb' is selected,
+this will be moved to  `src/flask/flaskapp/seeder.py`.
+#}
 import json
 
 import models
@@ -12,15 +15,19 @@ def seed_data(filename:str) -> None:
 
         for entry in data:
             if entry["model"] == "relecloud.destination":
-                destination = models.Destination(
-                    name=entry["fields"]["name"],
-                    description=entry["fields"].get("description", None),
-                    subtitle=entry["fields"].get("subtitle", None),
-                )
-                destination.save()
-                pk_maps[entry['pk']] = destination.id
+
+                if Destination.objects.filter(name=entry["fields"]["name"]).count() == 0:
+                    destination = models.Destination(
+                        name=entry["fields"]["name"],
+                        description=entry["fields"].get("description", None),
+                        subtitle=entry["fields"].get("subtitle", None),
+                    )
+                    destination.save()
+                    pk_maps[entry['pk']] = destination.id
 
             if entry["model"] == "relecloud.cruise":
+
+                if Cruise.objects.filter(name=entry["fields"]["name"]).count() == 0:
                 cruise = models.Cruise(
                     name=entry["fields"]["name"],
                     description=entry["fields"].get("description", None),
