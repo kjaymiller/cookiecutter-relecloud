@@ -8,10 +8,10 @@ all_{{ model|lower }}s = models.{{ model|capitalize }}.objects.all()
 {% endmacro %}
 
 {% macro get_one(model) %}
-    {% if 'postgres' in cookiecutter.db_resource %}
-    {{model|lower}} = db.get_or_404(models.{{model|capitalize}}, pk)
-    {% endif %}
-    {% if 'mongodb' in cookiecutter.db_resource %}
-    {{model|lower}} = models.{{model|capitalize}}.objects.get(pk=pk)
-    {% endif %}
+{% if 'postgres' in cookiecutter.db_resource %}
+{{model|lower}} = db.get_or_404(models.{{model|capitalize}}, pk)
+{% endif %}
+{% if 'mongodb' in cookiecutter.db_resource %}
+{{model|lower}} = models.{{model|capitalize}}.objects.get(pk=pk)
+{% endif %}
 {% endmacro %}

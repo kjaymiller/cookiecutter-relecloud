@@ -19,6 +19,6 @@ dbuser = os.environ["MONGODB_USERNAME"]
 dbpass = os.environ["MONGODB_PASSWORD"]
 dbhost = os.environ["MONGODB_HOST"]
 dbname = os.environ["MONGODB_DATABASE"]
-DATABASE_URI  = f"mongodb://{dbuser}:{dbpass}@{dbhost}/{dbname}"
+DATABASE_URI  = f"mongodb://{dbuser}:{dbpass}@{dbhost}/{dbname}?authSource=admin"
 {% endif %}
 TIME_ZONE = "UTC"

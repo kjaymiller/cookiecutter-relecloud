@@ -1,12 +1,8 @@
-{% import 'entrypoint_macros.sh' as entrypoint with context %}
 #!/bin/bash
 set -e
 python3 -m pip install --upgrade pip
 {% if cookiecutter.project_backend in ("flask", "fastapi") %}
 python3 -m pip install -e .
-{% endif %}
-{% if cookiecutter.project_backend == "flask" %}
-{{ entrypoint.install_flask_deps() }}
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
 python3 fastapi_app/seed_data.py

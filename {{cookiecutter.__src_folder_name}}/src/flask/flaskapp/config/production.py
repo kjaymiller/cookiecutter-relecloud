@@ -29,6 +29,6 @@ dbuser = os.environ["MONGO_USERNAME"]
 dbpass = os.environ["MONGO_PASSWORD"]
 dbhost = os.environ["MONGO_HOST"]
 dbname = os.environ["MONGO_DATABASE"]
-DATABASE_URI  = f"mongodb://{dbuser}:{dbpass}@{dbhost}/{dbname}"
+DATABASE_URI  = f"mongodb://{dbuser}:{dbpass}@{dbhost}/{dbname}?authSource=admin"
 {% endif %}
 
