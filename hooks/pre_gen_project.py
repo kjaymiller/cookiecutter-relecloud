@@ -2,11 +2,26 @@ import subprocess
 import re
 
 import rich
+from rich.traceback import install
 from packaging.version import Version, parse
+
+install()
 
 def check_version(current_version: str, supported_version: str) -> bool:
     """Checks if the current version is supported"""
     return current_version < supported_version
+
+
+def check_not_implemented() -> None:
+    if 'mongodb' in "{{cookiecutter.db_resource}}"  and "{{cookiecutter.project_backend}}" in ('fastAPI', 'django'):
+        raise NotImplementedError(
+            "MongoDB is not yet supported for FastAPI or Django projects"
+        )
+
+    if "{{cookiecutter.project_host}}" == "appservice" and "{{cookiecutter.db_resource}}" == "mongodb":
+        raise NotImplementedError(
+            "MongoDB is not yet supported for App Service projects"
+        )
 
 
 def tests_bicep_is_installed():
@@ -30,4 +45,6 @@ Please update your bicep version using [yellow]`az bicep upgrade`[/yellow] befor
 
 
 if __name__ == "__main__":
+    check_not_implemented()
     tests_bicep_is_installed()
+
