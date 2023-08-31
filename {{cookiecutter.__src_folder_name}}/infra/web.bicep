@@ -8,10 +8,13 @@ param containerRegistryName string
 param exists bool
 param identityName string
 param serviceName string = 'web'
+param keyVaultUrl string
+{# The dbserver values do not exist in the postgres aca add-on #}
 {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
 param dbserverDomainName string
 param dbserverDatabaseName string
 param dbserverUser string
+
 @secure()
 param dbserverPassword string
 {% endif %}
@@ -40,6 +43,7 @@ module app 'core/host/container-app-upsert.bicep' = {
     containerAppsEnvironmentName: containerAppsEnvironmentName
     containerRegistryName: containerRegistryName
     env: [
+      {% if 'postgres' in cookiecutter.db_resource %}
       {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
       {
         name: 'POSTGRES_HOST'
@@ -57,6 +61,7 @@ module app 'core/host/container-app-upsert.bicep' = {
         name: 'POSTGRES_PASSWORD'
         secretRef: 'dbserver-password'
       }
+      {% endif %}
       {% endif %}
       {
         name: 'RUNNING_IN_PRODUCTION'
@@ -84,6 +89,13 @@ module app 'core/host/container-app-upsert.bicep' = {
         {
           name: 'secret-key'
           value: secretKey
+        }
+        {% endif %}
+        {% if "mongodb" in cookiecutter.project_backend%}
+        {
+          name: 'azure-cosmos-connection-string'
+          keyVaultUrl: '${keyVaultURI}/secrets/azure-cosmos-connection-string'
+          identiry: 
         }
         {% endif %}
       ]

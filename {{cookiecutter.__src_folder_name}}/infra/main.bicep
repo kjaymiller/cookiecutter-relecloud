@@ -20,6 +20,7 @@ param dbserverPassword string
 @description('Secret Key')
 param secretKey string
 {% endif %}
+
 {% if cookiecutter.project_host == "aca" %}
 param webAppExists bool = false
 {% endif %}
@@ -80,6 +81,20 @@ module dbserver 'core/database/cosmos/cosmos-pg-adapter.bicep' = {
     coordinatorVCores: 1
     nodeCount: 0
     nodeVCores: 4
+  }
+}
+{% endif %}
+
+{% if cookiecutter.db_resource == "cosmos-mongodb" %}
+module dbserver 'core/database/cosmos/mongo/cosmos-mongo-db.bicep' = {
+  name: 'dbserver'
+  scope: resourceGroup
+  params: {
+    accountName: 'mongodb'
+    location: location
+    databaseName: 'db'
+    tags: tags
+    keyVaultName: keyVault.name
   }
 }
 {% endif %}
