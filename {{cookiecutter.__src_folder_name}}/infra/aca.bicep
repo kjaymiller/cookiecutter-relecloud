@@ -3,12 +3,13 @@ param name string
 param location string = resourceGroup().location
 param tags object = {}
 
+param applicationInsightsName string
 param containerAppsEnvironmentName string
 param containerRegistryName string
 param exists bool
 param identityName string
 param serviceName string = 'web'
-param keyVaultUrl string
+param keyVaultName string
 {# The dbserver values do not exist in the postgres aca add-on #}
 {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
 param dbserverDomainName string
@@ -18,10 +19,6 @@ param dbserverUser string
 @secure()
 param dbserverPassword string
 {% endif %}
-{% if cookiecutter.project_backend in ("django", "flask") %}
-@secure()
-param secretKey string
-{% endif %}
 {% if cookiecutter.db_resource == "postgres-addon" %}
 param postgresServiceId string
 {% endif %}
@@ -30,6 +27,11 @@ resource webIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-3
   name: identityName
   location: location
 }
+
+resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
+  name: keyVaultName
+}
+
 
 {% if cookiecutter.project_host == "aca" %}
 module app 'core/host/container-app-upsert.bicep' = {
@@ -88,14 +90,15 @@ module app 'core/host/container-app-upsert.bicep' = {
         {% if cookiecutter.project_backend in ("django", "flask") %}
         {
           name: 'secret-key'
-          value: secretKey
+          keyVaultUrl: '${keyVault.properties.vaultUri}/secrets/SECRETKEY'
+          identity: webIdentity.id
         }
         {% endif %}
-        {% if "mongodb" in cookiecutter.project_backend%}
+        {% if "mongodb" in cookiecutter.db_resource %}
         {
           name: 'azure-cosmos-connection-string'
-          keyVaultUrl: '${keyVaultURI}/secrets/azure-cosmos-connection-string'
-          identity: 
+          keyVaultUrl: '${keyVault.properties.vaultUri}/secrets/AZURE-COSMOS-CONNECTION-STRING'
+          identity: webIdentity.id
         }
         {% endif %}
       ]
@@ -109,8 +112,9 @@ module app 'core/host/container-app-upsert.bicep' = {
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: applicationInsightsName
+}
   
-  output SERVICE_WEB_IDENTITY_PRINCIPAL_ID string = webIdentity.properties.principalId
+output SERVICE_WEB_IDENTITY_PRINCIPAL_ID string = webIdentity.properties.principalId
 output SERVICE_WEB_NAME string = app.outputs.name
 output SERVICE_WEB_URI string = app.outputs.uri
 output SERVICE_WEB_IMAGE_NAME string = app.outputs.imageName

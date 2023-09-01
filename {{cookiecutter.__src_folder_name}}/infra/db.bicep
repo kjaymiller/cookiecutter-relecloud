@@ -3,7 +3,6 @@
 {% endif %}
 
 param name string
-param scope object 
 param location string = resourceGroup().location
 param tags object = {}
 param prefix string
@@ -27,7 +26,6 @@ param keyVaultName string
 {% if cookiecutter.db_resource == "postgres-addon" %}
 module dbserver 'core/database/postgresql/aca-service.bicep' = {
   name: name
-  scope: scope
   params: {
     name: '${take(prefix, 29)}-pg' // max 32 characters
     location: location
@@ -85,12 +83,11 @@ module dbserver 'core/database/cosmos/cosmos-pg-adapter.bicep' = {
 {# Cosmos MongoDB#}
 {% if cookiecutter.db_resource == "cosmos-mongodb" %}
 module dbserver 'core/database/cosmos/mongo/cosmos-mongo-db.bicep' = {
-  name: 'dbserver'
-  scope: scope
+  name: name
   params: {
     accountName: '${prefix}-mongodb'
     location: location
-    databaseName: 'db'
+    databaseName: dbserverDatabaseName
     tags: tags
     keyVaultName: keyVaultName
   }

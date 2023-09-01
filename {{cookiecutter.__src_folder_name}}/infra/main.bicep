@@ -55,18 +55,15 @@ module db 'db.bicep' = {
   scope: resourceGroup
   params: {
     name: 'dbserver'
-    scope: resourceGroup
     location: location
     tags: tags
     prefix: prefix
     keyVaultName: keyVault.outputs.name
     dbserverDatabaseName: 'relecloud'
+    {% if "postgres" in cookiecutter.db_resource %}
     dbserverPassword: dbserverPassword
+    {% endif %}
   }
-}
-
-resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
-  name: applicationInsightsName
 }
 
 // Monitor application with Azure Monitor
@@ -95,6 +92,7 @@ module containerApps 'core/host/container-apps.bicep' = {
     logAnalyticsWorkspaceName: monitoring.outputs.logAnalyticsWorkspaceName
   }
 }
+{% endif %}
 
 // Web frontend
 module web 'web.bicep' = {
@@ -104,16 +102,24 @@ module web 'web.bicep' = {
     {% if cookiecutter.project_host  == "aca" %}
     {% set host_type = "ca" %}
     {% endif %}
-    {% if cookiecutter.project_host  == "app-service" %}
+    {% if cookiecutter.project_host  == "appservice" %}
     {% set host_type = "appsvc" %}
     {% endif %}
     name: replace('${take(prefix,19)}-{{host_type}}', '--', '-')
     location: location
     tags: tags
-    identityName: '${prefix}-id-web'
     applicationInsightsName: monitoring.outputs.applicationInsightsName
+    identityName: '${prefix}-id-web'
+    keyVaultName: keyVault.outputs.name
+    {% if cookiecutter.project_host == "appservice" %}
+    appCommandLine: 'entrypoint.sh'
+    pythonVersion: '3.11'
+    {% endif %}
+    {% if cookiecutter.project_host == "aca" %}
     containerAppsEnvironmentName: containerApps.outputs.environmentName
     containerRegistryName: containerApps.outputs.registryName
+    exists: webAppExists
+    {% endif %}
     {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
     dbserverDomainName: dbserver.outputs.DOMAIN_NAME
     dbserverUser: dbserverUser
@@ -123,13 +129,8 @@ module web 'web.bicep' = {
     {% if cookiecutter.db_resource == "postgres-addon" %}
     postgresServiceId: dbserver.outputs.id
     {% endif %}
-    {% if cookiecutter.project_backend in ("django", "flask") %}
-    secretKey: secretKey
-    {% endif %}
-    exists: webAppExists
   }
 }
-{% endif %}
 
 
 // Give the app access to KeyVault
@@ -138,12 +139,7 @@ module webKeyVaultAccess './core/security/keyvault-access.bicep' = {
   scope: resourceGroup
   params: {
     keyVaultName: keyVault.outputs.name
-    {% if cookiecutter.project_host == "aca" %}
     principalId: web.outputs.SERVICE_WEB_IDENTITY_PRINCIPAL_ID
-    {% endif %}
-    {% if cookiecutter.project_host == "appservice" %}
-    principalId: web.outputs.identityPrincipalId
-    {% endif %}
   }
 }
 

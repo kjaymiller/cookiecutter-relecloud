@@ -4,6 +4,10 @@ python3 -m pip install --upgrade pip
 {% if cookiecutter.project_backend in ("flask", "fastapi") %}
 python3 -m pip install -e .
 {% endif %}
+{% if cookiecutter.project_backend == "flask" %}
+python3 -m flask --app flaskapp seed --filename="seed_data.json" --drop
+python3 -m gunicorn "flaskapp:create_app()" 
+{% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
 python3 fastapi_app/seed_data.py
 python3 -m gunicorn fastapi_app:app

@@ -50,12 +50,13 @@ def create_app(test_config=None):
     app.register_blueprint(pages.bp)
 
     @app.cli.command("seed")
+    @click.option("--drop", is_flag=True, default=False)
     @click.option("--filename", default="seed_data.json")
-    def seed_data(filename):
+    def seed_data(filename, drop):
         from . import seeder
 
         {% if 'postgres' in cookiecutter.db_resource %}
-        seeder.seed_data(db, filename)
+        seeder.seed_data(filename, drop=drop)
         {% endif %}
         {% if 'mongodb' in cookiecutter.db_resource %}
         seeder.seed_data(filename)
