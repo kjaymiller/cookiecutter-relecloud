@@ -25,11 +25,11 @@ param secretKey string
 param webAppExists bool = false
 {% endif %}
 
-
 @description('Id of the user or app to assign application roles')
 param principalId string = ''
 
 var resourceToken = toLower(uniqueString(subscription().id, name, location))
+var prefix = '${name}-${resourceToken}'
 var tags = { 'azd-env-name': name }
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -37,19 +37,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
   tags: tags
 }
-
-var prefix = '${name}-${resourceToken}'
-{% set pg_name = "dbserver" %}
-{% set pg_version = 15 %}
-{% if cookiecutter.db_resource == "cosmos-postgres" %}
-// value is read-only in cosmos
-var dbserverUser = 'citus'
-{% elif cookiecutter.db_resource == "postgres-flexible" %}
-var dbserverUser = 'admin${uniqueString(resourceGroup.id)}'
-{% endif %}
-{% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
-var dbserverDatabaseName = 'relecloud'
-{% endif %}
 
 // Store secrets in a keyvault
 module keyVault './core/security/keyvault.bicep' = {
@@ -63,78 +50,20 @@ module keyVault './core/security/keyvault.bicep' = {
   }
 }
 
-{% if cookiecutter.db_resource == "cosmos-postgres" %}
-module dbserver 'core/database/cosmos/cosmos-pg-adapter.bicep' = {
-  name: '{{pg_name}}'
+module db 'db.bicep' = {
+  name: 'db'
   scope: resourceGroup
   params: {
-    name: '${prefix}-postgresql'
+    name: 'dbserver'
+    scope: resourceGroup
     location: location
     tags: tags
-    postgresqlVersion: '{{pg_version}}'
-    administratorLogin: dbserverUser
-    administratorLoginPassword: dbserverPassword
-    databaseName: dbserverDatabaseName
-    allowAzureIPsFirewall: true
-    coordinatorServerEdition: 'BurstableMemoryOptimized'
-    coordinatorStorageQuotainMb: 131072
-    coordinatorVCores: 1
-    nodeCount: 0
-    nodeVCores: 4
+    prefix: prefix
+    keyVaultName: keyVault.outputs.name
+    dbserverDatabaseName: 'relecloud'
+    dbserverPassword: dbserverPassword
   }
 }
-{% endif %}
-
-{% if cookiecutter.db_resource == "cosmos-mongodb" %}
-module dbserver 'core/database/cosmos/mongo/cosmos-mongo-db.bicep' = {
-  name: 'dbserver'
-  scope: resourceGroup
-  params: {
-    accountName: 'mongodb'
-    location: location
-    databaseName: 'db'
-    tags: tags
-    keyVaultName: keyVault.name
-  }
-}
-{% endif %}
-
-{% if cookiecutter.db_resource == "postgres-flexible" %}
-module dbserver 'core/database/postgresql/flexibleserver.bicep' = {
-  name: '{{pg_name}}'
-  scope: resourceGroup
-  params: {
-    name: '${prefix}-postgresql'
-    location: location
-    tags: tags
-    sku: {
-      name: 'Standard_B1ms'
-      tier: 'Burstable'
-    }
-    storage: {
-      storageSizeGB: 32
-    }
-    version: '{{pg_version}}'
-    administratorLogin: dbserverUser
-    administratorLoginPassword: dbserverPassword
-    databaseNames: [dbserverDatabaseName]
-    allowAzureIPsFirewall: true
-  }
-}
-{% endif %}
-
-{% if cookiecutter.db_resource == "postgres-addon" %}
-module dbserver 'core/database/postgresql/aca-service.bicep' = {
-  name: '{{pg_name}}'
-  scope: resourceGroup
-  params: {
-    name: '${take(prefix, 29)}-pg' // max 32 characters
-    location: location
-    tags: tags
-    containerAppsEnvironmentId: containerApps.outputs.environmentId
-  }
-}
-{% endif %}
 
 // Monitor application with Azure Monitor
 module monitoring 'core/monitor/monitoring.bicep' = {
@@ -151,33 +80,6 @@ module monitoring 'core/monitor/monitoring.bicep' = {
 
 {% if cookiecutter.project_host == "appservice" %}
 
-module web 'core/host/appservice.bicep' = {
-  name: 'appservice'
-  scope: resourceGroup
-  params: {
-    name: '${prefix}-web'
-    location: location
-    tags: union(tags, {'azd-service-name': 'web'})
-    appServicePlanId: appServicePlan.outputs.id
-    runtimeName: 'python'
-    runtimeVersion: '3.11'
-    scmDoBuildDuringDeployment: true
-    ftpsState: 'Disabled'
-    appCommandLine: 'entrypoint.sh'
-    managedIdentity: true
-    appSettings: {
-      APPLICATIONINSIGHTS_CONNECTION_STRING: monitoring.outputs.applicationInsightsConnectionString
-      RUNNING_IN_PRODUCTION: 'true'
-      POSTGRES_HOST: dbserver.outputs.DOMAIN_NAME
-      POSTGRES_USERNAME: dbserverUser
-      POSTGRES_DATABASE: dbserverDatabaseName
-      POSTGRES_PASSWORD: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=DBSERVERPASSWORD)'
-      {% if cookiecutter.project_backend in ("django", "flask") %}
-      SECRET_KEY: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=SECRETKEY)'
-      {% endif %}
-    }
-  }
-}
 
 module appServicePlan 'core/host/appserviceplan.bicep' = {
   name: 'serviceplan'
@@ -213,7 +115,13 @@ module web 'web.bicep' = {
   name: 'web'
   scope: resourceGroup
   params: {
-    name: replace('${take(prefix,19)}-ca', '--', '-')
+    {% if cookiecutter.project_host  == "aca" %}
+    {% set host_type = "ca" %}
+    {% endif %}
+    {% if cookiecutter.project_host  == "app-service" %}
+    {% set host_type = "appsvc" %}
+    {% endif %}
+    name: replace('${take(prefix,19)}-{{host_type}}', '--', '-')
     location: location
     tags: tags
     identityName: '${prefix}-id-web'

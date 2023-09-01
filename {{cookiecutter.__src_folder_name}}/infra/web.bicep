@@ -95,7 +95,7 @@ module app 'core/host/container-app-upsert.bicep' = {
         {
           name: 'azure-cosmos-connection-string'
           keyVaultUrl: '${keyVaultURI}/secrets/azure-cosmos-connection-string'
-          identiry: 
+          identity: 
         }
         {% endif %}
       ]
@@ -109,9 +109,35 @@ module app 'core/host/container-app-upsert.bicep' = {
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: applicationInsightsName
-}
 
-output SERVICE_WEB_IDENTITY_PRINCIPAL_ID string = webIdentity.properties.principalId
+module web 'core/host/appservice.bicep' = {
+    name: 'appservice'
+    scope: resourceGroup
+    params: {
+      name: '${prefix}-web'
+      location: location
+      tags: union(tags, {'azd-service-name': 'web'})
+      appServicePlanId: appServicePlan.outputs.id
+      runtimeName: 'python'
+      runtimeVersion: '3.11'
+      scmDoBuildDuringDeployment: true
+      ftpsState: 'Disabled'
+      appCommandLine: 'entrypoint.sh'
+      managedIdentity: true
+      appSettings: {
+        APPLICATIONINSIGHTS_CONNECTION_STRING: monitoring.outputs.applicationInsightsConnectionString
+        RUNNING_IN_PRODUCTION: 'true'
+        POSTGRES_HOST: dbserver.outputs.DOMAIN_NAME
+        POSTGRES_USERNAME: dbserverUser
+        POSTGRES_DATABASE: dbserverDatabaseName
+        POSTGRES_PASSWORD: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=DBSERVERPASSWORD)'
+        {% if cookiecutter.project_backend in ("django", "flask") %}
+        SECRET_KEY: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=SECRETKEY)'
+        {% endif %}
+      }
+    }
+  }
+  output SERVICE_WEB_IDENTITY_PRINCIPAL_ID string = webIdentity.properties.principalId
 output SERVICE_WEB_NAME string = app.outputs.name
 output SERVICE_WEB_URI string = app.outputs.uri
 output SERVICE_WEB_IMAGE_NAME string = app.outputs.imageName

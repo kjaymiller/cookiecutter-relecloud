@@ -18,3 +18,18 @@
 }
 {% endif %}
 {% endmacro %}
+
+
+{% if cookiecutter.db_resource == "cosmos-mongodb" %}
+module dbserver 'core/database/cosmos/mongo/cosmos-mongo-db.bicep' = {
+  name: 'dbserver'
+  scope: resourceGroup
+  params: {
+    accountName: 'mongodb'
+    location: location
+    databaseName: 'db'
+    tags: tags
+    keyVaultName: keyVault.name
+  }
+}
+{% endif %}
