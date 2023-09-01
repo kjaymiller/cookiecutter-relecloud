@@ -65,6 +65,10 @@ module db 'db.bicep' = {
   }
 }
 
+resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
+  name: applicationInsightsName
+}
+
 // Monitor application with Azure Monitor
 module monitoring 'core/monitor/monitoring.bicep' = {
   name: 'monitoring'
@@ -77,24 +81,6 @@ module monitoring 'core/monitor/monitoring.bicep' = {
     logAnalyticsName: '${prefix}-loganalytics'
   }
 }
-
-{% if cookiecutter.project_host == "appservice" %}
-
-
-module appServicePlan 'core/host/appserviceplan.bicep' = {
-  name: 'serviceplan'
-  scope: resourceGroup
-  params: {
-    name: '${prefix}-serviceplan'
-    location: location
-    tags: tags
-    sku: {
-      name: 'B1'
-    }
-    reserved: true
-  }
-}
-{% endif %}
 
 {% if cookiecutter.project_host == "aca" %}
 // Container apps host (including container registry)
