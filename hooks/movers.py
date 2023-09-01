@@ -75,8 +75,8 @@ def rename_backend_files():
 def choose_web_bicep():
     """Selects the correct web.bicep file"""
     bicep_files = {
-        "aca": "infra/web_aca.bicep",
-        "appservice": "infra/web_appservice.bicep",
+        "aca": "infra/aca.bicep",
+        "appservice": "infra/appservice.bicep",
     }
 
     shutil.move(

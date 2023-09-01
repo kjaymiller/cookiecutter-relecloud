@@ -1,3 +1,4 @@
+{# This is the aca version of `web.bicep` selected by post_gen_project.py #}
 param name string
 param location string = resourceGroup().location
 param tags object = {}
