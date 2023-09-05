@@ -121,6 +121,9 @@ module app 'core/host/container-app-upsert.bicep' = {
     {% endif %}
     targetPort: {{cookiecutter.web_port}} 
   }
+  dependsOn: [
+    webKeyVaultAccess
+  ]
 }
 {% endif %}
 

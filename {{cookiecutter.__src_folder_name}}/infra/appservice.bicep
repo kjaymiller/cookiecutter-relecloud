@@ -69,6 +69,9 @@ module web 'core/host/appservice.bicep' = {
         {% endif %}
       }
     }
+    dependsOn: [
+      webKeyVaultAccess
+    ]
   }
 
 
