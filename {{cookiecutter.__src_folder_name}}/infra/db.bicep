@@ -14,23 +14,34 @@ var dbserverUser = 'citus'
 var dbserverUser = 'admin${uniqueString(resourceGroup().id)}'
 {% endif %}
 {# Create the dbserverPassword this is only required for postgres instances #}
-{% if "postgres" in cookiecutter.db_resource %}
+{% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %} 
+@secure()
 param dbserverPassword string
 {% endif %}
 {% if cookiecutter.db_resource != "postgres-addon" %}
 param dbserverDatabaseName string
 {% endif %}
+{% if "mongodb" in cookiecutter.db_resource %}
 param keyVaultName string
+{% endif %}
+{% if cookiecutter.db_resource == "postgres-addon" %}
+param containerAppsEnvironmentName string
+{% endif %}
 
 {# Postgres ACA Add-on #}
 {% if cookiecutter.db_resource == "postgres-addon" %}
+
+resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2022-03-01' existing = {
+  name: containerAppsEnvironmentName
+}
+
 module dbserver 'core/database/postgresql/aca-service.bicep' = {
   name: name
   params: {
     name: '${take(prefix, 29)}-pg' // max 32 characters
     location: location
     tags: tags
-    containerAppsEnvironmentId: containerApps.outputs.environmentId
+    containerAppsEnvironmentId: containerAppsEnvironment.id
   }
 }
 {% endif %}
@@ -38,7 +49,6 @@ module dbserver 'core/database/postgresql/aca-service.bicep' = {
 {% if cookiecutter.db_resource == "postgres-flexible" %}
 module dbserver 'core/database/postgresql/flexibleserver.bicep' = {
   name: name
-  scope: scope
   params: {
     name: '${prefix}-postgresql'
     location: location
@@ -62,7 +72,6 @@ module dbserver 'core/database/postgresql/flexibleserver.bicep' = {
 {% if cookiecutter.db_resource == "cosmos-postgres" %}
 module dbserver 'core/database/cosmos/cosmos-pg-adapter.bicep' = {
   name: name
-  scope: scope
   params: {
     name: '${prefix}-postgresql'
     location: location
@@ -92,4 +101,14 @@ module dbserver 'core/database/cosmos/mongo/cosmos-mongo-db.bicep' = {
     keyVaultName: keyVaultName
   }
 }
+{% endif %}
+
+{% if cookiecutter.db_resource != "postgres-addon" %}
+output dbserverDatabaseName string = dbserverDatabaseName
+{% if "postgres" in cookiecutter.db_resource %}
+output dbserverUser string = dbserverUser
+{% endif %}
+{% endif %}
+{% if cookiecutter.db_resource == "postgres-addon" %}
+output dbserverID string = dbserver.outputs.id
 {% endif %}

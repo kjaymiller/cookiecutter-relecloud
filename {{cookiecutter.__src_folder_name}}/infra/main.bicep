@@ -58,10 +58,17 @@ module db 'db.bicep' = {
     location: location
     tags: tags
     prefix: prefix
+    {% if "mongodb" in cookiecutter.db_resource %}
     keyVaultName: keyVault.outputs.name
+    {% endif %}
+    {% if cookiecutter.db_resource != "postgres-addon" %}
     dbserverDatabaseName: 'relecloud'
-    {% if "postgres" in cookiecutter.db_resource %}
+    {% endif %}
+    {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres")%}
     dbserverPassword: dbserverPassword
+    {% endif %}
+    {% if cookiecutter.db_resource == "postgres-addon" %}
+    containerAppsEnvironmentName: containerApps.outputs.environmentName
     {% endif %}
   }
 }
@@ -121,13 +128,13 @@ module web 'web.bicep' = {
     exists: webAppExists
     {% endif %}
     {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
-    dbserverDomainName: dbserver.outputs.DOMAIN_NAME
-    dbserverUser: dbserverUser
-    dbserverDatabaseName: dbserverDatabaseName
+    dbserverDomainName: db.name
+    dbserverUser: db.outputs.dbserverUser
+    dbserverDatabaseName: db.outputs.dbserverDatabaseName
     dbserverPassword: dbserverPassword
     {% endif %}
     {% if cookiecutter.db_resource == "postgres-addon" %}
-    postgresServiceId: dbserver.outputs.id
+    postgresServiceId: db.outputs.dbserverID
     {% endif %}
   }
 }
