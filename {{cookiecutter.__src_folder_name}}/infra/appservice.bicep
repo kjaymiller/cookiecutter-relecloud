@@ -28,6 +28,15 @@ resource webIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-3
   name: identityName
   location: location
 }
+// Give the app access to KeyVault
+module webKeyVaultAccess './core/security/keyvault-access.bicep' = {
+  name: 'web-keyvault-access'
+  scope: resourceGroup
+  params: {
+    keyVaultName: keyVaultName
+    principalId: web.outputs.identityPrincipalId
+  }
+}
 
 module web 'core/host/appservice.bicep' = {
     name: 'appservice'

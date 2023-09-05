@@ -140,15 +140,6 @@ module web 'web.bicep' = {
 }
 
 
-// Give the app access to KeyVault
-module webKeyVaultAccess './core/security/keyvault-access.bicep' = {
-  name: 'web-keyvault-access'
-  scope: resourceGroup
-  params: {
-    keyVaultName: keyVault.outputs.name
-    principalId: web.outputs.SERVICE_WEB_IDENTITY_PRINCIPAL_ID
-  }
-}
 
 
 var secrets = [

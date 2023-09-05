@@ -32,6 +32,15 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
   name: keyVaultName
 }
 
+// Give the app access to KeyVault
+module webKeyVaultAccess './core/security/keyvault-access.bicep' = {
+  name: 'web-keyvault-access'
+  scope: resourceGroup
+  params: {
+    keyVaultName: keyVault.name
+    principalId: webIdentity.properties.principalId
+  }
+}
 
 {% if cookiecutter.project_host == "aca" %}
 module app 'core/host/container-app-upsert.bicep' = {
@@ -72,6 +81,11 @@ module app 'core/host/container-app-upsert.bicep' = {
       {
         name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
         value: applicationInsights.properties.ConnectionString
+      }
+      {% if "mongodb" in cookiecutter.db_resource %}
+      {
+        name: 'AZURE_COSMOS_CONNECTION_STRING'
+        secretRef: 'azure-cosmos-connection-string'
       }
       {% if cookiecutter.project_backend in ("django", "flask") %}
       {
