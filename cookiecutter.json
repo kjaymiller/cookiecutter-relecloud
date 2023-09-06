@@ -29,7 +29,12 @@
       "cosmos-postgres": "CosmosDB Postgres Adapter",
       "postgres-addon": "Azure Container Apps Postgres Addon [red]Requires ACA[/red]",
       "cosmos-mongodb": "CosmosDB - MongoDB Adapter [red]Flask/FastAPI Only[/red]"
-    }
-  },
+    },
+    "project_host": {
+      "__prompt__": "Choose an Azure Host Framework",
+      "aca": "Azure Container Apps",
+      "appservice": "Azure App Service"
+    },
     "web_port": "Port to run the web server on?"
+  }
 }

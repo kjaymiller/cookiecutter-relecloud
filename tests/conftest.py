@@ -20,16 +20,13 @@ def CONTEXT_OVERRIDE(web_frameworks, db_resource):
 def default_context():
     return {
         "project_name": "Long_MIXED_CASE-demo name",
-        "azd_template_version": "0.0.1",
         "project_backend": ["django", "fastapi", "flask"],
-        "use_vnet": "n",
         "db_resource": [
             "postgres-flexible",
             "cosmos-postgres",
             "postgres-addon",
             "cosmos-mongodb",
         ],
-        "opencensus": "y",
         "web_port": "8000",
     }
 
