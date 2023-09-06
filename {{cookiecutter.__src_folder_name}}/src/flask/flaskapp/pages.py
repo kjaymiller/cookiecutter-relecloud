@@ -1,6 +1,9 @@
 {% from 'pages_macros.py' import get_all, get_one with context %}
 from flask import Blueprint, redirect, render_template, request, url_for
 
+{% if 'postgres' in cookiecutter.db_resource %}
+import db
+{% endif %}
 import models
 
 bp = Blueprint("pages", __name__)
