@@ -85,7 +85,7 @@ python3 -m gunicorn project.wsgi:application -c src/gunicorn.conf.py --pythonpat
 
 ## Deployment
 
-This repo is set up for deployment on [Azure] via {{azure_host}}.
+This repo is set up for deployment on Azure via {{azure_host}}.
 
 Steps for deployment:
 
