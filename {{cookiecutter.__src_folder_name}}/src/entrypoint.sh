@@ -5,6 +5,9 @@ python3 -m pip install --upgrade pip
 python3 -m pip install -e .
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
+{% if "postgres" in cookiecutter.db_resource %}
+python3 -m flask --app flaskapp db upgrade --directory flaskapp/migrations
+{% endif %}
 python3 -m flask --app flaskapp seed --filename="seed_data.json" --drop
 python3 -m gunicorn "flaskapp:create_app()" 
 {% endif %}
