@@ -25,6 +25,3 @@ services:
       db:
         condition: service_healthy
     network_mode: service:db
-
-volumes:
-  postgres-data:

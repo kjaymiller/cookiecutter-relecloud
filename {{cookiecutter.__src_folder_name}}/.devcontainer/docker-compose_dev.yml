@@ -25,10 +25,14 @@ services:
       db:
         condition: service_healthy 
     network_mode: service:db
-
     {# load the app environment #}
     {{ app_environment() }}
     command: sleep infinity
 
     volumes:
       - ..:/workspace:cached
+
+{% if 'postgres' in cookiecutter.db_resource %}
+volumes:
+  postgres-data:
+{% endif %}

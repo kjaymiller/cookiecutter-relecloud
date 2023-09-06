@@ -143,8 +143,6 @@ def lint() -> None:
     run_bicep_format()
 
 if __name__ == "__main__":
-    # It's import to remove the unecessary files before moving the db files
-    
     rich.print("Removing unecessary files")
     check_for_files()
     rich.print("Linting files")
