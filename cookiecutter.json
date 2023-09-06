@@ -24,6 +24,7 @@
       "cosmos-postgres": "CosmosDB Postgres Adapter",
       "postgres-addon": "Azure Container Apps Postgres Addon [red]Requires ACA[/red]",
       "cosmos-mongodb": "CosmosDB - MongoDB Adapter [red]Flask/FastAPI Only[/red]"
-    },
+    }
+  },
     "web_port": "Port to run the web server on?"
 }
