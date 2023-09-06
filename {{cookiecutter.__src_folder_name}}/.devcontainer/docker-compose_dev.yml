@@ -18,12 +18,12 @@ services:
   {% endfor %}
   #}
   app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile_dev
     depends_on:
       db:
-        condition: service_healthy 
+        condition: service_healthy
     network_mode: service:db
     {# load the app environment #}
     {{ app_environment() }}

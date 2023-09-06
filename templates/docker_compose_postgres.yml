@@ -9,10 +9,10 @@ image: postgres:14
       POSTGRES_DB: relecloud
       POSTGRES_HOST: db
       POSTGRES_PASSWORD: postgres
-      POSTGRES_PORT: 5432  
+      POSTGRES_PORT: 5432
 
     volumes:
-      - postgres-data:/var/lib/postgresql/data 
+      - postgres-data:/var/lib/postgresql/data
 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d relecloud"]

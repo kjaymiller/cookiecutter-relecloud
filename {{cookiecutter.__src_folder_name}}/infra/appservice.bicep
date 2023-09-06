@@ -3,7 +3,7 @@ param name string
 param location string = resourceGroup().location
 param tags object = {}
 param identityName string
-param pythonVersion string 
+param pythonVersion string
 param appCommandLine string
 param keyVaultName string
 

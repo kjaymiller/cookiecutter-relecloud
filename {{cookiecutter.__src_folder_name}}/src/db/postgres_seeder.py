@@ -1,4 +1,4 @@
-{# 
+{#
 The postgres seeder module. If 'postgres' is selected,
 this will be moved to  `src/flask/flaskapp/seeder.py`.
 #}
@@ -15,7 +15,7 @@ def seed_data(db, filename:str) -> None:
         for entry in data:
             if entry["model"] == "relecloud.destination":
                 destination = session.get(models.Destination, entry["pk"])
-                
+
                 if destination is None:
                     destination = models.Destination(
                        name=entry["fields"]["name"],

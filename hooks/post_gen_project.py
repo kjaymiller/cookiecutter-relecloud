@@ -62,10 +62,10 @@ def rename_backend_files():
     project_backends.remove(selected_backend)
 
     src = pathlib.Path('src')
-    
+
     for unused_backend in project_backends:
         shutil.rmtree(src / pathlib.Path(unused_backend))
-        
+
     shutil.copytree(
         src / pathlib.Path(selected_backend),
         pathlib.Path.cwd() / src,

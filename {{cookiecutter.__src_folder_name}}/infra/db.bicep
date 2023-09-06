@@ -14,7 +14,7 @@ var dbserverUser = 'citus'
 var dbserverUser = 'admin${uniqueString(resourceGroup().id)}'
 {% endif %}
 {# Create the dbserverPassword this is only required for postgres instances #}
-{% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %} 
+{% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
 @secure()
 param dbserverPassword string
 {% endif %}

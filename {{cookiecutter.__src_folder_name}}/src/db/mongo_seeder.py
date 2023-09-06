@@ -1,4 +1,4 @@
-{# 
+{#
 The mongodb seeder module. If 'mongodb' is selected,
 this will be moved to  `src/flask/flaskapp/seeder.py`.
 #}
@@ -40,7 +40,7 @@ def seed_data(filename:str, drop:bool=False) -> None:
                     description=entry["fields"].get("description", None),
                     subtitle=entry["fields"].get("subtitle", None),
                     )
-                    
+
                 for destination_id in entry["fields"]["destinations"]:
                     destination = models.Destination.objects.get(id=pk_maps[destination_id])
                     cruise.destinations.append(destination)

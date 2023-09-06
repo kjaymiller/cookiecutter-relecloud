@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 import itertools
 
 postgres_db_resources = ["postgres-flexible", "cosmos-postgres", "postgres-addon"]
@@ -25,8 +25,8 @@ def default_context():
         "use_vnet": "n",
         "db_resource": [
             "postgres-flexible",
-            "cosmos-postgres", 
-            "postgres-addon", 
+            "cosmos-postgres",
+            "postgres-addon",
             "cosmos-mongodb",
         ],
         "opencensus": "y",

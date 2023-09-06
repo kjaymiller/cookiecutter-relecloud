@@ -62,7 +62,7 @@ resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
   tags: tags
   // It is critical that the identity is granted ACR pull access before the app is created
   // otherwise the container app will throw a provision error
-  // This also forces us to use an user assigned managed identity since there would no way to 
+  // This also forces us to use an user assigned managed identity since there would no way to
   // provide the system assigned identity with the ACR pull access before the app is created
   dependsOn: [ containerRegistryAccess ]
   identity: {

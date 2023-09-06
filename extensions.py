@@ -11,7 +11,7 @@ def get_url_for_backend(route, framework):
     return url_formulas[framework]
 
 
-def get_detail_url_for_backend(route, framework): 
+def get_detail_url_for_backend(route, framework):
     """Return the url for the selected backend"""
     url_formulas = {
         "django": f"{{% url '{route}_detail' {route}.id %}}",

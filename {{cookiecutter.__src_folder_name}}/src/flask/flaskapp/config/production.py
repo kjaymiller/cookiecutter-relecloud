@@ -27,4 +27,3 @@ DATABASE_URI = f"postgresql+psycopg2://{dbuser}:{dbpass}@{dbhost}/{dbname}"
 {% if 'mongo' in cookiecutter.db_resource %}
 DATABASE_URI  = os.environ["AZURE_COSMOS_CONNECTION_STRING"]
 {% endif %}
-

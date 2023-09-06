@@ -1,5 +1,5 @@
 # name: Test
-on: 
+on:
   # when pushed on main
   push:
     branches: [ main ]

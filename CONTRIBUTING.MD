@@ -101,7 +101,7 @@ Generating files often have issues with whitespace among other things. To ensure
 def my_new_linter() -> None:
     """Linting function for file type"""
     # Do something
-    
+
 ... # Other linters
 
 def lint() -> None:

@@ -47,4 +47,3 @@ Please update your bicep version using [yellow]`az bicep upgrade`[/yellow] befor
 if __name__ == "__main__":
     check_not_implemented()
     tests_bicep_is_installed()
-

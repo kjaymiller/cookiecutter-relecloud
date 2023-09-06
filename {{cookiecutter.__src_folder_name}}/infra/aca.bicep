@@ -76,7 +76,7 @@ module app 'core/host/container-app-upsert.bicep' = {
       {
         name: 'RUNNING_IN_PRODUCTION'
         value: 'true'
-      } 
+      }
       {
         name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
         value: applicationInsights.properties.ConnectionString
@@ -119,7 +119,7 @@ module app 'core/host/container-app-upsert.bicep' = {
     {% if cookiecutter.db_resource == "postgres-addon" %}
     postgresServiceId: postgresServiceId
     {% endif %}
-    targetPort: {{cookiecutter.web_port}} 
+    targetPort: {{cookiecutter.web_port}}
   }
 }
 {% endif %}
@@ -127,7 +127,7 @@ module app 'core/host/container-app-upsert.bicep' = {
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: applicationInsightsName
 }
-  
+
 output SERVICE_WEB_IDENTITY_PRINCIPAL_ID string = webIdentity.properties.principalId
 output SERVICE_WEB_NAME string = app.outputs.name
 output SERVICE_WEB_URI string = app.outputs.uri
