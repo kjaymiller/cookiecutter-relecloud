@@ -1,15 +1,12 @@
 {
-  "project_name": "Relecloud",
-  "version": "0.0.1",
-  "project_host": ["aca", "appservice"],
+  "project_name": "azure",
   "project_backend": ["django", "fastapi", "flask"],
-  "use_opencensus": "y",
-  "use_vnet": "n",
   "db_resource": ["postgres-flexible", "cosmos-postgres", "postgres-addon", "cosmos-mongodb"],
+  "project_host": ["aca", "appservice"],
+  "web_port": "8000",
   "__repo_name": "{{cookiecutter.project_name}}-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-{{cookiecutter.project_host}}",
   "__src_folder_name": "{{ cookiecutter.__repo_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
   "__project_short_description": "Create a relecloud demo application with {{cookiecutter.project_backend}} and {{cookiecutter.db_resource}}",
-  "web_port": "8000",
   "_copy_without_render": [
     "root/.github/workflows/*"
   ],
@@ -17,5 +14,22 @@
   "_jinja2_env_vars": {
       "lstrip_blocks": true,
       "trim_blocks": true
-  }
+  },
+  "__prompts__": {
+    "project_name": "Name prefix of your project?",
+    "project_backend": {
+      "__prompt__": "Choose a Web Framework",
+      "django": "Django",
+      "fastapi": "FastAPI",
+      "flask": "Flask"
+    },
+    "db_resource": {
+      "__prompt__": "Choose a Database and Host Framework",
+      "postgres-flexible": "Postgres - Flexible Server",
+      "cosmos-postgres": "CosmosDB Postgres Adapter",
+      "postgres-addon": "Azure Container Apps Postgres Addon [red]Requires ACA[/red]",
+      "cosmos-mongodb": "CosmosDB - MongoDB Adapter [red]Flask/FastAPI Only[/red]"
+    }
+  },
+    "web_port": "Port to run the web server on?"
 }
