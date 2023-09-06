@@ -85,7 +85,7 @@ def live_server_url(live_server):
 @pytest.fixture(scope="session")
 def live_server_url(live_server):
     """Returns the url of the live server"""
-    return "http://localhost:8000"
+    return "http://localhost:{{cookiecutter.web_port}}"
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
 @pytest.fixture(scope="function")
