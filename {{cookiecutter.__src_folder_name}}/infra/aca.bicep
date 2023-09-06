@@ -35,7 +35,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
 // Give the app access to KeyVault
 module webKeyVaultAccess './core/security/keyvault-access.bicep' = {
   name: 'web-keyvault-access'
-  scope: resourceGroup
   params: {
     keyVaultName: keyVault.name
     principalId: webIdentity.properties.principalId
@@ -87,6 +86,7 @@ module app 'core/host/container-app-upsert.bicep' = {
         name: 'AZURE_COSMOS_CONNECTION_STRING'
         secretRef: 'azure-cosmos-connection-string'
       }
+      {% endif %}
       {% if cookiecutter.project_backend in ("django", "flask") %}
       {
         name: 'SECRET_KEY'
@@ -104,14 +104,14 @@ module app 'core/host/container-app-upsert.bicep' = {
         {% if cookiecutter.project_backend in ("django", "flask") %}
         {
           name: 'secret-key'
-          keyVaultUrl: '${keyVault.properties.vaultUri}/secrets/SECRETKEY'
+          keyVaultUrl: '${keyVault.properties.vaultUri}secrets/SECRETKEY'
           identity: webIdentity.id
         }
         {% endif %}
         {% if "mongodb" in cookiecutter.db_resource %}
         {
           name: 'azure-cosmos-connection-string'
-          keyVaultUrl: '${keyVault.properties.vaultUri}/secrets/AZURE-COSMOS-CONNECTION-STRING'
+          keyVaultUrl: '${keyVault.properties.vaultUri}secrets/AZURE-COSMOS-CONNECTION-STRING'
           identity: webIdentity.id
         }
         {% endif %}
@@ -121,9 +121,6 @@ module app 'core/host/container-app-upsert.bicep' = {
     {% endif %}
     targetPort: {{cookiecutter.web_port}} 
   }
-  dependsOn: [
-    webKeyVaultAccess
-  ]
 }
 {% endif %}
 
