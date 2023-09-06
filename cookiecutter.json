@@ -17,7 +17,12 @@
   },
   "__prompts__": {
     "project_name": "Name prefix of your project?",
-    "project_backend": "Choose a Web Framework",
+    "project_backend": {
+      "__prompt__": "Choose a Web Framework",
+      "django": "Django",
+      "fastapi": "FastAPI",
+      "flask": "Flask"
+    },
     "db_resource": {
       "__prompt__": "Choose a Database and Host Framework",
       "postgres-flexible": "Postgres - Flexible Server",
