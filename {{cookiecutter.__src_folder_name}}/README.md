@@ -1,10 +1,8 @@
-{% if cookiecutter.project_backend == "fastapi" %}
+{% extends 'abbreviations.txt' %}
+{% block cc %}
+# Deploy {{web_framework}} Application with {{db}} via Azure Container Apps
 
-# Deploy a FastAPI Application via Azure Container Apps
-
-This project deploy a [FastAPI](https://fastapi.tiangolo.com) application to [Azure Container Apps](https://aka.ms/aca). The FastAPI application is a simple web application for a space travel agency. The application is built using the FastAPI framework and uses a PostgreSQL database with SQLModel as an ORM. The application can be deployed to Azure using the [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/overview).
-
-{% endif %}
+This project deploys a web application for a space travel agency using {{web_framework}}. The application can be deployed to Azure with {{azure_host}} using the [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/overview).
 
 ## Opening the project
 
@@ -87,7 +85,7 @@ python3 -m gunicorn project.wsgi:application -c src/gunicorn.conf.py --pythonpat
 
 ## Deployment
 
-This repo is set up for deployment on [Azure Container Apps](https://learn.microsoft.com/azure/container-apps/overview) using the `Dockerfile` and the configuration files in the `infra` folder.
+This repo is set up for deployment on Azure via {{azure_host}}.
 
 Steps for deployment:
 
@@ -124,3 +122,5 @@ to be stored as Github action secrets. To set that up, run:
 ```shell
 azd pipeline config
 ```
+
+{% endblock %}

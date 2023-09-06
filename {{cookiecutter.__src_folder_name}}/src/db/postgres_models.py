@@ -1,3 +1,7 @@
+{#
+The postgres model definitions. If a 'postgres' option is selected,
+this will be moved to `src/models.py`.
+#}
 from . import db
 
 association_table = db.Table(
@@ -5,7 +9,6 @@ association_table = db.Table(
     db.Column("cruise_id", db.ForeignKey("cruise.id"), primary_key=True),
     db.Column("destination_id", db.ForeignKey("destination.id"), primary_key=True),
 )
-
 
 class Destination(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

@@ -13,10 +13,10 @@ ReleCloud - {{ destination }}
 <p>You can explore {{ destination }} on the following cruises:</p>
 <div class="list-group">
 {% endraw %}
-{{ 'destination' | get_model_url_for_backend(relation='cruise', framework=cookiecutter.project_backend) }}
-<a class="list-group-item list-group-item-action" href="{{'cruise' | get_detail_url_for_backend(framework=cookiecutter.project_backend) }}">{{ "{{cruise}}" }}</a>
-{% raw %}
-{% endfor %}
+{{ "{% for cruise in cruises %}" }}
+<a class="list-group-item list-group-item-action" href="{{'cruise' | get_detail_url_for_backend(framework=cookiecutter.project_backend) }}">{{"{{cruise}}"}}</a>
+{{ "{% endfor %}" }}
 </div>
-{% endblock content %}
+{% raw %}
+{% endblock %}
 {% endraw %}

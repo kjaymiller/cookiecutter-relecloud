@@ -1,0 +1,31 @@
+{# db layer configurations #}
+{# with the indentation you need to ensure the first row is level with the macro
+subsequent rows are at the expected level of the parent file#}
+{% macro db() %}
+image: postgres:14
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: relecloud
+      POSTGRES_HOST: db
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: 5432
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d relecloud"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+{% endmacro %}
+
+{% macro app_environment() %}
+environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_DATABASE: relecloud
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_PASSWORD: postgres
+{% endmacro%}

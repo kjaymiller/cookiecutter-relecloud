@@ -1,6 +1,10 @@
+{% from 'pages_macros.py' import get_all, get_one with context %}
 from flask import Blueprint, redirect, render_template, request, url_for
 
-from . import db, models
+{% if 'postgres' in cookiecutter.db_resource %}
+import db
+{% endif %}
+import models
 
 bp = Blueprint("pages", __name__)
 
@@ -17,25 +21,35 @@ def about():
 
 @bp.get("/destinations")
 def destinations():
-    all_destinations = db.session.execute(db.select(models.Destination)).scalars().all()
+    {{ get_all("Destination") }}
     return render_template("destinations.html", destinations=all_destinations)
 
 
-@bp.get("/destination/<int:pk>")
-def destination_detail(pk: int):
-    destination = db.get_or_404(models.Destination, pk)
-    return render_template("destination_detail.html", destination=destination)
+@bp.get("/destination/<pk>")
+def destination_detail(pk):
+    {{ get_one("Destination") }}
+    cruises = models.Cruise.objects(destinations__in=[destination])
+    return render_template(
+        "destination_detail.html",
+        destination=destination,
+        cruises=cruises,
+    )
 
 
-@bp.get("/cruise/<int:pk>")
+@bp.get("/cruise/<pk>")
 def cruise_detail(pk: int):
-    cruise = db.get_or_404(models.Cruise, pk)
-    return render_template("cruise_detail.html", cruise=cruise)
+    {{ get_one("Cruise") }}
+    destinations = cruise.destinations
+    return render_template(
+        "cruise_detail.html",
+        cruise=cruise,
+        destinations=destinations,
+    )
 
 
 @bp.get("/info_request/")
 def info_request():
-    all_cruises = db.session.execute(db.select(models.Cruise)).scalars().all()
+    {{ get_all("Cruise") }}
     return render_template("info_request_create.html", cruises=all_cruises, message=request.args.get("message"))
 
 
@@ -43,9 +57,17 @@ def info_request():
 def create_info_request():
     name = request.form["name"]
     db_info_request = models.InfoRequest(
-        name=name, email=request.form["email"], notes=request.form["notes"], cruise_id=request.form["cruise_id"]
+        name=name,
+        email=request.form["email"],
+        notes=request.form["notes"],
+        cruise_id=request.form["cruise_id"],
     )
+    {% if 'postgres' in cookiecutter.db_resource %}
     db.session.add(db_info_request)
     db.session.commit()
+    {% endif %}
+    {% if 'mongodb' in cookiecutter.db_resource %}
+    db_info_request.save()
+    {% endif %}
     success_message = f"Thank you, {name}! We will email you when we have more information!"
     return redirect(url_for("pages.info_request", message=success_message))

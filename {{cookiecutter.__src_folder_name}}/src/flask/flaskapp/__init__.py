@@ -1,16 +1,17 @@
 import os
 
 import click
+{% if 'mongodb' in cookiecutter.db_resource %}
+import mongoengine as engine
+{% endif %}
 from flask import Flask
+{% if 'postgres' in cookiecutter.db_resource %}
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+{% endif %}
 from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 from opencensus.trace.samplers import ProbabilitySampler
-
-
-db = SQLAlchemy()
-migrate = Migrate()
 
 
 def create_app(test_config=None):
@@ -30,24 +31,36 @@ def create_app(test_config=None):
         )
 
     # Configure the database
-    app.config.update(SQLALCHEMY_DATABASE_URI=app.config.get("DATABASE_URI"), SQLALCHEMY_TRACK_MODIFICATIONS=False)
-
     if test_config is not None:
         app.config.update(test_config)
 
+    {% if 'postgres' in cookiecutter.db_resource %}
+    app.config.update(SQLALCHEMY_DATABASE_URI=app.config.get("DATABASE_URI"), SQLALCHEMY_TRACK_MODIFICATIONS=False)
+    db = SQLAlchemy()
+    migrate = Migrate()
     db.init_app(app)
     migrate.init_app(app, db)
+    {% endif %}
+    {% if 'mongodb' in cookiecutter.db_resource %}
+    db = engine.connect(host=app.config.get("DATABASE_URI")) # noqa: F841
+    {% endif %}
 
     from . import pages
 
     app.register_blueprint(pages.bp)
 
     @app.cli.command("seed")
+    @click.option("--drop", is_flag=True, default=False)
     @click.option("--filename", default="seed_data.json")
-    def seed_data(filename):
+    def seed_data(filename, drop):
         from . import seeder
 
-        seeder.seed_data(db, filename)
+        {% if 'postgres' in cookiecutter.db_resource %}
+        seeder.seed_data(filename, drop=drop)
+        {% endif %}
+        {% if 'mongodb' in cookiecutter.db_resource %}
+        seeder.seed_data(filename)
+        {% endif %}
         click.echo("Database seeded!")
 
     return app

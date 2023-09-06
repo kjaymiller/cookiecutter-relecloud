@@ -34,7 +34,7 @@
                     <a class="nav-link" href="{{ 'destinations' | get_url_for_backend(framework=cookiecutter.project_backend) }}">Destinations</a>
                 </li>
                 <li class="nav-item">
-                
+
                     <a class="nav-link" href="{{ 'about' | get_url_for_backend(framework=cookiecutter.project_backend)}}">About</a>
                 </li>
                 {# <li class="nav-item">
@@ -57,13 +57,13 @@
                 </div>
             </div>
         </div>
-        
+
         {% raw %}
         {% if messages %}
             {% for message in messages %}'
             <div class="alert alert-{{message.tags}}" role="alert">
                 <p>{{ message }}</p>
-            </div>   
+            </div>
             {% endfor %}
         {% endif %}
         {% endraw %}

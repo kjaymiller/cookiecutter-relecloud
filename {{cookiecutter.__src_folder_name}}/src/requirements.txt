@@ -4,7 +4,7 @@ gunicorn==20.1.0
 uvicorn==0.23.2
 {% endif %}
 
-{% if cookiecutter.db_resource in ('postgres-flexible', 'cosmos-postgres') %}
+{% if 'postgres' in cookiecutter.db_resource %}
 # postgres requirements
 psycopg2-binary==2.9.6
 {% endif %}

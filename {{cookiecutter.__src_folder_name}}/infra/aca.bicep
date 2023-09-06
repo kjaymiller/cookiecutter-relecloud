@@ -1,3 +1,4 @@
+{# This is the aca version of `web.bicep` selected by post_gen_project.py #}
 param name string
 param location string = resourceGroup().location
 param tags object = {}
@@ -8,24 +9,36 @@ param containerRegistryName string
 param exists bool
 param identityName string
 param serviceName string = 'web'
+param keyVaultName string
+{# The dbserver values do not exist in the postgres aca add-on #}
 {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
 param dbserverDomainName string
 param dbserverDatabaseName string
 param dbserverUser string
+
 @secure()
 param dbserverPassword string
 {% endif %}
-{% if cookiecutter.project_backend in ("django", "flask") %}
-@secure()
-param secretKey string
-{% endif %}
-{% if cookiecutter.db_resource == "postgres-service" %}
+{% if cookiecutter.db_resource == "postgres-addon" %}
 param postgresServiceId string
 {% endif %}
 
 resource webIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: identityName
   location: location
+}
+
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+  name: keyVaultName
+}
+
+// Give the app access to KeyVault
+module webKeyVaultAccess './core/security/keyvault-access.bicep' = {
+  name: 'web-keyvault-access'
+  params: {
+    keyVaultName: keyVault.name
+    principalId: webIdentity.properties.principalId
+  }
 }
 
 {% if cookiecutter.project_host == "aca" %}
@@ -40,6 +53,7 @@ module app 'core/host/container-app-upsert.bicep' = {
     containerAppsEnvironmentName: containerAppsEnvironmentName
     containerRegistryName: containerRegistryName
     env: [
+      {% if 'postgres' in cookiecutter.db_resource %}
       {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
       {
         name: 'POSTGRES_HOST'
@@ -58,14 +72,21 @@ module app 'core/host/container-app-upsert.bicep' = {
         secretRef: 'dbserver-password'
       }
       {% endif %}
+      {% endif %}
       {
         name: 'RUNNING_IN_PRODUCTION'
         value: 'true'
-      } 
+      }
       {
         name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
         value: applicationInsights.properties.ConnectionString
       }
+      {% if "mongodb" in cookiecutter.db_resource %}
+      {
+        name: 'AZURE_COSMOS_CONNECTION_STRING'
+        secretRef: 'azure-cosmos-connection-string'
+      }
+      {% endif %}
       {% if cookiecutter.project_backend in ("django", "flask") %}
       {
         name: 'SECRET_KEY'
@@ -83,14 +104,22 @@ module app 'core/host/container-app-upsert.bicep' = {
         {% if cookiecutter.project_backend in ("django", "flask") %}
         {
           name: 'secret-key'
-          value: secretKey
+          keyVaultUrl: '${keyVault.properties.vaultUri}secrets/SECRETKEY'
+          identity: webIdentity.id
+        }
+        {% endif %}
+        {% if "mongodb" in cookiecutter.db_resource %}
+        {
+          name: 'azure-cosmos-connection-string'
+          keyVaultUrl: '${keyVault.properties.vaultUri}secrets/AZURE-COSMOS-CONNECTION-STRING'
+          identity: webIdentity.id
         }
         {% endif %}
       ]
-    {% if cookiecutter.db_resource == "postgres-service" %}
+    {% if cookiecutter.db_resource == "postgres-addon" %}
     postgresServiceId: postgresServiceId
     {% endif %}
-    targetPort: {{cookiecutter.web_port}} 
+    targetPort: {{cookiecutter.web_port}}
   }
 }
 {% endif %}

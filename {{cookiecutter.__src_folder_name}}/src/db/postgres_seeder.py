@@ -1,18 +1,24 @@
+{#
+The postgres seeder module. If 'postgres' is selected,
+this will be moved to  `src/flask/flaskapp/seeder.py`.
+#}
 import json
 
 from . import models
 
-
-def seed_data(db, filename):
+def seed_data(db, filename:str) -> None:
+        """Uses the json file to populate the database"""
     with open(filename) as f:
         data = json.load(f)
         session = db.session
+
         for entry in data:
             if entry["model"] == "relecloud.destination":
                 destination = session.get(models.Destination, entry["pk"])
+
                 if destination is None:
                     destination = models.Destination(
-                        name=entry["fields"]["name"],
+                       name=entry["fields"]["name"],
                         id=entry["pk"],
                         description=entry["fields"]["description"],
                     )

@@ -1,0 +1,29 @@
+{# db layer configurations #}
+{% macro db() %}
+    {% if cookiecutter.db_resource == "mongodb-vcore" %}
+image: mongo:5.0
+    {% else %}
+image: mongo:4.2.24
+    {% endif %}
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodb
+      MONGO_INITDB_ROOT_PASSWORD: mongodb
+      MONGO_INITDB_DATABASE: relecloud
+
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo db:27017/relecloud --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 5
+{% endmacro %}
+
+{# This is the environment section under `app` in devcontainer.json #}
+{% macro app_environment() %}
+environment:
+      MONGODB_USERNAME: mongodb
+      MONGODB_PASSWORD: mongodb
+      MONGODB_HOST: db
+      MONGODB_DATABASE: relecloud
+      MONGODB_PORT: 27017
+{% endmacro %}

@@ -7,7 +7,7 @@ infra:
     provider: "bicep"
 services:
     web:
-        project: src 
+        project: src
         language: py
         {% if cookiecutter.project_host == "aca" %}
         module: web
@@ -16,4 +16,3 @@ services:
         {% if cookiecutter.project_host == "appservice" %}
         host: appservice
         {% endif %}
-

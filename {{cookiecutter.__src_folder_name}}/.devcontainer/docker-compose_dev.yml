@@ -1,28 +1,38 @@
-# This overwrites select settings from the main docker-compose.yml.
-# WARNING: THIS SHOULD NOT BE USED DIRECTLY
+{# This section is for importing items #}
+{% if "postgres" in cookiecutter.db_resource %}
+  {% set db_app = "docker_compose_postgres.yml" %}
+{% endif %}
+{% if "mongodb" in cookiecutter.db_resource %}
+  {% set db_app = "docker_compose_mongodb.yml" %}
+{% endif %}
+{% from db_app import db, app_environment with context %}
+{# end import section #}
 version: '3'
 services:
-  # Update this to the name of the service you want to work with in your docker-compose.yml file
   db:
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_DB: relecloud
-      POSTGRES_HOST: db
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_PORT: 5432  
-
+    {{ db() }}
+  {# TODO: Create a way to add services such as redis, rabbitmq, etc. #}
+  {# Not Implemented
+  {% for service in extra_services %}
+    {{ service }}
+  {% endfor %}
+  #}
   app:
-    build: 
+    build:
       context: .
-      dockerfile: .devcontainer/Dockerfile_dev
-    environment:
-      POSTGRES_USERNAME: postgres
-      POSTGRES_DATABASE: relecloud
-      POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
-      POSTGRES_PASSWORD: postgres
-
+      dockerfile: Dockerfile_dev
+    depends_on:
+      db:
+        condition: service_healthy
+    network_mode: service:db
+    {# load the app environment #}
+    {{ app_environment() }}
     command: sleep infinity
 
     volumes:
-      - .:/workspace:cached
+      - ..:/workspace:cached
+
+{% if 'postgres' in cookiecutter.db_resource %}
+volumes:
+  postgres-data:
+{% endif %}
