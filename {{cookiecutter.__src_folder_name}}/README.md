@@ -30,26 +30,19 @@ If you're not using one of those options for opening the project, then you'll ne
 
 1. Apply database migrations and seed initial data:
 
-{% if cookiecutter.project_backend == "django" %}
     ```sh
+{% if cookiecutter.project_backend == "django" %}
     python src/manage.py migrate
     python src/manage.py loaddata src/seed_data.json
-
-```
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
-    ```sh
     python3 -m flask --app src.flaskapp db upgrade --directory src/flaskapp/migrations
     python3 -m flask --app src.flaskapp seed --filename src/seed_data.json
-```
-
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
-    ```sh
     python3 src/fastapi_app/seed_data.py
-
-```
 {% endif %}
+    ```
 
 ## Running locally
 
