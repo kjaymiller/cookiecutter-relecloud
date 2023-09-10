@@ -128,7 +128,7 @@ module web 'web.bicep' = {
     exists: webAppExists
     {% endif %}
     {% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
-    dbserverDomainName: db.name
+    dbserverDomainName: db.outputs.dbserverDomainName
     dbserverUser: db.outputs.dbserverUser
     dbserverDatabaseName: db.outputs.dbserverDatabaseName
     dbserverPassword: dbserverPassword

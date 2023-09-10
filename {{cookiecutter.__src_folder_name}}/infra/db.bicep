@@ -112,3 +112,6 @@ output dbserverUser string = dbserverUser
 {% if cookiecutter.db_resource == "postgres-addon" %}
 output dbserverID string = dbserver.outputs.id
 {% endif %}
+{% if cookiecutter.db_resource in ("postgres-flexible", "cosmos-postgres") %}
+output dbserverDomainName string = dbserver.outputs.domainName
+{% endif %}
