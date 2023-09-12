@@ -12,11 +12,13 @@
 |**Databases**|-|-|-|
 |Azure ACA Postgres Plugin|✅|✅|✅|
 |Azure Cosmos DB (Postgres Adapter)|✅|✅|✅|
-|Azure Cosmos DB (MongoDB)|❌|❌|❌|
+|Azure Cosmos DB (MongoDB)|❌|🛠️|✅|
 |Azure Postgres Flexible Server|✅|✅|✅|
 |**Azure Add-ons**|-|-|-|
 |Azure vNet|❌|❌|❌|
 |Azure Secret KeyVault|✅|✅|✅|
+
+|✅ (Developed)|🛠️ (In Development)|❌ (Currently Not Supported)| 
 
 ## Deploying your cookiecutter template
 
