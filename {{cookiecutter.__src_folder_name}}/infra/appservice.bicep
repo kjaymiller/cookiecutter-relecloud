@@ -56,7 +56,7 @@ module web 'core/host/appservice.bicep' = {
         APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString
         RUNNING_IN_PRODUCTION: 'true'
         {% if "postgres" in cookiecutter.db_resource %}
-        POSTGRES_HOST: dbserver.outputs.DOMAIN_NAME
+        POSTGRES_HOST: dbserver.outputs.domainName
         POSTGRES_USERNAME: dbserverUser
         POSTGRES_DATABASE: dbserverDatabaseName
         POSTGRES_PASSWORD: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=DBSERVERPASSWORD)'
