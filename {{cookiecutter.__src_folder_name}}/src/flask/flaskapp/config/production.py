@@ -3,9 +3,12 @@ import os
 import pymongo
 {% endif %}
 
+{% if 'mongo' in cookiecutter.db_resource %}
 # Create a mongoDB Connection
 client = pymongo.MongoClient("DATABASE_CONNECTION_STRING")
+{% endif %}
 DEBUG = False
+
 
 if "WEBSITE_HOSTNAME" in os.environ:
     ALLOWED_HOSTS = [os.environ["WEBSITE_HOSTNAME"]]
