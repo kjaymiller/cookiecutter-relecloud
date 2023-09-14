@@ -15,13 +15,13 @@ known-first-party = ["fastapi_app"]
 line-length = 120
 extend-exclude = '''
 (
-  ^/migrations\/
+  ^/src/flaskapp/migrations\/
 )
 '''
 force-exclude = '''
 # Needed for pre-commit
 (
-  ^/migrations\/
+  ^/src/flaskapp/migrations\/
 )
 '''
 
