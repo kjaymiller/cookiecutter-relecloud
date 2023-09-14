@@ -15,7 +15,7 @@ def move_db_files(db_resource: str):
     if "postgres" in db_resource:
         shutil.move(
             "src/db/postgres_models.py",
-            "src/models.py"
+            "src/flask/flaskapp/models.py"
         )
         shutil.move(
             "src/db/postgres_seeder.py",

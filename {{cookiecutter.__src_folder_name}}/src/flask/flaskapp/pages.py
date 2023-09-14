@@ -2,9 +2,9 @@
 from flask import Blueprint, redirect, render_template, request, url_for
 
 {% if 'postgres' in cookiecutter.db_resource %}
-import db
+from . import db
 {% endif %}
-import models
+from . import models
 
 bp = Blueprint("pages", __name__)
 
