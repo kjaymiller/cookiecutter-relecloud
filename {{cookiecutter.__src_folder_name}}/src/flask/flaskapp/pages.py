@@ -31,7 +31,7 @@ def destination_detail(pk):
     return render_template(
         "destination_detail.html",
         destination=destination,
-        cruises={% if 'mongodb' in cookiecutter.db_resource %}models.Cruise.objects(destinations__in=[destination]){% else %}cruises{% endif %},
+        cruises={% if 'mongodb' in cookiecutter.db_resource %}models.Cruise.objects(destinations__in=[destination]){% else %}destination.cruises{% endif %},
     )
 
 
