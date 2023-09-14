@@ -60,7 +60,7 @@ def create_app(test_config=None):
         from . import seeder
 
         {% if 'postgres' in cookiecutter.db_resource %}
-        seeder.seed_data(filename)
+        seeder.seed_data(db, filename)
         {% endif %}
         {% if 'mongodb' in cookiecutter.db_resource %}
         seeder.seed_data(filename, drop=drop)
