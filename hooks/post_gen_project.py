@@ -128,7 +128,7 @@ def run_ruff_fix_and_black() -> None:
         logging.warning(error_msg("ruff"))
 
     if importlib.util.find_spec("black"):
-        subprocess.run(["python3", "-m", "black", "-q", "src"])
+        subprocess.run(["python3", "-m", "black", "-q", "src", "-c", "pyproject.toml"])
     else:
         logging.warning(error_msg("black"))
 
