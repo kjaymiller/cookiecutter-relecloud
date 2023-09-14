@@ -14,6 +14,11 @@ from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 from opencensus.trace.samplers import ProbabilitySampler
 
 
+{% if 'postgres' in cookiecutter.db_resource %}
+db = SQLAlchemy()
+migrate = Migrate()
+{% endif %}
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, static_folder="../static", template_folder="../templates")
@@ -36,8 +41,7 @@ def create_app(test_config=None):
 
     {% if 'postgres' in cookiecutter.db_resource %}
     app.config.update(SQLALCHEMY_DATABASE_URI=app.config.get("DATABASE_URI"), SQLALCHEMY_TRACK_MODIFICATIONS=False)
-    db = SQLAlchemy()
-    migrate = Migrate()
+
     db.init_app(app)
     migrate.init_app(app, db)
     {% endif %}
@@ -56,10 +60,10 @@ def create_app(test_config=None):
         from . import seeder
 
         {% if 'postgres' in cookiecutter.db_resource %}
-        seeder.seed_data(filename, drop=drop)
+        seeder.seed_data(db, filename)
         {% endif %}
         {% if 'mongodb' in cookiecutter.db_resource %}
-        seeder.seed_data(filename)
+        seeder.seed_data(filename, drop=drop)
         {% endif %}
         click.echo("Database seeded!")
 

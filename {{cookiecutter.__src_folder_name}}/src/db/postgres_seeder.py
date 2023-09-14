@@ -1,13 +1,16 @@
+"""
+Seeder module for the PostgreSQL database.
 {#
 The postgres seeder module. If 'postgres' is selected,
 this will be moved to  `src/flask/flaskapp/seeder.py`.
 #}
+"""
 import json
 
 from . import models
 
 def seed_data(db, filename:str) -> None:
-        """Uses the json file to populate the database"""
+    """Uses the JSON file to populate the database"""
     with open(filename) as f:
         data = json.load(f)
         session = db.session

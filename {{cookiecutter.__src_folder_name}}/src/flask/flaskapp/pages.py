@@ -2,9 +2,9 @@
 from flask import Blueprint, redirect, render_template, request, url_for
 
 {% if 'postgres' in cookiecutter.db_resource %}
-import db
+from . import db
 {% endif %}
-import models
+from . import models
 
 bp = Blueprint("pages", __name__)
 
@@ -28,22 +28,20 @@ def destinations():
 @bp.get("/destination/<pk>")
 def destination_detail(pk):
     {{ get_one("Destination") }}
-    cruises = models.Cruise.objects(destinations__in=[destination])
     return render_template(
         "destination_detail.html",
         destination=destination,
-        cruises=cruises,
+        cruises={% if 'mongodb' in cookiecutter.db_resource %}models.Cruise.objects(destinations__in=[destination]){% else %}destination.cruises{% endif %},
     )
 
 
 @bp.get("/cruise/<pk>")
 def cruise_detail(pk: int):
     {{ get_one("Cruise") }}
-    destinations = cruise.destinations
     return render_template(
         "cruise_detail.html",
         cruise=cruise,
-        destinations=destinations,
+        destinations=cruise.destinations,
     )
 
 

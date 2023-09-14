@@ -15,7 +15,7 @@ def move_db_files(db_resource: str):
     if "postgres" in db_resource:
         shutil.move(
             "src/db/postgres_models.py",
-            "src/models.py"
+            "src/flask/flaskapp/models.py"
         )
         shutil.move(
             "src/db/postgres_seeder.py",
@@ -128,7 +128,7 @@ def run_ruff_fix_and_black() -> None:
         logging.warning(error_msg("ruff"))
 
     if importlib.util.find_spec("black"):
-        subprocess.run(["python3", "-m", "black", "-q", "src"])
+        subprocess.run(["python3", "-m", "black", "src", "-q", "--config", "pyproject.toml"])
     else:
         logging.warning(error_msg("black"))
 
