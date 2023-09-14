@@ -5,6 +5,7 @@ permissions:
   contents: write
   pull-requests: write
 on:
+  workfow_dispatch:
   schedule:
     - cron: "0 2 * * 1" # Every Monday at 2am
 jobs:
