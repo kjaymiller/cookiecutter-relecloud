@@ -13,7 +13,17 @@ known-first-party = ["fastapi_app"]
 
 [tool.black]
 line-length = 120
-extend-exclude = "migrations"
+extend-exclude = '''
+(
+  ^/migrations\/
+)
+'''
+force-exclude = '''
+# Needed for pre-commit
+(
+  ^/migrations\/
+)
+'''
 
 [tool.pytest.ini_options]
 addopts = "-ra --cov -vv"
