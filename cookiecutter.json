@@ -8,7 +8,7 @@
   "__src_folder_name": "{{ cookiecutter.__repo_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
   "__project_short_description": "Create a relecloud demo application with {{cookiecutter.project_backend}} and {{cookiecutter.db_resource}}",
   "_copy_without_render": [
-    "root/.github/workflows/*"
+    ".github/workflows/*"
   ],
   "_extensions": ["extensions.GetUrlForBackend"],
   "_jinja2_env_vars": {
