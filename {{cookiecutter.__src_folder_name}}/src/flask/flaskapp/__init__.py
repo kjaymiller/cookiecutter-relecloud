@@ -8,6 +8,7 @@ from flask import Flask
 {% if 'postgres' in cookiecutter.db_resource %}
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase
 {% endif %}
 from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
@@ -15,7 +16,11 @@ from opencensus.trace.samplers import ProbabilitySampler
 
 
 {% if 'postgres' in cookiecutter.db_resource %}
-db = SQLAlchemy()
+class BaseModel(DeclarativeBase):
+    pass
+
+
+db = SQLAlchemy(model_class=BaseModel)
 migrate = Migrate()
 {% endif %}
 
