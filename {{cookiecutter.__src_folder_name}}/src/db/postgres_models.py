@@ -21,7 +21,9 @@ class Destination(db.Model):
     name: Mapped[str] = mapped_column(String(255))
     subtitle: Mapped[Optional[str]] = mapped_column(String(255))
     description: Mapped[Optional[str]] = mapped_column(String(1000))
-    cruises:Mapped[List["Cruise"]] = relationship("Cruise", secondary=association_table, back_populates="destinations")
+    cruises: Mapped[List["Cruise"]] = relationship(
+        "Cruise", secondary=association_table, back_populates="destinations"
+    )
 
     def __str__(self):
         return self.name
@@ -32,8 +34,10 @@ class Cruise(db.Model):
     name: Mapped[str] = mapped_column(String(255))
     subtitle: Mapped[Optional[str]] = mapped_column(String(255))
     description: Mapped[Optional[str]] = mapped_column(String(1000))
-    destinations: Mapped[List[Destination]] = relationship("Destination", secondary=association_table, back_populates="cruises")
-    
+    destinations: Mapped[List[Destination]] = relationship(
+        "Destination", secondary=association_table, back_populates="cruises"
+    )
+
     def __str__(self):
         return self.name
 
@@ -44,4 +48,3 @@ class InfoRequest(db.Model):
     email: Mapped[str] = mapped_column(String(255))
     notes: Mapped[str] = mapped_column(String(255))
     cruise_id: Mapped[int] = mapped_column(ForeignKey("cruise.id"))
-    
