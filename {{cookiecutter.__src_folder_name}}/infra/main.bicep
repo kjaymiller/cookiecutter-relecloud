@@ -116,13 +116,13 @@ module web 'web.bicep' = {
     location: location
     tags: tags
     applicationInsightsName: monitoring.outputs.applicationInsightsName
-    identityName: '${prefix}-id-web'
     keyVaultName: keyVault.outputs.name
     {% if cookiecutter.project_host == "appservice" %}
     appCommandLine: 'entrypoint.sh'
     pythonVersion: '3.11'
     {% endif %}
     {% if cookiecutter.project_host == "aca" %}
+    identityName: '${prefix}-id-web'
     containerAppsEnvironmentName: containerApps.outputs.environmentName
     containerRegistryName: containerApps.outputs.registryName
     exists: webAppExists
