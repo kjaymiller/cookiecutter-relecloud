@@ -10,7 +10,7 @@ dependencies = [
     "SQLAlchemy==2.0.17",
     "psycopg2-binary==2.9.6",
     "Flask-Migrate==4.0.4",
-    "Flask-SQLAlchemy==3.0.5",
+    "Flask-SQLAlchemy==3.1.1",
     {% endif %}
     {% if 'mongodb' in cookiecutter.db_resource %}
     "mongoengine==0.27.0",
