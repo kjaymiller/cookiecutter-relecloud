@@ -49,7 +49,6 @@
                 ],
                 {% endif %}
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
-                "python.linting.enabled": true,
                 "python.testing.pytestEnabled": true,
                 "python.testing.unittestEnabled": false,
                 "files.exclude": {
