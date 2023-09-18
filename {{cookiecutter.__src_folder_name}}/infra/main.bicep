@@ -131,7 +131,9 @@ module web 'web.bicep' = {
     dbserverDomainName: db.outputs.dbserverDomainName
     dbserverUser: db.outputs.dbserverUser
     dbserverDatabaseName: db.outputs.dbserverDatabaseName
+    {% if cookiecutter.project_host == "aca" %}
     dbserverPassword: dbserverPassword
+    {% endif %}
     {% endif %}
     {% if cookiecutter.db_resource == "postgres-addon" %}
     postgresServiceId: db.outputs.dbserverID
