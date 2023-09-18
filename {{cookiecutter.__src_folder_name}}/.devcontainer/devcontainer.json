@@ -26,7 +26,6 @@
                 "ms-python.python",
                 "ms-python.black-formatter",
                 "microsoft.bicep",
-                "bierner.github-markdown-preview",
                 {% if cookiecutter.project_host == "aca" %}
                 "ms-azuretools.vscode-docker",
                 {% endif %}
@@ -34,6 +33,7 @@
                 "mtxr.sqltools",
                 "mtxr.sqltools-driver-pg",
                 {% endif %}
+                "bierner.github-markdown-preview"
             ],
             "settings": {
                 {% if 'postgres' in cookiecutter.db_resource %}
