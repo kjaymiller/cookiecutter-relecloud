@@ -15,7 +15,7 @@ If you're not using one of those options for opening the project, then you'll ne
 1. Install production requirements:
 
     ```sh
-    python -m pip install -r src/requirements.txt
+    python3 -m pip install -r src/requirements.txt
     ```
 
 {% if cookiecutter.project_backend in ("flask", "fastapi") %}
@@ -23,7 +23,7 @@ If you're not using one of those options for opening the project, then you'll ne
 1. Install the app as an editable package:
 
     ```sh
-    python -m pip install -e src
+    python3 -m pip install -e src
     ```
 
 {% endif %}
@@ -32,8 +32,8 @@ If you're not using one of those options for opening the project, then you'll ne
 
     ```sh
 {% if cookiecutter.project_backend == "django" %}
-    python src/manage.py migrate
-    python src/manage.py loaddata src/seed_data.json
+    python3 src/manage.py migrate
+    python3 src/manage.py loaddata src/seed_data.json
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
     python3 -m flask --app src.flaskapp db upgrade --directory src/flaskapp/migrations
