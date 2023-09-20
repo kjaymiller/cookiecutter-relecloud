@@ -8,8 +8,10 @@ on:
 
 jobs:
   test_package:
+    {% raw %}
     name: Test ${{ matrix.os }} Python ${{ matrix.python_version }}
     runs-on: ${{ matrix.os }}
+    {% endraw %}
     strategy:
       fail-fast: false
       matrix:
@@ -38,8 +40,10 @@ jobs:
         - name: Setup python
           uses: actions/setup-python@v2
           with:
+            {% raw %}
             python-version: ${{ matrix.python_version }}
             architecture: x64
+            {% endraw %}
         - name: Install dependencies
           run: |
             python3 -m pip install --upgrade pip
