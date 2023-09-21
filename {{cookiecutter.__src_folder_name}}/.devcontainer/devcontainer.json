@@ -76,7 +76,9 @@
     "postCreateCommand": "pip install -r requirements-dev.in && pip install -e src"
     {% endif %}
     {% endif %}
-
+    {% if cookiecutter.project_backend == "fastapi" %}
+    "postCreateCommand": "pip install -r requirements-dev.in && pip install -e src && python3 src/fastapi_app/seed_data.py"
+    {% endif %}
 }
 
 {% endblock %}
