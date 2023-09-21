@@ -37,5 +37,17 @@
             "justMyCode": false
         }
         {% endif %}
+        {% if cookiecutter.project_backend == "fastapi" %}
+        {
+			"name": "Python: FastAPI",
+			"type": "python",
+			"request": "launch",
+			"module": "uvicorn",
+			"args": [
+				"fastapi_app:app",
+				"--reload"
+			],
+		}
+        {% endif %}
     ]
 }
