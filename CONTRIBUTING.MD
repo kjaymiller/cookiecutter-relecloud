@@ -1,3 +1,13 @@
+# Filing Issues
+
+**TLDR: File an issue in this repo or one of the generated repos and trust our maintainers to ensure we're triaging them.**
+
+When working with templated issues it's important to understand where the problem is originating. In most cases the error is from this repo. We're working to help users understand that and here are some **pending** actions we're taking to ensure that.
+
+- Create GitHub Issue Template that makes it easier to check the boxes similar to the options in the cookiecutter.json
+- Capture issues in projects and discussions with active moderation
+- Create GitHub Actions that can transfer issues to the correct repo
+
 # Troubleshooting
 
 ## non-Python Package dependencies
