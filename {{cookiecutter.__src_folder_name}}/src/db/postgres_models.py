@@ -33,7 +33,7 @@ class Cruise(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(255))
     subtitle: Mapped[Optional[str]] = mapped_column(String(255))
-    description: Mapped[Optional[str]] = mapped_column(String(1000))
+    description: Mapped[Optional[str]] = mapped_column(String(1000))  # noqa
     destinations: Mapped[List[Destination]] = relationship(
         "Destination", secondary=association_table, back_populates="cruises"
     )
@@ -42,7 +42,7 @@ class Cruise(db.Model):
         return self.name
 
 
-class InfoRequest(db.Model):
+class InfoRequest(db.Model): # Will this come through?
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(255))
     email: Mapped[str] = mapped_column(String(255))
