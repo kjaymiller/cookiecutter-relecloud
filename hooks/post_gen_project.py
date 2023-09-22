@@ -148,5 +148,5 @@ def lint() -> None:
 if __name__ == "__main__":
     rich.print("Removing unecessary files")
     check_for_files()
-    rich.print("Linting files")
+    rich.print("Linting files!!")
     lint()
