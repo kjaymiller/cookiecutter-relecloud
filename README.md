@@ -62,38 +62,34 @@ These templates are configured to deploy to Microsoft Azure via the Azure Develo
 
 ## Deployed Project Examples
 
-
 ### Django
+
 ----------
+
 - [Django Postgres - Flexible Server Azure Container Apps](https://github.com/Azure-Samples/azure-django-postgres-flexible-aca)
 - [Django Postgres - Flexible Server Azure App Service](https://github.com/Azure-Samples/azure-django-postgres-flexible-appservice)
 - [Django CosmosDB Postgres Adapter Azure Container Apps](https://github.com/Azure-Samples/azure-django-cosmos-postgres-aca)
 - [Django CosmosDB Postgres Adapter Azure App Service](https://github.com/Azure-Samples/azure-django-cosmos-postgres-appservice)
 - [Django Azure Container Apps Postgres Addon  Azure Container Apps](https://github.com/Azure-Samples/azure-django-postgres-addon-aca)
-- [Django Azure Container Apps Postgres Addon  Azure App Service](https://github.com/Azure-Samples/azure-django-postgres-addon-appservice)
-- [Django CosmosDB - MongoDB Adapter  Azure Container Apps](https://github.com/Azure-Samples/azure-django-cosmos-mongodb-aca)
-- [Django CosmosDB - MongoDB Adapter  Azure App Service](https://github.com/Azure-Samples/azure-django-cosmos-mongodb-appservice)
-
 
 ### Fastapi
+
 ----------
+
 - [FastAPI Postgres - Flexible Server Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-postgres-flexible-aca)
 - [FastAPI Postgres - Flexible Server Azure App Service](https://github.com/Azure-Samples/azure-fastapi-postgres-flexible-appservice)
 - [FastAPI CosmosDB Postgres Adapter Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-cosmos-postgres-aca)
 - [FastAPI CosmosDB Postgres Adapter Azure App Service](https://github.com/Azure-Samples/azure-fastapi-cosmos-postgres-appservice)
 - [FastAPI Azure Container Apps Postgres Addon  Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-postgres-addon-aca)
-- [FastAPI Azure Container Apps Postgres Addon  Azure App Service](https://github.com/Azure-Samples/azure-fastapi-postgres-addon-appservice)
-- [FastAPI CosmosDB - MongoDB Adapter  Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-cosmos-mongodb-aca)
-- [FastAPI CosmosDB - MongoDB Adapter  Azure App Service](https://github.com/Azure-Samples/azure-fastapi-cosmos-mongodb-appservice)
-
 
 ### Flask
+
 ----------
+
 - [Flask Postgres - Flexible Server Azure Container Apps](https://github.com/Azure-Samples/azure-flask-postgres-flexible-aca)
 - [Flask Postgres - Flexible Server Azure App Service](https://github.com/Azure-Samples/azure-flask-postgres-flexible-appservice)
 - [Flask CosmosDB Postgres Adapter Azure Container Apps](https://github.com/Azure-Samples/azure-flask-cosmos-postgres-aca)
 - [Flask CosmosDB Postgres Adapter Azure App Service](https://github.com/Azure-Samples/azure-flask-cosmos-postgres-appservice)
 - [Flask Azure Container Apps Postgres Addon  Azure Container Apps](https://github.com/Azure-Samples/azure-flask-postgres-addon-aca)
-- [Flask Azure Container Apps Postgres Addon  Azure App Service](https://github.com/Azure-Samples/azure-flask-postgres-addon-appservice)
 - [Flask CosmosDB - MongoDB Adapter  Azure Container Apps](https://github.com/Azure-Samples/azure-flask-cosmos-mongodb-aca)
 - [Flask CosmosDB - MongoDB Adapter  Azure App Service](https://github.com/Azure-Samples/azure-flask-cosmos-mongodb-appservice)
