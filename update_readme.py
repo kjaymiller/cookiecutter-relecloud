@@ -15,7 +15,7 @@ web_framework_values = defaultdict(list)
 combos = list(itertools.product(web_frameworks, db_resources, deployment_hosts))
 
 for framework, db_resource, host in combos:
-    base_keys= (f"{framework[0]}/{db_resource[0]}/{host[0]}").lower().replace('/','-')
+    base_keys= (f"azure-{framework[0]}/{db_resource[0]}/{host[0]}").lower().replace('/','-')
     if re.findall('__prompt', base_keys):
         continue
     base_values = (f"{framework[1]} {db_resource[1]} {host[1]}")
