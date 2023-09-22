@@ -1,5 +1,6 @@
 [tool.ruff]
 line-length = 120
+target-version = "py38"
 select = ["E", "F", "I", "UP"]
 ignore = ["D203"]
 
@@ -13,6 +14,7 @@ known-first-party = ["fastapi_app"]
 
 [tool.black]
 line-length = 120
+target-version = ["py38"]
 {% if cookiecutter.project_backend == "flask" %}
 extend-exclude = '''
 (
