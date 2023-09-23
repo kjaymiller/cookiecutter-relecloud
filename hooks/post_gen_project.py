@@ -24,7 +24,7 @@ def move_db_files(db_resource: str):
     if "mongo" in db_resource:
         shutil.move(
             "src/db/mongo_models.py",
-            "src/models.py"
+            "src/flask/flaskapp/models.py"
         )
         shutil.move(
             "src/db/mongo_seeder.py",
