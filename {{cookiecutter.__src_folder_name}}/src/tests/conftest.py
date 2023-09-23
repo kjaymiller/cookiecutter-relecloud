@@ -33,7 +33,7 @@ from fastapi_app.app import app
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
 from flaskapp import create_app, seeder
-{% if 'mongodb' in cookiecutter.db_resource %}
+{% if 'postgres' in cookiecutter.db_resource %}
 from flaskapp import db
 {% endif %}
 {% endif %}
