@@ -22,7 +22,6 @@ def seed_data(filename:str, drop:bool=False) -> None:
 
         for entry in data:
             if entry["model"] == "relecloud.destination":
-
                 if models.Destination.objects.filter(name=entry["fields"]["name"]).count() == 0:
                     destination = models.Destination(
                         name=entry["fields"]["name"],

@@ -34,7 +34,7 @@ def create_app(test_config=None):
         app.config.from_object("flaskapp.config.development")
     else:
         app.config.from_object("flaskapp.config.production")  # pragma: no cover
-        middleware = FlaskMiddleware(
+        FlaskMiddleware(
             app,
             exporter=AzureExporter(connection_string=os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING", None)),
             sampler=ProbabilitySampler(rate=1.0),
