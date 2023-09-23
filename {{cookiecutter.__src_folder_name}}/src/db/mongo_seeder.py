@@ -4,7 +4,7 @@ this will be moved to  `src/flask/flaskapp/seeder.py`.
 #}
 import json
 
-import models
+from . import models
 
 
 def seed_data(filename:str, drop:bool=False) -> None:
