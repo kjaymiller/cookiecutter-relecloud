@@ -4,10 +4,13 @@ version = "1.0.0"
 description = "{{cookiecutter.__project_short_description}}"
 dependencies = [
     "fastapi==0.100.1",
-    "sqlmodel==0.0.8",
     "jinja2==3.1.2",
     "uvicorn[standard]==0.23.2",
     "python-multipart==0.0.6",
+    {% if 'postgres' in cookiecutter.db_resource %}
+    "psycopg2-binary==2.9.6",
+    "sqlmodel==0.0.8",
+    {% endif %}
 ]
 
 [build-system]
