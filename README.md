@@ -17,7 +17,7 @@
 ### What is cookiecutter?
 Cookiecutter is a command-line utility that creates projects from cookiecutters (project templates), e.g. creating a Python package project from a Python package project template.
 
-### What is relecloud
+### What is relecloud?
 Relecloud is a sample web app created by the Microsoft Python Cloud Advocacy team.
 
 ### What makes Cookiecutter-Relecloud different
