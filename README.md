@@ -5,7 +5,7 @@
 ## Table of Contents
 - [Cookiecutter Relecloud](#cookiecutter-relecloud)
   - [Table of Contents](#table-of-contents)
-  - [What is Cookiecutter-Relecloud](#what-is-cookiecutter-relecloud)
+  - [What is Cookiecutter-Relecloud?](#what-is-cookiecutter-relecloud)
   - [Deployment Options](#deployment-options)
   - [Deploying your cookiecutter template](#deploying-your-cookiecutter-template)
   - [Getting Updates from this Template](#getting-updates-from-this-template)
@@ -14,15 +14,11 @@
 
 ## What is Cookiecutter-Relecloud?
 
-### What is cookiecutter?
 Cookiecutter is a command-line utility that creates projects from cookiecutters (project templates), e.g. creating a Python package project from a Python package project template.
 
-### What is relecloud?
 Relecloud is a sample web app created by the Microsoft Python Cloud Advocacy team.
 
-### What makes Cookiecutter-Relecloud different
-
-Cookiecutter-Relecloud is a cookiecutter template that allows you to create a relecloud project with your choice of web framework, database, and deployment options.
+While most cookiecutter generated projects are designed to build with a particular stack, Cookiecutter-Relecloud allows you to create a relecloud project with your choice of web framework, database, and deployment options.
 
 https://github.com/kjaymiller/cookiecutter-relecloud/assets/8632637/872a41ad-a48e-49ad-956e-370e302508d2
 
