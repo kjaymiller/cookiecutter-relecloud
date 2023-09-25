@@ -1,7 +1,10 @@
+"""
+Seeder for MongoDB
 {#
 The mongodb seeder module. If 'mongodb' is selected,
 this will be moved to  `src/flask/flaskapp/seeder.py`.
 #}
+"""
 import json
 
 from . import models
