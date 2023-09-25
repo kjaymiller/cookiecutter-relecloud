@@ -1,5 +1,35 @@
 # Cookiecutter Relecloud
 
+[![Github Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fkjaymiller%2Fcookiecutter-relecloud%2Fbadge%3Fref%3Dmain&style=flat-square)](https://actions-badge.atrox.dev/kjaymiller/cookiecutter-relecloud/goto?ref=main)
+
+## Table of Contents
+- [Cookiecutter Relecloud](#cookiecutter-relecloud)
+  - [Table of Contents](#table-of-contents)
+  - [What is Cookiecutter-Relecloud](#what-is-cookiecutter-relecloud)
+  - [Deployment Options](#deployment-options)
+  - [Deploying your cookiecutter template](#deploying-your-cookiecutter-template)
+  - [Getting Updates from this Template](#getting-updates-from-this-template)
+  - [Running your Deployment via DevContainer/Github Codespaces](#running-your-deployment-via-devcontainergithub-codespaces)
+  - [Deploy your template to Azure](#deploy-your-template-to-azure)
+  - [Deployed Project Examples](#deployed-project-examples)
+
+## What is Cookiecutter-Relecloud
+
+### What is cookiecutter
+Cookiecutter is a command-line utility that creates projects from cookiecutters (project templates), e.g. creating a Python package project from a Python package project template.
+
+### What is relecloud
+Relecloud is a sample web app created by the Microsoft Python Cloud Advocacy team.
+
+### What makes Cookiecutter-Relecloud different
+
+Cookiecutter-Relecloud is a cookiecutter template that allows you to create a relecloud project with your choice of web framework, database, and deployment options.
+
+### Features
+
+- Sync new updates to your project via [cruft](https://github.com/cruft/cruft)
+- Deploy your project to Azure using [Azure Developer CLI](https://aka.ms/azd)
+
 ## Deployment Options
 
 |Feature| Django | FastAPI | Flask |
@@ -12,13 +42,15 @@
 |**Databases**|-|-|-|
 |Azure ACA Postgres Plugin|✅|✅|✅|
 |Azure Cosmos DB (Postgres Adapter)|✅|✅|✅|
-|Azure Cosmos DB (MongoDB)|❌|🛠️|✅|
+|Azure Cosmos DB (MongoDB)|❌|❌|✅|
 |Azure Postgres Flexible Server|✅|✅|✅|
 |**Azure Add-ons**|-|-|-|
 |Azure vNet|❌|❌|❌|
 |Azure Secret KeyVault|✅|✅|✅|
 
 |✅ (Developed)|🛠️ (In Development)|❌ (Currently Not Supported)|
+
+To request support please create a [new discussion](https://github.com/kjaymiller/cookiecutter-relecloud/discussions/new?category=ideas).
 
 ## Deploying your cookiecutter template
 
@@ -72,7 +104,7 @@ These templates are configured to deploy to Microsoft Azure via the Azure Develo
 - [Django CosmosDB Postgres Adapter Azure App Service](https://github.com/Azure-Samples/azure-django-cosmos-postgres-appservice)
 - [Django Azure Container Apps Postgres Addon  Azure Container Apps](https://github.com/Azure-Samples/azure-django-postgres-addon-aca)
 
-### Fastapi
+### FastAPI
 
 ----------
 
