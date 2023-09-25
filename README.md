@@ -12,7 +12,7 @@
   - [Running your Deployment via DevContainer/Github Codespaces](#running-your-deployment-via-devcontainergithub-codespaces)
   - [Deploy your template to Azure](#deploy-your-template-to-azure)
 
-## What is Cookiecutter-Relecloud
+## What is Cookiecutter-Relecloud?
 
 ### What is cookiecutter
 Cookiecutter is a command-line utility that creates projects from cookiecutters (project templates), e.g. creating a Python package project from a Python package project template.
