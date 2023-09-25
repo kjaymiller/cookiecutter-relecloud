@@ -5,9 +5,9 @@ this will be moved to `src/models.py`.
 from mongoengine import (
     Document,
     EmailField,
-    StringField,
-    ReferenceField,
     ListField,
+    ReferenceField,
+    StringField,
 )
 
 class Destination(Document):

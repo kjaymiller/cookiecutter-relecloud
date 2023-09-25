@@ -9,7 +9,7 @@ def app():
     dbname = os.environ["MONGODB_DATABASE"]
     config_override = {
         "TESTING": True,
-        "DATABASE_URI": f"mongodb://{dbuser}:{dbpass}@{dbhost}/test?authSource=admin",
+        "DATABASE_URI": f"mongodb://{dbuser}:{dbpass}@{dbhost}/{dbname}?authSource=admin",
     }
     app = create_app(config_override)
     db = engine.connect(host=app.config.get("DATABASE_URI"))  # noqa: F841

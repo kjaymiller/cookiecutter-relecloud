@@ -36,8 +36,13 @@ If you're not using one of those options for opening the project, then you'll ne
     python3 src/manage.py loaddata src/seed_data.json
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
+    {% if "postgres" in cookiecutter.db_resource %}
     python3 -m flask --app src.flaskapp db upgrade --directory src/flaskapp/migrations
     python3 -m flask --app src.flaskapp seed --filename src/seed_data.json
+    {% endif %}
+    {% if "mongodb" in cookiecutter.db_resource %}
+    python3 -m flask --app src.flaskapp seed --filename="src/seed_data.json" --drop
+    {% endif %}
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
     python3 src/fastapi_app/seed_data.py

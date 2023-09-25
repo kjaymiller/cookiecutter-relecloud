@@ -34,7 +34,7 @@ def create_app(test_config=None):
         app.config.from_object("flaskapp.config.development")
     else:
         app.config.from_object("flaskapp.config.production")  # pragma: no cover
-        middleware = FlaskMiddleware(
+        FlaskMiddleware(
             app,
             exporter=AzureExporter(connection_string=os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING", None)),
             sampler=ProbabilitySampler(rate=1.0),
@@ -59,7 +59,9 @@ def create_app(test_config=None):
     app.register_blueprint(pages.bp)
 
     @app.cli.command("seed")
+    {% if 'mongodb' in cookiecutter.db_resource %}
     @click.option("--drop", is_flag=True, default=False)
+    {% endif %}
     @click.option("--filename", default="seed_data.json")
     def seed_data(filename, drop):
         from . import seeder
