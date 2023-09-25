@@ -11,7 +11,6 @@
   - [Getting Updates from this Template](#getting-updates-from-this-template)
   - [Running your Deployment via DevContainer/Github Codespaces](#running-your-deployment-via-devcontainergithub-codespaces)
   - [Deploy your template to Azure](#deploy-your-template-to-azure)
-  - [Deployed Project Examples](#deployed-project-examples)
 
 ## What is Cookiecutter-Relecloud
 
@@ -52,6 +51,40 @@ Cookiecutter-Relecloud is a cookiecutter template that allows you to create a re
 
 To request support please create a [new discussion](https://github.com/kjaymiller/cookiecutter-relecloud/discussions/new?category=ideas).
 
+### Deployed Project Examples
+
+#### Django
+
+----------
+
+- [Django Postgres - Flexible Server Azure Container Apps](https://github.com/Azure-Samples/azure-django-postgres-flexible-aca)
+- [Django Postgres - Flexible Server Azure App Service](https://github.com/Azure-Samples/azure-django-postgres-flexible-appservice)
+- [Django CosmosDB Postgres Adapter Azure Container Apps](https://github.com/Azure-Samples/azure-django-cosmos-postgres-aca)
+- [Django CosmosDB Postgres Adapter Azure App Service](https://github.com/Azure-Samples/azure-django-cosmos-postgres-appservice)
+- [Django Azure Container Apps Postgres Addon  Azure Container Apps](https://github.com/Azure-Samples/azure-django-postgres-addon-aca)
+
+#### FastAPI
+
+----------
+
+- [FastAPI Postgres - Flexible Server Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-postgres-flexible-aca)
+- [FastAPI Postgres - Flexible Server Azure App Service](https://github.com/Azure-Samples/azure-fastapi-postgres-flexible-appservice)
+- [FastAPI CosmosDB Postgres Adapter Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-cosmos-postgres-aca)
+- [FastAPI CosmosDB Postgres Adapter Azure App Service](https://github.com/Azure-Samples/azure-fastapi-cosmos-postgres-appservice)
+- [FastAPI Azure Container Apps Postgres Addon  Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-postgres-addon-aca)
+
+#### Flask
+
+----------
+
+- [Flask Postgres - Flexible Server Azure Container Apps](https://github.com/Azure-Samples/azure-flask-postgres-flexible-aca)
+- [Flask Postgres - Flexible Server Azure App Service](https://github.com/Azure-Samples/azure-flask-postgres-flexible-appservice)
+- [Flask CosmosDB Postgres Adapter Azure Container Apps](https://github.com/Azure-Samples/azure-flask-cosmos-postgres-aca)
+- [Flask CosmosDB Postgres Adapter Azure App Service](https://github.com/Azure-Samples/azure-flask-cosmos-postgres-appservice)
+- [Flask Azure Container Apps Postgres Addon  Azure Container Apps](https://github.com/Azure-Samples/azure-flask-postgres-addon-aca)
+- [Flask CosmosDB - MongoDB Adapter  Azure Container Apps](https://github.com/Azure-Samples/azure-flask-cosmos-mongodb-aca)
+- [Flask CosmosDB - MongoDB Adapter  Azure App Service](https://github.com/Azure-Samples/azure-flask-cosmos-mongodb-appservice)
+
 ## Deploying your cookiecutter template
 
 1. Create a new folder
@@ -91,37 +124,3 @@ To deploy the dev container locally you can do so with a compatible code editor 
 ## Deploy your template to Azure
 
 These templates are configured to deploy to Microsoft Azure via the Azure Developer CLI. You can deploy your project immediately using `azd up`
-
-## Deployed Project Examples
-
-### Django
-
-----------
-
-- [Django Postgres - Flexible Server Azure Container Apps](https://github.com/Azure-Samples/azure-django-postgres-flexible-aca)
-- [Django Postgres - Flexible Server Azure App Service](https://github.com/Azure-Samples/azure-django-postgres-flexible-appservice)
-- [Django CosmosDB Postgres Adapter Azure Container Apps](https://github.com/Azure-Samples/azure-django-cosmos-postgres-aca)
-- [Django CosmosDB Postgres Adapter Azure App Service](https://github.com/Azure-Samples/azure-django-cosmos-postgres-appservice)
-- [Django Azure Container Apps Postgres Addon  Azure Container Apps](https://github.com/Azure-Samples/azure-django-postgres-addon-aca)
-
-### FastAPI
-
-----------
-
-- [FastAPI Postgres - Flexible Server Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-postgres-flexible-aca)
-- [FastAPI Postgres - Flexible Server Azure App Service](https://github.com/Azure-Samples/azure-fastapi-postgres-flexible-appservice)
-- [FastAPI CosmosDB Postgres Adapter Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-cosmos-postgres-aca)
-- [FastAPI CosmosDB Postgres Adapter Azure App Service](https://github.com/Azure-Samples/azure-fastapi-cosmos-postgres-appservice)
-- [FastAPI Azure Container Apps Postgres Addon  Azure Container Apps](https://github.com/Azure-Samples/azure-fastapi-postgres-addon-aca)
-
-### Flask
-
-----------
-
-- [Flask Postgres - Flexible Server Azure Container Apps](https://github.com/Azure-Samples/azure-flask-postgres-flexible-aca)
-- [Flask Postgres - Flexible Server Azure App Service](https://github.com/Azure-Samples/azure-flask-postgres-flexible-appservice)
-- [Flask CosmosDB Postgres Adapter Azure Container Apps](https://github.com/Azure-Samples/azure-flask-cosmos-postgres-aca)
-- [Flask CosmosDB Postgres Adapter Azure App Service](https://github.com/Azure-Samples/azure-flask-cosmos-postgres-appservice)
-- [Flask Azure Container Apps Postgres Addon  Azure Container Apps](https://github.com/Azure-Samples/azure-flask-postgres-addon-aca)
-- [Flask CosmosDB - MongoDB Adapter  Azure Container Apps](https://github.com/Azure-Samples/azure-flask-cosmos-mongodb-aca)
-- [Flask CosmosDB - MongoDB Adapter  Azure App Service](https://github.com/Azure-Samples/azure-flask-cosmos-mongodb-appservice)
