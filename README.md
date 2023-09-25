@@ -24,6 +24,8 @@ Relecloud is a sample web app created by the Microsoft Python Cloud Advocacy tea
 
 Cookiecutter-Relecloud is a cookiecutter template that allows you to create a relecloud project with your choice of web framework, database, and deployment options.
 
+https://github.com/kjaymiller/cookiecutter-relecloud/assets/8632637/872a41ad-a48e-49ad-956e-370e302508d2
+
 ### Features
 
 - Sync new updates to your project via [cruft](https://github.com/cruft/cruft)
