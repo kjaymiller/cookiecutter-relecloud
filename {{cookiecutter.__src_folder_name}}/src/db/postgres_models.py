@@ -1,7 +1,11 @@
+"""
+Models for PostgreSQL
+
 {#
 The postgres model definitions. If a 'postgres' option is selected,
 this will be moved to `src/models.py`.
 #}
+"""
 from typing import List, Optional
 
 from sqlalchemy import Column, ForeignKey, String
