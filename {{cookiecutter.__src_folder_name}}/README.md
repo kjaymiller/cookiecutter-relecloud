@@ -55,16 +55,32 @@ Run gunicorn on the app:
 
 ```sh
 {% if cookiecutter.project_backend == "flask" %}
-python3 -m gunicorn 'src.flaskapp:create_app()' -c src/gunicorn.conf.py
+python3 -m gunicorn 'src.flaskapp:create_app()' --reload
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
-python3 -m gunicorn fastapi_app:app -c src/gunicorn.conf.py
+python3 -m gunicorn fastapi_app:app --reload
 {% endif %}
 {% if cookiecutter.project_backend == "django" %}
 python3 src/manage.py collectstatic
-python3 -m gunicorn project.wsgi:application -c src/gunicorn.conf.py --pythonpath src
+python3 -m gunicorn project.wsgi:application --pythonpath src --reload
 {% endif %}
 ```
+
+{% if cookiecutter.project_backend == "django" %}
+### Admin
+
+This app comes with the built-in Django admin interface.
+
+1. Create a superuser:
+
+```
+python3 src/manage.py createsuperuser
+```
+
+2. Restart the server and navigate to "/admin"
+
+3. Login with the superuser credentials.
+{% endif %}
 
 ## Running tests
 
