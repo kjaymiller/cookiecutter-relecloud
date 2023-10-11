@@ -1,8 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
 
-name: azure-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-aca
+
+name: azure-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-{{cookiecutter.project_host}}
 metadata:
-    template: azure-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-aca
+    template: azure-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-{{cookiecutter.project_host}}
 infra:
     provider: "bicep"
 services:
