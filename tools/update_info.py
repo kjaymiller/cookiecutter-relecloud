@@ -98,7 +98,7 @@ def update_all_repos():
             cwd=path,
         )
         subprocess.check_output(
-            ["git", "push", "-u", "origin", random_cc_folder_prefix],
+            ["git", "push", "--set-upstream", "origin", random_cc_folder_prefix],
         )
 
 
