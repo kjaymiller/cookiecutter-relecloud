@@ -76,11 +76,30 @@ def update_all_repos():
                 text=True,
                 cwd=base_path,
             )
+
         except subprocess.CalledProcessError as e:
             logging.error(f"Failed to clone {url}: {e}")
             continue
 
+        subprocess.check_output(
+            ["git", "checkout", "-b", random_cc_folder_prefix],
+            text=True,
+            cwd=path,
+        )
         cruft.update(path, skip_apply_ask=True)
+        subprocess.check_output(
+            ["git", "add", "."],
+            text=True,
+            cwd=path,
+        )
+        subprocess.check_output(
+            ["git", "commit", "-m", "Cruft Update"],
+            text=True,
+            cwd=path,
+        )
+        subprocess.check_output(
+            ["git", "push", "-u", "origin", random_cc_folder_prefix],
+        )
 
 
 @app.command()
