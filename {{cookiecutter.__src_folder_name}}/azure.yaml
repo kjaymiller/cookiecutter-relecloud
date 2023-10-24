@@ -3,7 +3,7 @@
 
 name: azure-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-{{cookiecutter.project_host}}
 metadata:
-    template: azure-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-{{cookiecutter.project_host}}
+    template: azure-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-{{cookiecutter.project_host}}@0.0.1
 infra:
     provider: "bicep"
 services:
