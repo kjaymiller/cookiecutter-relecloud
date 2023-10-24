@@ -1,4 +1,5 @@
 import cruft
+import logging
 import pathlib
 import subprocess
 import random
@@ -59,17 +60,21 @@ def update_all_repos():
     """
 
     logging.debug("Creating Placeholder Folder")
-    pathlib.Path(random_cc_folder_prefix).mkdir()
+    base_path = pathlib.Path(f"update_repos/{random_cc_folder_prefix}")
+    base_path.mkdir(parents=True, exist_ok=True)
 
     logging.debug("Cloning Repos and Running Cruft")
     for base_key, base_values in get_azure_combinations():
-        cmd = ["git", "clone", "url", pathlib.Path(base_key)]
-        url = (f"https://github.com/Azure-Samples/{base_key}")
-        path = pathlib.Path(random_cc_folder_prefix).joinpath(base_key)
+        base_file = base_key.replace('-', '_')
+        url = (f"git@github.com:Azure-Samples/{base_key}.git")
+        cmd = ["git", "clone", url, base_file] 
+        path = base_path.joinpath(base_file)
 
         try:
             subprocess.check_output(
-                cmd, stderr=subprocess.STDOUT, text=True, cwd=random_cc_folder_prefix
+                cmd,
+                text=True,
+                cwd=base_path,
             )
         except subprocess.CalledProcessError as e:
             logging.error(f"Failed to clone {url}: {e}")
