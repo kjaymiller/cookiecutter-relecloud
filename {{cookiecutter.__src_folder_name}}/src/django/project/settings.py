@@ -41,7 +41,7 @@ else:  # Running is Production
         {% if cookiecutter.project_host == "appservice" %}os.environ["WEBSITE_HOSTNAME"],{% endif %}
     ]
     CSRF_TRUSTED_ORIGINS = [
-        {% if cookiecutter.project_host == "aca" %}os.environ["CONTAINER_APP_NAME"] + "." + os.environ["CONTAINER_APP_ENV_DNS_SUFFIX"],{% endif %}
+        {% if cookiecutter.project_host == "aca" %}"https://" + os.environ["CONTAINER_APP_NAME"] + "." + os.environ["CONTAINER_APP_ENV_DNS_SUFFIX"],{% endif %}
         {% if cookiecutter.project_host == "appservice" %}"https://" + os.environ['WEBSITE_HOSTNAME'],{% endif %}
     ]
 
