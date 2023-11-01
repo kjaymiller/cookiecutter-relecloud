@@ -51,18 +51,17 @@ If you're not using one of those options for opening the project, then you'll ne
 
 ## Running locally
 
-Run gunicorn on the app:
+If you're running the app inside VS Code or GitHub Codespaces, you can use the "Run and Debug" button to start the app.
 
 ```sh
 {% if cookiecutter.project_backend == "flask" %}
-python3 -m gunicorn 'src.flaskapp:create_app()' --reload
+python3 -m flask --app src.flaskapp run --reload --port={{cookiecutter.web_port}}
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
-python3 -m gunicorn fastapi_app:app --reload
+python3 -m uvicorn fastapi_app:app --reload --port={{cookiecutter.web_port}}
 {% endif %}
 {% if cookiecutter.project_backend == "django" %}
-python3 src/manage.py collectstatic
-python3 -m gunicorn project.wsgi:application --pythonpath src --reload
+python3 src/manage.py runserver {{cookiecutter.web_port}}
 {% endif %}
 ```
 
