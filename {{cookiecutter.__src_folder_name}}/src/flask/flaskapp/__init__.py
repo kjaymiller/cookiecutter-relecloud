@@ -63,7 +63,7 @@ def create_app(test_config=None):
     @click.option("--drop", is_flag=True, default=False)
     {% endif %}
     @click.option("--filename", default="seed_data.json")
-    def seed_data(filename, drop):
+    def seed_data(filename{% if 'mongodb' in cookiecutter.db_resource %}, drop{% endif %}):
         from . import seeder
 
         {% if 'postgres' in cookiecutter.db_resource %}
