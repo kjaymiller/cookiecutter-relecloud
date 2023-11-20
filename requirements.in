@@ -4,7 +4,6 @@ packaging
 
 # linting
 ruff
-black
 
 # testing
 pytest

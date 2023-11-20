@@ -11,22 +11,6 @@ known-first-party = ["flaskapp"]
 known-first-party = ["fastapi_app"]
 {% endif %}
 
-[tool.black]
-line-length = 120
-{% if cookiecutter.project_backend == "flask" %}
-extend-exclude = '''
-(
-  flaskapp/migrations/
-)
-'''
-force-exclude = '''
-# Needed for pre-commit
-(
-  flaskapp/migrations/
-)
-'''
-{% endif %}
-
 [tool.pytest.ini_options]
 addopts = "-ra --cov -vv"
 {% if cookiecutter.project_backend == "django" %}

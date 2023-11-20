@@ -18,4 +18,3 @@ pytest-playwright
 
 # Linters
 ruff
-black

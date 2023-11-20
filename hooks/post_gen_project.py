@@ -120,17 +120,13 @@ def check_for_files() -> None:
 def error_msg(pkg: str) -> str:
     return f"`{pkg}` is not installed. Run `pip install {pkg}` to install it."
 
-def run_ruff_fix_and_black() -> None:
+def run_ruff_lint_and_format() -> None:
     """checks if ruff and black are installed and runs them on the project"""
     if importlib.util.find_spec("ruff"):
-        subprocess.run(["python3", "-m" "ruff", "--fix", "src"])
+        subprocess.run(["python3", "-m" "ruff", "lint", "--fix", "src"])
+        subprocess.run(["python3", "-m", "ruff", "format", "src"])
     else:
         logging.warning(error_msg("ruff"))
-
-    if importlib.util.find_spec("black"):
-        subprocess.run(["python3", "-m", "black", "src", "-q", "--config", "pyproject.toml"])
-    else:
-        logging.warning(error_msg("black"))
 
 def run_bicep_format() -> None:
     """formats your bicep files"""
@@ -139,11 +135,11 @@ def run_bicep_format() -> None:
 
 def lint() -> None:
     """Runs all linters"""
-    run_ruff_fix_and_black()
+    run_ruff_lint_and_format()
     run_bicep_format()
 
 if __name__ == "__main__":
     rich.print("Removing unecessary files")
     check_for_files()
-    rich.print("Linting files")
+    rich.print("Linting and Formatting files")
     lint()

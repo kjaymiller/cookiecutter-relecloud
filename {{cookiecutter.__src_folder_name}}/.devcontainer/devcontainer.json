@@ -24,7 +24,6 @@
                 "ms-azuretools.vscode-bicep",
                 "charliermarsh.ruff",
                 "ms-python.python",
-                "ms-python.black-formatter",
                 {% if cookiecutter.project_host == "aca" %}
                 "ms-azuretools.vscode-docker",
                 {% endif %}
