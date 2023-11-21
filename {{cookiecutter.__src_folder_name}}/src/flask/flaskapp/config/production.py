@@ -24,7 +24,7 @@ dbuser = os.environ["POSTGRES_USERNAME"]
 dbpass = os.environ["POSTGRES_PASSWORD"]
 dbhost = os.environ["POSTGRES_HOST"]
 dbname = os.environ["POSTGRES_DATABASE"]
-DATABASE_URI = f"postgresql+psycopg2://{dbuser}:{dbpass}@{dbhost}/{dbname}"
+DATABASE_URI = f"postgresql+psycopg2://{dbuser}:{dbpass}@{dbhost}/{dbname}?sslmode=require"
 {% endif %}
 
 {% if 'mongo' in cookiecutter.db_resource %}
