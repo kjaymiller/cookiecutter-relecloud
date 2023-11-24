@@ -16,6 +16,10 @@
   name: 'POSTGRES_PASSWORD'
   secretRef: 'dbserver-password'
 }
+{
+  name: 'POSTGRES_SSL'
+  value: 'require'
+}
 {% endif %}
 {% endmacro %}
 
