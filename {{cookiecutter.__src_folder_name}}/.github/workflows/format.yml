@@ -26,5 +26,5 @@ jobs:
             pip install -r requirements-dev.in
         - name: Lint with ruff
           run: |
-            ruff lint .
+            ruff check .
             ruff format.
