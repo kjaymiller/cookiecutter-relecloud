@@ -112,7 +112,7 @@ def live_server_url(app_with_db):
     proc.start()
 
     # Return the URL of the live server once it is ready
-    url = f"http://{hostname}:{port}"
+    url = f"http://{hostname}:{free_port}"
     wait_for_server_ready(url, timeout=10.0, check_interval=0.5)
     yield url
 
@@ -129,19 +129,19 @@ def live_server_url(app_with_db):
 
     # Start the process
     hostname = ephemeral_port_reserve.LOCALHOST
-    port = ephemeral_port_reserve.reserve(hostname)
+    free_port = ephemeral_port_reserve.reserve(hostname)
     proc = Process(
         target=run_server,
         args=(
             app_with_db,
-            port,
+            free_port,
         ),
         daemon=True,
     )
     proc.start()
 
     # Return the URL of the live server
-    yield f"http://{hostname}:{port}"
+    yield f"http://{hostname}:{free_port}"
 
     # Clean up the process
     proc.kill()
