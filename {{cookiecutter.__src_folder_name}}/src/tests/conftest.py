@@ -17,6 +17,7 @@ import os
 import pytest
 {% if cookiecutter.project_backend == "flask" %}
 import ephemeral_port_reserve
+from flask import Flask
 {% endif %}
 {% if 'mongodb' in cookiecutter.db_resource %}
 import mongoengine as engine
