@@ -3,7 +3,7 @@ cookiecutter
 packaging
 
 # linting
-ruff
+ruff<=0.1.6
 
 # testing
 pytest
