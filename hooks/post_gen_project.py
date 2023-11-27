@@ -121,7 +121,7 @@ def error_msg(pkg: str) -> str:
     return f"`{pkg}` is not installed. Run `pip install {pkg}` to install it."
 
 def run_ruff_lint_and_format() -> None:
-    """checks if ruff and black are installed and runs them on the project"""
+    """checks if ruff are installed and runs it on the project"""
     if importlib.util.find_spec("ruff"):
         subprocess.run(["python3", "-m" "ruff", "lint", "--fix", "src"])
         subprocess.run(["python3", "-m", "ruff", "format", "src"])
