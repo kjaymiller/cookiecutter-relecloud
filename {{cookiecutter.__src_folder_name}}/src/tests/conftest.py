@@ -101,7 +101,7 @@ def live_server_url(live_server):
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
 @pytest.fixture(scope="session")
-def live_server_url(app_with_db):
+def live_server_url():
     """Returns the url of the live server"""
     seed_data.load_from_json()
 
