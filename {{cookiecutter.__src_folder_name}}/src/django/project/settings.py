@@ -16,14 +16,11 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
+# Determine whether we're in production, as this will affect many settings.
 prod = bool(os.environ.get("RUNNING_IN_PRODUCTION", False))
 
-if not prod:  # Running in a Test Environment
-    DEBUG = True
+if not prod:  # Running in a Test/Development environment
+    DEBUG = True # SECURITY WARNING: don't run with debug turned on in production!
     DEFAULT_SECRET = "insecure-secret-key"
     ALLOWED_HOSTS = []
     CSRF_TRUSTED_ORIGINS = [
@@ -33,7 +30,7 @@ if not prod:  # Running in a Test Environment
         CSRF_TRUSTED_ORIGINS.append(
             f"https://{os.environ.get('CODESPACE_NAME')}-{{cookiecutter.web_port}}.{os.environ.get('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN')}"
         )
-else:  # Running is Production
+else:  # Running in a Production environment
     DEBUG = False
     DEFAULT_SECRET = None
     ALLOWED_HOSTS = [
@@ -45,7 +42,6 @@ else:  # Running is Production
         {% if cookiecutter.project_host == "appservice" %}"https://" + os.environ['WEBSITE_HOSTNAME'],{% endif %}
     ]
 
-# SECURITY WARNING: don't run with debug turned on in production!
 SECRET_KEY = os.environ.get("SECRET_KEY", DEFAULT_SECRET)
 
 INSTALLED_APPS = [
