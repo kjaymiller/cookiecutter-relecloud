@@ -109,6 +109,13 @@ OPENCENSUS = {
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+db_options = {}
+{% if cookiecutter.db_resource == "postgres-addon" %}
+# The PostgreSQL service binding will typically set POSTGRES_SSL to disable.
+{% endif %}
+if ssl_mode := os.environ.get("POSTGRES_SSL"):
+    db_options = {"sslmode": ssl_mode}
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -119,7 +126,8 @@ DATABASES = {
         "USER": os.environ.get("POSTGRES_USERNAME"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
         "HOST": os.environ.get("POSTGRES_HOST"),
-        "PORT": os.environ.get("POSTGRES_PORT"),
+        "PORT": os.environ.get("POSTGRES_PORT", 5432),
+        "OPTIONS": db_options,
     }
 }
 

@@ -51,6 +51,7 @@ module web 'core/host/appservice.bicep' = {
       POSTGRES_USERNAME: dbserverUser
       POSTGRES_DATABASE: dbserverDatabaseName
       POSTGRES_PASSWORD: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=DBSERVERPASSWORD)'
+      POSTGRES_SSL: 'require'
       {% endif %}
       {% if cookiecutter.project_backend in ("django", "flask") %}
       SECRET_KEY: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=SECRETKEY)'
