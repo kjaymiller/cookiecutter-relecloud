@@ -11,7 +11,9 @@ django-crispy-forms
 crispy-bootstrap4
 whitenoise
 opentelemetry-distro
+opentelemetry-instrumentation-django
 {% if 'postgres' in cookiecutter.db_resource %}
+opentelemetry-instrumentation-psycopg2
 psycopg2-binary==2.9.6
 {% endif %}
 {% endif %}
