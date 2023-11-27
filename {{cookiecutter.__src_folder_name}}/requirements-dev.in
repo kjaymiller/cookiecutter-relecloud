@@ -11,9 +11,6 @@ pytest-cov
 {% if cookiecutter.project_backend == "django" %}
 pytest-django
 {% endif %}
-{% if cookiecutter.project_backend == "flask" %}
-pytest-flask
-{% endif %}
 pytest-playwright
 
 # Linters
