@@ -10,10 +10,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 {% endif %}
-from opencensus.ext.azure.trace_exporter import AzureExporter
-from opencensus.ext.flask.flask_middleware import FlaskMiddleware
-from opencensus.trace.samplers import ProbabilitySampler
-
+# Add Open Telemetry Flask Instrumentation
 
 {% if 'postgres' in cookiecutter.db_resource %}
 class BaseModel(DeclarativeBase):

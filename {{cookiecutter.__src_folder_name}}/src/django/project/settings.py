@@ -74,7 +74,7 @@ MIDDLEWARE = [
 ]
 
 if prod:
-    MIDDLEWARE.append("opencensus.ext.django.middleware.OpencensusMiddleware")
+    # Add OpenTelemetry middleware
 
 ROOT_URLCONF = "project.urls"
 
@@ -97,15 +97,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "project.wsgi.application"
 
 
-OPENCENSUS = {
-    "TRACE": {
-        "SAMPLER": "opencensus.trace.samplers.ProbabilitySampler(rate=1)",
-        "EXPORTER": f"""opencensus.ext.azure.trace_exporter.AzureExporter(
-            connection_string="{os.environ.get('APPLICATIONINSIGHTS_CONNECTION_STRING')}"
-        )""",
-    }
-}
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -122,6 +113,8 @@ DATABASES = {
         "PORT": os.environ.get("POSTGRES_PORT"),
     }
 }
+
+# Add OpenTemeletry database instrumentation
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
