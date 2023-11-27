@@ -7,6 +7,7 @@ import time
 {% if cookiecutter.project_backend == "flask" %}
 import os
 import pathlib
+from multiprocessing import Process
 {% endif %}
 {% if cookiecutter.project_backend == "django" %}
 import os
@@ -15,12 +16,14 @@ import os
 {# third-party library imports #}
 import pytest
 {% if cookiecutter.project_backend == "flask" %}
-from flask import url_for
+import ephemeral_port_reserve
+from flask import Flask
 {% endif %}
 {% if 'mongodb' in cookiecutter.db_resource %}
 import mongoengine as engine
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
+import ephemeral_port_reserve
 import requests
 import uvicorn
 {% endif %}
@@ -58,23 +61,15 @@ def wait_for_server_ready(
     raise RuntimeError(conn_error)
 
 
-@pytest.fixture(scope="session")
-def free_port() -> int:
-    """
-    Return a free port on localhost
-    """
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(("", 0))
-        addr = s.getsockname()
-        port = addr[1]
-        return port
-
-
-def run_server(port):
+def run_server(port: int):
     uvicorn.run(app, port=port)
 {% endif %}
 
 {% if cookiecutter.project_backend == "flask" %}
+def run_server(app: Flask, port: int):
+    app.run(port=port, debug=False)
+
+
 {% if 'postgres' in cookiecutter.db_resource %}
 {% from 'conftest_flask_postgres.py' import app with context %}
 {% endif %}
@@ -106,20 +101,48 @@ def live_server_url(live_server):
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
 @pytest.fixture(scope="session")
-def live_server_url(free_port: int):
+def live_server_url():
     """Returns the url of the live server"""
     seed_data.load_from_json()
+
+    # Start the process
+    hostname = ephemeral_port_reserve.LOCALHOST
+    free_port = ephemeral_port_reserve.reserve()
     proc = Process(target=run_server, args=(free_port,), daemon=True)
     proc.start()
-    url = f"http://localhost:{free_port}"
+
+    # Return the URL of the live server once it is ready
+    url = f"http://{hostname}:{free_port}"
     wait_for_server_ready(url, timeout=10.0, check_interval=0.5)
     yield url
+
+    # Clean up the process and database
     proc.kill()
     seed_data.drop_all()
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
-@pytest.fixture(scope="function")
-def live_server_url(app, live_server):
+
+
+@pytest.fixture(scope="session")
+def live_server_url(app_with_db):
     """Returns the url of the live server"""
-    return url_for("pages.index", _external=True)
+
+    # Start the process
+    hostname = ephemeral_port_reserve.LOCALHOST
+    free_port = ephemeral_port_reserve.reserve(hostname)
+    proc = Process(
+        target=run_server,
+        args=(
+            app_with_db,
+            free_port,
+        ),
+        daemon=True,
+    )
+    proc.start()
+
+    # Return the URL of the live server
+    yield f"http://{hostname}:{free_port}"
+
+    # Clean up the process
+    proc.kill()
 {% endif %}

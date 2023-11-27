@@ -9,8 +9,8 @@ pytest
 {% if cookiecutter.project_backend == "django" %}
 pytest-django
 {% endif %}
-{% if cookiecutter.project_backend == "flask" %}
-pytest-flask
+{% if cookiecutter.project_backend in ("flask", "fastapi") %}
+ephemeral-port-reserve
 {% endif %}
 pytest-playwright
 

@@ -1,6 +1,6 @@
 {% macro app() %}
 @pytest.fixture(scope="session")
-def app():
+def app_with_db():
     """Session-wide test `Flask` application."""
     # set up the test database
     dbuser = os.environ["MONGODB_USERNAME"]
