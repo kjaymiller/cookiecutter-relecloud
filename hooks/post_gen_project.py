@@ -123,7 +123,7 @@ def error_msg(pkg: str) -> str:
 def run_ruff_lint_and_format() -> None:
     """checks if ruff are installed and runs it on the project"""
     if importlib.util.find_spec("ruff"):
-        subprocess.run(["python3", "-m" "ruff", "lint", "--fix", "src"])
+        subprocess.run(["python3", "-m" "ruff", "check", "--fix", "src"])
         subprocess.run(["python3", "-m", "ruff", "format", "src"])
     else:
         logging.warning(error_msg("ruff"))
