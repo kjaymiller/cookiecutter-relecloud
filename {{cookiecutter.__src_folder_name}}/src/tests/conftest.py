@@ -121,8 +121,6 @@ def live_server_url(app_with_db):
     seed_data.drop_all()
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
-def run_server(app, port):
-    app.run(port=port, debug=False)
 
 
 @pytest.fixture(scope="session")
