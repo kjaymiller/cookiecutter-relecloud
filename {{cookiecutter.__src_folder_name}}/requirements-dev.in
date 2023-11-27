@@ -5,9 +5,7 @@ cruft
 pip-tools
 
 # Testing Tools
-coverage
 pytest
-pytest-cov
 {% if cookiecutter.project_backend == "django" %}
 pytest-django
 {% endif %}

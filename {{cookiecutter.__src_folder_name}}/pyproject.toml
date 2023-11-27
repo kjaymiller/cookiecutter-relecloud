@@ -28,11 +28,8 @@ force-exclude = '''
 {% endif %}
 
 [tool.pytest.ini_options]
-addopts = "-ra --cov -vv"
+addopts = "-ra -vv"
 {% if cookiecutter.project_backend == "django" %}
 DJANGO_SETTINGS_MODULE = "project.settings"
 pythonpath = ["src"]
 {% endif %}
-
-[tool.coverage.report]
-show_missing = true
