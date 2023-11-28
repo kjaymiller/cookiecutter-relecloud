@@ -137,4 +137,4 @@ output SERVICE_WEB_NAME string = app.outputs.name
 output SERVICE_WEB_URI string = app.outputs.uri
 output SERVICE_WEB_IMAGE_NAME string = app.outputs.imageName
 
-output uri string = web.outputs.uri
+output uri string = app.outputs.uri
