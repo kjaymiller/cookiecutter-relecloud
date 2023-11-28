@@ -78,7 +78,7 @@ jobs:
             {% if cookiecutter.project_backend == "fastapi" %}
             python3 src/fastapi_app/seed_data.py
             {% endif %}
-            python3 -m pytest 
+            python3 -m pytest
           env:
             {% if "postgres" in cookiecutter.db_resource %}
             POSTGRES_HOST: localhost
