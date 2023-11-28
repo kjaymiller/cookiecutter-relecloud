@@ -18,7 +18,7 @@ def test_project_generation(bakery):
 def test_project_post_hook_triggers_warning_if_linters_not_installed(
     cookies_session, default_context, mocker, caplog
     ):
-    """If ruff or black is not installed, the post hook should trigger a warning"""
+    """If ruff is not installed, the post hook should trigger a warning"""
 
     mocker.patch("hooks.post_gen_project.importlib.util.find_spec", return_value=None)
 
