@@ -13,7 +13,7 @@ def app_with_db():
     }
     app = create_app(config_override)
     db = engine.connect(host=app.config.get("DATABASE_URI"))  # noqa: F841
-    seeder.seed_data(pathlib.Path(__file__).parent.parent / "seed_data.json", drop=True)
+    seeder.seed_data(pathlib.Path(__file__).parent.parent.parent / "seed_data.json", drop=True)
 
     # establish an application context before running the tests
     yield app
