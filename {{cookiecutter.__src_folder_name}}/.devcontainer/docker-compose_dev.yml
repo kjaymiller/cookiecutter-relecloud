@@ -20,7 +20,7 @@ services:
   app:
     build:
       context: ..
-      dockerfile: ./.devcontainers/Dockerfile_dev
+      dockerfile: ./.devcontainer/Dockerfile_dev
     depends_on:
       db:
         condition: service_healthy
