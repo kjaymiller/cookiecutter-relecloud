@@ -27,26 +27,9 @@
                 {% if cookiecutter.project_host == "aca" %}
                 "ms-azuretools.vscode-docker",
                 {% endif %}
-                {% if 'postgres' in cookiecutter.db_resource %}
-                "mtxr.sqltools",
-                "mtxr.sqltools-driver-pg",
-                {% endif %}
                 "bierner.github-markdown-preview"
             ],
             "settings": {
-                {% if 'postgres' in cookiecutter.db_resource %}
-                "sqltools.connections": [
-                    {
-                        "name": "Local database",
-                        "driver": "PostgreSQL",
-                        "server": "db",
-                        "port": 5432,
-                        "database": "relecloud",
-                        "username": "postgres",
-                        "password": "postgres"
-                    }
-                ],
-                {% endif %}
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
                 "python.testing.pytestEnabled": true,
                 "python.testing.unittestEnabled": false,
