@@ -74,7 +74,7 @@
         "ghcr.io/azure/azure-dev/azd:latest": {}
     },
     {% if cookiecutter.project_backend == "django" %}
-    "postCreateCommand": "python -m pip install -r requirements-dev.in && python src/manage.py migrate && python src/manage.py loaddata src/seed_data.json"
+    "postCreateCommand": "python -m pip install -r requirements-dev.txt && python src/manage.py migrate && python src/manage.py loaddata src/seed_data.json"
     {% endif %}
     {% if cookiecutter.project_backend == "flask" %}
     {% if 'postgres' in cookiecutter.db_resource %}
