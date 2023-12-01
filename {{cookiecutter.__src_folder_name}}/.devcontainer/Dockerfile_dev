@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/python:{{cookiecutter._python_version}}-bullseye
+FROM mcr.microsoft.com/devcontainers/python:{{cookiecutter.__python_version}}-bullseye
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends postgresql-client \
