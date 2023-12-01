@@ -95,7 +95,7 @@ jobs:
         - name: Setup python
           uses: actions/setup-python@v4
           with:
-            python-version: {{cookiecutter.__python_version}}
+            python-version: 3.12
 
         - name: End-to-end smoke tests (playwright)
           env:
