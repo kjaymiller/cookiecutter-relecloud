@@ -119,7 +119,7 @@ module web 'web.bicep' = {
     keyVaultName: keyVault.outputs.name
     {% if cookiecutter.project_host == "appservice" %}
     appCommandLine: 'entrypoint.sh'
-    pythonVersion: '3.11'
+    pythonVersion: '{{cookiecutter.python_version}}'
     {% endif %}
     {% if cookiecutter.project_host == "aca" %}
     identityName: '${prefix}-id-web'
