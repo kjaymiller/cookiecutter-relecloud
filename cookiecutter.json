@@ -1,10 +1,10 @@
 {
   "project_name": "azure",
+  "python_version": ["3.12", "3.11", "3.10", "3.9", "3.8"],
   "project_backend": ["django", "fastapi", "flask"],
   "db_resource": ["postgres-flexible", "cosmos-postgres", "postgres-addon", "cosmos-mongodb"],
   "project_host": ["aca", "appservice"],
   "web_port": "8000",
-  "__python_version": "3.12",
   "__repo_name": "{{cookiecutter.project_name}}-{{cookiecutter.project_backend}}-{{cookiecutter.db_resource}}-{{cookiecutter.project_host}}",
   "__src_folder_name": "{{ cookiecutter.__repo_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
   "__project_short_description": "Create a relecloud demo application with {{cookiecutter.project_backend}} and {{cookiecutter.db_resource}}",
@@ -21,6 +21,7 @@
   },
   "__prompts__": {
     "project_name": "Name prefix of your project?",
+    "python_version": "Python Version?",
     "project_backend": {
       "__prompt__": "Choose a Web Framework",
       "django": "Django",
