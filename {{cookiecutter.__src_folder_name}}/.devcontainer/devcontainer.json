@@ -67,7 +67,7 @@
     {% endif %}
     {% endif %}
     {% if cookiecutter.project_backend == "fastapi" %}
-    "postCreateCommand": "pip install -e && src playwright install chromium --with-deps && python3 src/fastapi_app/seed_data.py"
+    "postCreateCommand": "playwright install chromium --with-deps && pip install -e src &&  python3 src/fastapi_app/seed_data.py"
     {% endif %}
 }
 
