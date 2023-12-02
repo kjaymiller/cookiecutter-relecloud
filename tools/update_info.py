@@ -14,7 +14,7 @@ with open("cookiecutter.json") as f:
     data = json.load(f)
 
 db_resources = data["__prompts__"]["db_resource"].items()
-web_frameworks = [x for x in data["__prompts__"]["project_backend"].items() if x[0] == "fastapi"]
+web_frameworks = data["__prompts__"]["project_backend"].items()
 deployment_hosts = data["__prompts__"]["project_host"].items()
 
 
