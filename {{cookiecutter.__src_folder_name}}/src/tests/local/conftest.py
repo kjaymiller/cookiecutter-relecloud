@@ -1,13 +1,13 @@
 {# standard library imports #}
 {% if cookiecutter.project_backend == "fastapi" %}
-from multiprocessing import Process
+import multiprocessing
 import socket
 import time
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
+import multiprocessing
 import os
 import pathlib
-from multiprocessing import Process
 {% endif %}
 {% if cookiecutter.project_backend == "django" %}
 import os
@@ -42,6 +42,11 @@ from flaskapp import create_app, seeder
 {% if 'postgres' in cookiecutter.db_resource %}
 from flaskapp import db
 {% endif %}
+{% endif %}
+
+{% if cookiecutter.project_backend in ("flask", "fastapi") %}
+# Set start method to "fork" to avoid issues with pickling on OSes that default to "spawn"
+multiprocessing.set_start_method("fork")
 {% endif %}
 
 {% if cookiecutter.project_backend == "fastapi" %}
@@ -130,7 +135,7 @@ def live_server_url(app_with_db):
     # Start the process
     hostname = ephemeral_port_reserve.LOCALHOST
     free_port = ephemeral_port_reserve.reserve(hostname)
-    proc = Process(
+    proc = multiprocessing.Process(
         target=run_server,
         args=(
             app_with_db,
