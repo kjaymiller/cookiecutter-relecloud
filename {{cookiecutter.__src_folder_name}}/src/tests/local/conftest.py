@@ -113,7 +113,7 @@ def live_server_url():
     # Start the process
     hostname = ephemeral_port_reserve.LOCALHOST
     free_port = ephemeral_port_reserve.reserve()
-    proc = Process(target=run_server, args=(free_port,), daemon=True)
+    proc = multiprocessing.Process(target=run_server, args=(free_port,), daemon=True)
     proc.start()
 
     # Return the URL of the live server once it is ready
