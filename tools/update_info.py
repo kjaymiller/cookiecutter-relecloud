@@ -1,3 +1,4 @@
+from typing_extensions import Annotated
 import cruft
 import logging
 import pathlib
@@ -129,7 +130,12 @@ def get_repos_by_pattern(pattern:str, repos: list[str]=list(get_azure_combinatio
     matching_repos = [repo for repo in repos if pattern.match(repo)]
     return matching_repos
     
-def update_repo(repo:str, path: pathlib.Path, branch:str="cruft/update", **kwargs) -> None:
+def update_repo(
+        repo:str,
+        path: pathlib.Path,
+        branch:str="cruft/update",
+        checkout_branch:str|None=None,
+        **kwargs) -> None:
     """
     Updates the repo with the provided name
     
@@ -162,7 +168,10 @@ def update_repo(repo:str, path: pathlib.Path, branch:str="cruft/update", **kwarg
     )
 
     cruft.update(
-        path, skip_apply_ask=True, extra_context=kwargs,
+        path,
+        skip_apply_ask=True,
+        extra_context=kwargs,
+        checkout=checkout_branch if checkout_branch else None,
     )
 
     if not subprocess.check_output(
@@ -200,10 +209,34 @@ def update_repo(repo:str, path: pathlib.Path, branch:str="cruft/update", **kwarg
     )
 
 @repos_app.command(name="update-one")
-def update_single_repo(repo:str, branch:str="cruft/update") -> None:
-    """Clones a single repo and updates it using `cruft update`"""
+def update_single_repo(
+    repo: Annotated[str, typer.Argument(
+        help="The name of the repo to update.",
+        show_default=False,
+    )],
+    branch: Annotated[str, typer.Option(
+        "--branch",
+        "-b",
+        help="The branch to create and push to.",
+    )]="cruft/update",
+    checkout: Annotated[str, typer.Option(
+        "--checkout",
+        "-c",
+        help="The branch to use for cruft updates `checkout` parameter.",
+    )] = None,
+    ) -> None:
+    """
+    Clones a single repo and updates it using `cruft update`
+    
+    TODO: #307 Add dict pattern to pass in kwargs to cruft.update
+    """
     logger.info(f)
-    return update_repo(repo=repo, path=create_base_folder(), branch=branch)
+    return update_repo(
+        repo=repo,
+        path=create_base_folder(),
+        branch=branch,
+        checkout=checkout,
+        )
 
 @repos_app.command(name="update-many")
 def update_repos(pattern:str, branch:str="cruft/update") -> None:
