@@ -42,7 +42,7 @@ random_cc_folder_prefix = "".join([str(chr(random.randint(65, 90))) for _ in ran
 def get_azure_combinations() -> Generator[tuple[str, str], None, None]:
     """
     Returns the base_keys and base_values for the combinations
-    
+
     Yields:
         tuple[str, str]: The base_keys and base_values for the combinations
         Example: ("azure-flask-postgresql-azure-app-service", "Flask PostgreSQL Azure App Service")
@@ -118,7 +118,7 @@ def create_base_folder():
     base_path.mkdir(parents=True, exist_ok=True)
     return base_path
     # TODO: Get repos by pattern
-    
+
 
 def get_repos_by_pattern(pattern:str, repos: list[str]=list(get_azure_combinations())) -> list[str]:
     """
@@ -128,7 +128,7 @@ def get_repos_by_pattern(pattern:str, repos: list[str]=list(get_azure_combinatio
     pattern = re.compile(rf".*{pattern}.*")
     matching_repos = [repo[0] for repo in repos if pattern.match(repo[0])]
     return matching_repos
-    
+
 def update_repo(
         repo:str,
         path: pathlib.Path,
@@ -138,14 +138,14 @@ def update_repo(
         **kwargs) -> None:
     """
     Updates the repo with the provided name
-    
+
     Parameters:
         repo (str): The name of the repo to update.
             It should be the same as seen on GitHub.
         path (pathlib.Path): The parent folder where the will be saved.
         branch (str): The name of the branch to create and push to.
             Defaults to cruft/update.
-        **kwargs: Additional keyword arguments to pass to cruft.update as 
+        **kwargs: Additional keyword arguments to pass to cruft.update as
     """
     # console = console.Console()
     per_file_formatter = logging.Formatter(f'%(asctime)s - {repo} - %(levelname)s - %(message)s')
@@ -186,7 +186,8 @@ def update_repo(
         return
 
     if rejection_files:=list(pathlib.Path(path).rglob("*.rej")):
-        logger.error(f"Rejection files found for {path}!\nFiles: {'\n- '.join([str(x) for x in rejection_files])}")
+        files_str = '\n- '.join([str(x) for x in rejection_files])
+        logger.error(f"Rejection files found for {path}!\nFiles: {files_str}")
         return None
 
     logger.info(f"adding Changes and Creating a PR for {path}")
@@ -238,7 +239,8 @@ def update_repos(
     logger.info(f"Request updates to repos matching \"{pattern}\" requested. Attrs: \n\t{branch=}\n\t{checkout=}")
     path = create_base_folder()
     patterns = get_repos_by_pattern(pattern)
-    logger.info(f"Found {len(patterns)} repos matching \"{pattern}\"\n{'\n'.join(patterns)}")
+    patterns_str = '\n- '.join(patterns)
+    logger.info(f"Found {len(patterns)} repos matching \"{pattern}\"\n{patterns_str}")
 
     for repo in patterns:
         update_repo(repo=repo, path=path, branch=branch)
