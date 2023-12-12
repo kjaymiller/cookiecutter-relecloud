@@ -13,6 +13,8 @@ pytest-django
 ephemeral-port-reserve
 {% endif %}
 pytest-playwright
+coverage
+pytest-cov
 
 # Linters
 ruff

@@ -67,7 +67,7 @@ If you're running the app inside VS Code or GitHub Codespaces, you can use the "
 
 ```sh
 {% if cookiecutter.project_backend == "flask" %}
-python3 -m flask --app src.flaskapp run --reload --port={{cookiecutter.web_port}}
+python3 -m flask --app src.flaskapp run --debug --reload --port={{cookiecutter.web_port}}
 {% endif %}
 {% if cookiecutter.project_backend == "fastapi" %}
 python3 -m uvicorn fastapi_app:app --reload --port={{cookiecutter.web_port}}
@@ -99,7 +99,7 @@ python3 src/manage.py createsuperuser
 
     ```sh
     python3 -m pip install -r requirements-dev.txt
-    python3 -m playwright install --with-deps
+    python3 -m playwright install chromium --with-deps
     ```
 
 3. Run the tests:

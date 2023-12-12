@@ -70,7 +70,7 @@ Application tests are in `{{cookiecutter.__src_folder_name}}/tests/`.
 Application tests use [playwright](https://playwright.dev/python/) and [pytest-playwright](https://github.com/microsoft/playwright-pytest). If you're testing the generated projects, you'll need to have `playwright` installed with dependencies.
 
 ```sh
-playwright install --with-deps
+playwright install chromium --with-deps
 ```
 
 ### Running Tests
