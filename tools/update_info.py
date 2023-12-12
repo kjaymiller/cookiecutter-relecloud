@@ -1,3 +1,4 @@
+from typing_extensions import Annotated
 import cruft
 import logging
 import pathlib
@@ -9,6 +10,22 @@ import re
 import json
 import itertools
 from collections import defaultdict
+
+# Typer CLI Info
+app = typer.Typer()
+info_app = typer.Typer()
+app.add_typer(info_app, name="info")
+repos_app = typer.Typer()
+app.add_typer(repos_app, name="repos")
+
+# Configure Logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler("update_info.log")
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+# Add the file handler to the logger
+logger.addHandler(file_handler)
 
 with open("cookiecutter.json") as f:
     data = json.load(f)
@@ -23,7 +40,13 @@ random_cc_folder_prefix = "".join([str(chr(random.randint(65, 90))) for _ in ran
 
 
 def get_azure_combinations() -> Generator[tuple[str, str], None, None]:
-    """Returns the base_keys and base_values for the combinations"""
+    """
+    Returns the base_keys and base_values for the combinations
+    
+    Yields:
+        tuple[str, str]: The base_keys and base_values for the combinations
+        Example: ("azure-flask-postgresql-azure-app-service", "Flask PostgreSQL Azure App Service")
+    """
     for framework, db_resource, host in combos:
         base_keys = (
             (f"azure-{framework[0]}/{db_resource[0]}/{host[0]}")
@@ -37,13 +60,15 @@ def get_azure_combinations() -> Generator[tuple[str, str], None, None]:
         yield base_keys, base_values
 
 
-app = typer.Typer()
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-logger.FileHandler("update_info.log")
-
-@app.command()
+@info_app.command(name='list_repos')
 def metadata_list():
+    """
+    Creates a json file with the metadata for the combinations
+
+    TODO: #302 Allow passing in a file to update_repos to iterate
+    TODO: #303 Add a pattern that will allow for updating a subset of repos
+    TODO: #304 Create a list of patterns to exclude
+    """
     metadata_dict = defaultdict(list)
 
     for framework, db_resource, host in combos:
@@ -60,90 +85,9 @@ def metadata_list():
     with open("metadata.json", "w") as outfile:
         json.dump(metadata_dict, outfile, indent=4)
 
-
-@app.command()
-def update_all_repos():
-    """
-    Iterates through combinations:
-
-    - Creates a Placeholder Folder
-    - Attempts to pull the combination url
-    - Runs Cruft to update based on the path's cruft.json
-    - Creates pull request for the updates
-    """
-
-    logger.debug("Creating Placeholder Folder")
-    base_path = pathlib.Path(f"update_repos/{random_cc_folder_prefix}")
-    base_path.mkdir(parents=True, exist_ok=True)
-
-    logger.debug("Cloning Repos and Running Cruft")
-    for base_key, base_values in get_azure_combinations():
-        base_file = base_key.replace("-", "_")
-        url = f"git@github.com:Azure-Samples/{base_key}.git"
-        cmd = ["git", "clone", url, base_file]
-        path = base_path.joinpath(base_file)
-
-        try:
-            subprocess.check_output(
-                cmd,
-                cwd=base_path,
-            )
-
-        except subprocess.CalledProcessError as e:
-            logger.warning(f"Could not to clone {url}: {e}. This is likely a non-existent repo.")
-            continue
-
-        branch_name = f"cruft/update"
-        subprocess.check_output(
-            ["git", "checkout", "-b", branch_name],
-            text=True,
-            cwd=path,
-        )
-
-        cruft.update(
-            path, skip_apply_ask=True, extra_context={"python_version": "3.12"}
-        )
-
-        if not subprocess.check_output(
-            ["git", "status", "--porcelain"],
-            text=True,
-            cwd=path,
-        ):
-            logger.info(f"No changes for {base_file}, skipping.")
-            continue
-
-        if subprocess.check_output(
-            ["ls -a" "**/*.rej"],
-            text=True,
-            cwd=path,
-        ):
-            logger.error(f"Rejection files found for {base_file}!")
-            exit(1)
-
-        subprocess.check_output(
-            ["git", "add", "."],
-            text=True,
-            cwd=path,
-        )
-        subprocess.check_output(
-            ["git", "commit", "-m", "Cruft Update"],
-            text=True,
-            cwd=path,
-        )
-        subprocess.check_output(
-            ["git", "push", "--set-upstream", "origin", branch_name],
-            text=True,
-            cwd=path,
-        )
-        subprocess.check_output(
-            ["gh", "pr", "create", "--fill", "--reviewer", "kjaymiller,pamelafox"],
-            text=True,
-            cwd=path,
-        )
-
-
-@app.command()
+@info_app.command()
 def update_readme():
+    """Updates the README of cookiecutter-relecloud with the list of combinations"""
     web_framework_values = defaultdict(list)
 
     for framework, db_resource, host in combos:
@@ -168,6 +112,136 @@ def update_readme():
 
     print(f"{len(list(combos))}: Total Combinations")
 
+def create_base_folder():
+    """Creates the base folder for the repo"""
+    base_path = pathlib.Path(f"update_repos/{random_cc_folder_prefix}")
+    base_path.mkdir(parents=True, exist_ok=True)
+    return base_path
+    # TODO: Get repos by pattern
+    
+
+def get_repos_by_pattern(pattern:str, repos: list[str]=list(get_azure_combinations())) -> list[str]:
+    """
+    Returns a list of repos that match the provided pattern.
+    TODO: #305 Add Test
+    """
+    pattern = re.compile(rf".*{pattern}.*")
+    matching_repos = [repo[0] for repo in repos if pattern.match(repo[0])]
+    return matching_repos
+    
+def update_repo(
+        repo:str,
+        path: pathlib.Path,
+        branch:str="cruft/update",
+        checkout_branch:str|None=None,
+        submit_pr:bool=True,
+        **kwargs) -> None:
+    """
+    Updates the repo with the provided name
+    
+    Parameters:
+        repo (str): The name of the repo to update.
+            It should be the same as seen on GitHub.
+        path (pathlib.Path): The parent folder where the will be saved.
+        branch (str): The name of the branch to create and push to.
+            Defaults to cruft/update.
+        **kwargs: Additional keyword arguments to pass to cruft.update as 
+    """
+    # console = console.Console()
+    per_file_formatter = logging.Formatter(f'%(asctime)s - {repo} - %(levelname)s - %(message)s')
+    file_handler.setFormatter(per_file_formatter)
+    url = f"git@github.com:Azure-Samples/{repo}.git"
+    logger.info(f"Cloning from GitHub from {url}")
+    path = path.joinpath(repo)
+
+    try:
+        subprocess.check_output(
+            ["git", "clone", url],
+            cwd=path.parent,
+        )
+
+    except subprocess.CalledProcessError as e:
+        logging.warning(f"Could not to clone {url}: {e}.\nThis is likely a non-existent repo.")
+        return None
+
+    subprocess.check_output(
+        ["git", "checkout", "-b", branch],
+        text=True,
+        cwd=path,
+    )
+
+    cruft.update(
+        path,
+        skip_apply_ask=True,
+        extra_context=kwargs,
+        checkout=checkout_branch if checkout_branch else None,
+    )
+
+    if not subprocess.check_output(
+        ["git", "status", "--porcelain"],
+        text=True,
+        cwd=path,
+    ):
+        logger.info(f"No changes for {path}, skipping.")
+        return
+
+    if rejection_files:=list(pathlib.Path(path).rglob("*.rej")):
+        logger.error(f"Rejection files found for {path}!\nFiles: {'\n- '.join([str(x) for x in rejection_files])}")
+        return None
+
+    logger.info(f"adding Changes and Creating a PR for {path}")
+
+    subprocess.check_output(
+        ["git", "add", "."],
+        text=True,
+        cwd=path,
+    )
+    subprocess.check_output(
+        ["git", "commit", "-m", "Cruft Update"],
+        text=True,
+        cwd=path,
+    )
+    logger.info(f"Pushing changes to {branch}")
+    subprocess.check_output(
+        ["git", "push", "--set-upstream", "origin", branch],
+        text=True,
+        cwd=path,
+    )
+
+    if submit_pr:
+        logger.info(f"Creating PR for {path}")
+        subprocess.check_output(
+            ["gh", "pr", "create", "--fill", "--reviewer", "kjaymiller,pamelafox"],
+            text=True,
+            cwd=path,
+        )
+
+
+@repos_app.command(name="update")
+def update_repos(
+    pattern: Annotated[str, typer.Argument(
+        help="The pattern to match repos to update.",
+        show_default=False,
+    )]="",
+    branch: Annotated[str, typer.Option(
+        "--branch",
+        "-b",
+        help="The branch to create and push to.",
+    )]="cruft/update",
+    checkout: Annotated[str, typer.Option(
+        "--checkout",
+        "-c",
+        help="The branch to use for cruft updates `checkout` parameter.",
+    )]=None,
+    ) -> None:
+    """Updates all repos that match the provided pattern or all of the repos if no pattern is provided."""
+    logger.info(f"Request updates to repos matching \"{pattern}\" requested. Attrs: \n\t{branch=}\n\t{checkout=}")
+    path = create_base_folder()
+    patterns = get_repos_by_pattern(pattern)
+    logger.info(f"Found {len(patterns)} repos matching \"{pattern}\"\n{'\n'.join(patterns)}")
+
+    for repo in patterns:
+        update_repo(repo=repo, path=path, branch=branch)
 
 if __name__ == "__main__":
     app()
