@@ -10,7 +10,6 @@ import re
 import json
 import itertools
 from collections import defaultdict
-# from rich import console
 
 # Typer CLI Info
 app = typer.Typer()
@@ -126,8 +125,8 @@ def get_repos_by_pattern(pattern:str, repos: list[str]=list(get_azure_combinatio
     Returns a list of repos that match the provided pattern.
     TODO: #305 Add Test
     """
-    pattern = re.compile(pattern)
-    matching_repos = [repo for repo in repos if pattern.match(repo)]
+    pattern = re.compile(rf".*{pattern}.*")
+    matching_repos = [repo[0] for repo in repos if pattern.match(repo[0])]
     return matching_repos
     
 def update_repo(
@@ -135,6 +134,7 @@ def update_repo(
         path: pathlib.Path,
         branch:str="cruft/update",
         checkout_branch:str|None=None,
+        submit_pr:bool=True,
         **kwargs) -> None:
     """
     Updates the repo with the provided name
@@ -148,8 +148,10 @@ def update_repo(
         **kwargs: Additional keyword arguments to pass to cruft.update as 
     """
     # console = console.Console()
-    logger.debug("Creating Placeholder Folder")
+    per_file_formatter = logging.Formatter(f'%(asctime)s - {repo} - %(levelname)s - %(message)s')
+    file_handler.setFormatter(per_file_formatter)
     url = f"git@github.com:Azure-Samples/{repo}.git"
+    logger.info(f"Cloning from GitHub from {url}")
     path = path.joinpath(repo)
 
     try:
@@ -159,7 +161,8 @@ def update_repo(
         )
 
     except subprocess.CalledProcessError as e:
-        raise ValueError(f"Could not to clone {url}: {e}.\nThis is likely a non-existent repo.")
+        logging.warning(f"Could not to clone {url}: {e}.\nThis is likely a non-existent repo.")
+        return None
 
     subprocess.check_output(
         ["git", "checkout", "-b", branch],
@@ -183,10 +186,11 @@ def update_repo(
         return
 
     if rejection_files:=list(pathlib.Path(path).rglob("*.rej")):
-        logger.error(f"Rejection files found for {path}!\nFiles: {'\n- '.join(rejection_files)}")
-        exit(1)
+        logger.error(f"Rejection files found for {path}!\nFiles: {'\n- '.join([str(x) for x in rejection_files])}")
+        return None
 
-    # Add the Changes and Create a PR
+    logger.info(f"adding Changes and Creating a PR for {path}")
+
     subprocess.check_output(
         ["git", "add", "."],
         text=True,
@@ -197,23 +201,28 @@ def update_repo(
         text=True,
         cwd=path,
     )
+    logger.info(f"Pushing changes to {branch}")
     subprocess.check_output(
         ["git", "push", "--set-upstream", "origin", branch],
         text=True,
         cwd=path,
     )
-    subprocess.check_output(
-        ["gh", "pr", "create", "--fill", "--reviewer", "kjaymiller,pamelafox"],
-        text=True,
-        cwd=path,
-    )
 
-@repos_app.command(name="update-one")
-def update_single_repo(
-    repo: Annotated[str, typer.Argument(
-        help="The name of the repo to update.",
+    if submit_pr:
+        logger.info(f"Creating PR for {path}")
+        subprocess.check_output(
+            ["gh", "pr", "create", "--fill", "--reviewer", "kjaymiller,pamelafox"],
+            text=True,
+            cwd=path,
+        )
+
+
+@repos_app.command(name="update")
+def update_repos(
+    pattern: Annotated[str, typer.Argument(
+        help="The pattern to match repos to update.",
         show_default=False,
-    )],
+    )]="",
     branch: Annotated[str, typer.Option(
         "--branch",
         "-b",
@@ -223,46 +232,16 @@ def update_single_repo(
         "--checkout",
         "-c",
         help="The branch to use for cruft updates `checkout` parameter.",
-    )] = None,
+    )]=None,
     ) -> None:
-    """
-    Clones a single repo and updates it using `cruft update`
-    
-    TODO: #307 Add dict pattern to pass in kwargs to cruft.update
-    """
-    logger.info(f)
-    return update_repo(
-        repo=repo,
-        path=create_base_folder(),
-        branch=branch,
-        checkout=checkout,
-        )
-
-@repos_app.command(name="update-many")
-def update_repos(pattern:str, branch:str="cruft/update") -> None:
-    """Updates all repos that match the provided pattern"""
+    """Updates all repos that match the provided pattern or all of the repos if no pattern is provided."""
+    logger.info(f"Request updates to repos matching \"{pattern}\" requested. Attrs: \n\t{branch=}\n\t{checkout=}")
     path = create_base_folder()
-    repos = get_repos_by_pattern(pattern)
-    for repo in repos:
+    patterns = get_repos_by_pattern(pattern)
+    logger.info(f"Found {len(patterns)} repos matching \"{pattern}\"\n{'\n'.join(patterns)}")
+
+    for repo in patterns:
         update_repo(repo=repo, path=path, branch=branch)
-
-
-@repos_app.command(name="update-all")
-def update_all_repos(branch:str="cruft/update"):
-    """
-    Iterates through combinations:
-
-    - Creates a Placeholder Folder
-    - Attempts to pull the combination url
-    - Runs Cruft to update based on the path's cruft.json
-    - Creates pull request for the updates
-    """
-
-    path = create_base_folder()
-    for base_key,_ in get_azure_combinations():
-        update_repo(base_key, path, branch=branch)
-
-
 
 if __name__ == "__main__":
     app()
