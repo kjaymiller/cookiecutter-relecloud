@@ -18,3 +18,6 @@ addopts = "-ra -vv"
 DJANGO_SETTINGS_MODULE = "project.settings"
 pythonpath = ["src"]
 {% endif %}
+
+[tool.coverage.report]
+show_missing = true

@@ -15,7 +15,7 @@
             ],
             "django": true,
             "justMyCode": true
-        }
+        },
         {% endif %}
         {% if cookiecutter.project_backend == "flask" %}
         {
@@ -35,7 +35,7 @@
             ],
             "jinja": true,
             "justMyCode": false
-        }
+        },
         {% endif %}
         {% if cookiecutter.project_backend == "fastapi" %}
         {
@@ -47,7 +47,16 @@
                 "fastapi_app:app",
                 "--reload"
             ],
-        }
+        },
         {% endif %}
+        {
+            "name": "Python: Debug Tests",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "purpose": ["debug-test"],
+            "console": "integratedTerminal",
+            "env": {"PYTEST_ADDOPTS": "--no-cov"}
+        }
     ]
 }
