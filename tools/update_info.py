@@ -133,7 +133,7 @@ def update_repo(
         repo:str,
         path: pathlib.Path,
         branch:str="cruft/update",
-        checkout_branch:str|None=None,
+        checkout:str|None=None,
         submit_pr:bool=True,
         **kwargs) -> None:
     """
@@ -145,6 +145,7 @@ def update_repo(
         path (pathlib.Path): The parent folder where the will be saved.
         branch (str): The name of the branch to create and push to.
             Defaults to cruft/update.
+        checkout (str): The name of the branch to use from repo to update.
         **kwargs: Additional keyword arguments to pass to cruft.update as
     """
     # console = console.Console()
@@ -164,6 +165,7 @@ def update_repo(
         logging.warning(f"Could not to clone {url}: {e}.\nThis is likely a non-existent repo.")
         return None
 
+    logger.info(f"Checking out {branch}.")
     subprocess.check_output(
         ["git", "checkout", "-b", branch],
         text=True,
@@ -174,7 +176,7 @@ def update_repo(
         path,
         skip_apply_ask=True,
         extra_context=kwargs,
-        checkout=checkout_branch if checkout_branch else None,
+        checkout=checkout if checkout else None,
     )
 
     if not subprocess.check_output(
@@ -243,7 +245,7 @@ def update_repos(
     logger.info(f"Found {len(patterns)} repos matching \"{pattern}\"\n{patterns_str}")
 
     for repo in patterns:
-        update_repo(repo=repo, path=path, branch=branch)
+        update_repo(repo=repo, path=path, branch=branch, checkout=checkout)
 
 if __name__ == "__main__":
     app()
