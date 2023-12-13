@@ -6,6 +6,9 @@ import time
 {% endif %}
 {% if cookiecutter.project_backend == "flask" %}
 import multiprocessing
+from multiprocessing import ThreadPool as Pool
+{% endif %}
+{% if cookiecutter.project_backend == "django" %}
 import os
 import pathlib
 {% endif %}
@@ -44,9 +47,14 @@ from flaskapp import db
 {% endif %}
 {% endif %}
 
-{% if cookiecutter.project_backend in ("flask", "fastapi") %}
+{% if cookiecutter.project_backend in ("fastapi") %}
 # Set start method to "fork" to avoid issues with pickling on OSes that default to "spawn"
 multiprocessing.set_start_method("fork")
+{% endif %}
+
+{% if cookiecutter.project_backend == "flask" %}
+# We're using `spawn` to create a consistent call across the three main os's (Windows, Linux, MacOS)
+multiprocessing.set_start_method("spawn")
 {% endif %}
 
 {% if cookiecutter.project_backend == "fastapi" %}
@@ -135,19 +143,19 @@ def live_server_url(app_with_db):
     # Start the process
     hostname = ephemeral_port_reserve.LOCALHOST
     free_port = ephemeral_port_reserve.reserve(hostname)
-    proc = multiprocessing.Process(
+    pool = Pool(processes=1)
+    pool.apply_async(
         target=run_server,
         args=(
             app_with_db,
             free_port,
-        ),
-        daemon=True,
+        )
     )
-    proc.start()
 
     # Return the URL of the live server
     yield f"http://{hostname}:{free_port}"
 
     # Clean up the process
-    proc.kill()
+    pool.close()
 {% endif %}
+

@@ -8,7 +8,7 @@ dependencies = [
     "opencensus-ext-flask==0.8.2",
     {% if 'postgres' in cookiecutter.db_resource %}
     "SQLAlchemy==2.0.17",
-    "psycopg2-binary==2.9.6",
+    "psycopg2-binary==2.9.9",
     "Flask-Migrate==4.0.4",
     "Flask-SQLAlchemy==3.1.1",
     {% endif %}

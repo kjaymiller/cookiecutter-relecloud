@@ -15,37 +15,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-20.04"]
-        python_version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
-    services:
-      db:
-        {% if "mongo" in cookiecutter.db_resource %}
-        image: mongo:4.2.24
-        ports:
-          - 27017:27017
-        env:
-            MONGO_INITDB_ROOT_USERNAME: mongodb
-            MONGO_INITDB_ROOT_PASSWORD: mongodb
-            MONGO_INITDB_DATABASE: relecloud
-        options: >-
-          --health-cmd mongo
-          --health-start-period 20s
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        {% endif %}
-        {% if "postgres" in cookiecutter.db_resource %}
-        image: postgres:14
-        env:
-          POSTGRES_PASSWORD: postgres
-        ports:
-        - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-        {% endif %}
+        os: [ubuntu-20.04, windows-latest, macos-latest]
+        python_version: [3.8, 3.9, "3.10", 3.11, 3.12]
     steps:
-        - uses: actions/checkout@v3
-        - name: Setup python
+      - uses: actions/checkout@v3
+      - name: Check for MacOS Runner
+        if: matrix.os == 'macos-latest-xlarge'
+        run: |
+          brew install postgresql@14
+      - uses: ikalnytskyi/action-setup-postgres@v4
+      - name: Setup python
           uses: actions/setup-python@v2
           with:
             {% raw %}
