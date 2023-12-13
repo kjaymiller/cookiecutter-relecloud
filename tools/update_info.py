@@ -145,27 +145,32 @@ def update_repo(
         path (pathlib.Path): The parent folder where the will be saved.
         branch (str): The name of the branch to create and push to.
             Defaults to cruft/update.
-        checkout (str): The name of the branch to use from repo to update.
+        checkout (str): The name of the branch to checkout from repo to update.
         **kwargs: Additional keyword arguments to pass to cruft.update as
     """
     # console = console.Console()
     per_file_formatter = logging.Formatter(f'%(asctime)s - {repo} - %(levelname)s - %(message)s')
     file_handler.setFormatter(per_file_formatter)
     url = f"git@github.com:Azure-Samples/{repo}.git"
-    logger.info(f"Cloning from GitHub from {url}")
+    logger.info(f"Cloning {checkout} branch from GitHub from {url}")
     path = path.joinpath(repo)
 
     try:
-        subprocess.check_output(
-            ["git", "clone", url],
-            cwd=path.parent,
-        )
+        if checkout is not None:
+            subprocess.check_output(
+                ["git", "clone", "-b", checkout, url],
+                cwd=path.parent,
+            )
+        else:
+            subprocess.check_output(
+                ["git", "clone", url],
+                cwd=path.parent,
+            )
 
     except subprocess.CalledProcessError as e:
-        logging.warning(f"Could not to clone {url}: {e}.\nThis is likely a non-existent repo.")
+        logging.warning(f"Could not to clone {checkout} branch on {url}: {e}.\nThis is likely a non-existent repo or branch.")
         return None
 
-    logger.info(f"Checking out {branch}.")
     subprocess.check_output(
         ["git", "checkout", "-b", branch],
         text=True,
