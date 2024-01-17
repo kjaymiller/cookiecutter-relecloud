@@ -219,7 +219,7 @@ def update_repo(
     if submit_pr:
         logger.info(f"Creating PR for {path}")
         subprocess.check_output(
-            ["gh", "pr", "create", "--fill", "--reviewer", "kjaymiller,pamelafox"],
+            ["gh", "pr", "create", "--fill"],
             text=True,
             cwd=path,
         )
