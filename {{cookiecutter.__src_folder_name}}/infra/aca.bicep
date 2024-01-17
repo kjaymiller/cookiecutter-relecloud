@@ -85,6 +85,10 @@ module app 'core/host/container-app-upsert.bicep' = {
         name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
         value: applicationInsights.properties.ConnectionString
       }
+      {
+        name: 'OTEL_EXPERIMENTAL_RESOURCE_DETECTORS'
+        value: 'azure_app_service'
+      }
       {% if "mongodb" in cookiecutter.db_resource %}
       {
         name: 'AZURE_COSMOS_CONNECTION_STRING'
