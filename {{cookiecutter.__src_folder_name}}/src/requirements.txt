@@ -1,4 +1,5 @@
 # global requirements
+azure-monitor-opentelemety
 gunicorn==20.1.0
 {% if cookiecutter.project_backend == "fastapi" %}
 uvicorn==0.23.2
@@ -10,8 +11,6 @@ django
 django-crispy-forms
 crispy-bootstrap4
 whitenoise
-opencensus-ext-azure
-opencensus-ext-django
 {% if 'postgres' in cookiecutter.db_resource %}
 psycopg2-binary==2.9.6
 {% endif %}
