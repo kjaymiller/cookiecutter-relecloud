@@ -1,5 +1,5 @@
 # global requirements
-azure-monitor-opentelemety
+azure-monitor-opentelemetry
 gunicorn==20.1.0
 {% if cookiecutter.project_backend == "fastapi" %}
 uvicorn==0.23.2
