@@ -1,3 +1,6 @@
+> **WARNING**
+> Cookiecutter Relecloud is now the **Azure Python Standardization Template Generator**! This project will now be maintained at https://github.com/Azure-Samples/Azure-Python-Standardization-Template-Generator
+
 # Cookiecutter Relecloud
 
 [![Github Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fkjaymiller%2Fcookiecutter-relecloud%2Fbadge%3Fref%3Dmain&style=flat-square)](https://actions-badge.atrox.dev/kjaymiller/cookiecutter-relecloud/goto?ref=main)
