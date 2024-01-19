@@ -30,6 +30,8 @@ description: This project deploys a web application for a space travel agency us
 ---
 <!-- YAML front-matter schema: https://review.learn.microsoft.com/en-us/help/contribute/samples/process/onboarding?branch=main#supported-metadata-fields-for-readmemd -->
 
+{% extends 'abbreviations.txt' %}
+{% block cc %}
 # Deploy {{web_framework}} Application with {{db}} via Azure Container Apps
 
 This project deploys a web application for a space travel agency using {{web_framework}}. The application can be deployed to Azure with {{azure_host}} using the [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/overview).
